@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fiches de Révision & Quiz — apprentissages.faciles | RNCP 37099</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f0f4ff;
+    --white: #ffffff;
+    --navy: #1e2761;
+    --gold: #f7c948;
+    --muted: #64748b;
+    --border: #e2e8f0;
+    --radius: 14px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: #1e293b; }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--navy);
+    padding: 52px 24px 44px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before { content:''; position:absolute; width:380px; height:380px; border-radius:50%; background:rgba(247,201,72,0.07); top:-140px; right:-80px; pointer-events:none; }
+  header::after  { content:''; position:absolute; width:260px; height:260px; border-radius:50%; background:rgba(247,201,72,0.05); bottom:-100px; left:-60px; pointer-events:none; }
+
+  .logo-badge { display:inline-flex; align-items:center; gap:8px; background:rgba(247,201,72,0.15); border:1px solid rgba(247,201,72,0.4); color:var(--gold); border-radius:99px; font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; padding:5px 14px; margin-bottom:16px; }
+  header h1 { font-family:'Syne',sans-serif; font-size:clamp(26px,5vw,46px); font-weight:800; color:#fff; line-height:1.15; letter-spacing:-0.5px; margin-bottom:12px; }
+  header h1 span { color:var(--gold); }
+  header p { color:#94a3b8; font-size:15px; max-width:540px; margin:0 auto 28px; line-height:1.6; }
+
+  .stats { display:flex; justify-content:center; gap:28px; flex-wrap:wrap; }
+  .stat { text-align:center; }
+  .stat strong { display:block; font-family:'Syne',sans-serif; font-size:24px; font-weight:800; color:var(--gold); line-height:1.1; margin-bottom:2px; }
+  .stat span { font-size:12px; color:rgba(255,255,255,0.5); }
+
+  /* ── HOW TO ── */
+  .how-to { background:#fff; border-bottom:1px solid var(--border); padding:16px 24px; }
+  .how-inner { max-width:1000px; margin:0 auto; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .how-inner > b { font-size:13px; color:var(--navy); white-space:nowrap; }
+  .pill { display:inline-flex; align-items:center; gap:5px; background:var(--bg); border:1px solid var(--border); border-radius:99px; padding:4px 11px; font-size:12px; font-weight:600; color:var(--navy); white-space:nowrap; }
+  .pill .n { width:16px; height:16px; border-radius:50%; background:var(--navy); color:var(--gold); font-size:9px; font-weight:700; display:flex; align-items:center; justify-content:center; }
+  .arr { color:#cbd5e1; font-size:13px; }
+
+  /* ── MAIN ── */
+  main { max-width:1060px; margin:0 auto; padding:40px 18px 80px; }
+
+  .section-label { font-family:'Syne',sans-serif; font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--muted); margin-bottom:18px; display:flex; align-items:center; gap:10px; }
+  .section-label::after { content:''; flex:1; height:1px; background:var(--border); }
+
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:18px; margin-bottom:48px; }
+
+  .card { background:var(--white); border:1.5px solid var(--border); border-radius:var(--radius); overflow:hidden; display:flex; flex-direction:column; text-decoration:none; color:inherit; transition:transform .2s, box-shadow .2s, border-color .2s; }
+  .card:hover { transform:translateY(-4px); box-shadow:0 14px 36px rgba(30,39,97,.11); border-color:transparent; }
+
+  .card-accent { height:4px; }
+  .card-body { padding:18px 20px 14px; flex:1; }
+  .card-meta { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+
+  .tag { font-size:10px; font-weight:700; letter-spacing:.8px; text-transform:uppercase; border-radius:99px; padding:3px 10px; border:1.5px solid; }
+  .dot { width:7px; height:7px; border-radius:50%; background:#22c55e; box-shadow:0 0 0 3px rgba(34,197,94,.2); }
+
+  .card h3 { font-family:'Syne',sans-serif; font-size:16px; font-weight:800; color:var(--navy); margin-bottom:6px; line-height:1.3; }
+  .card p  { font-size:12.5px; color:var(--muted); line-height:1.55; margin-bottom:12px; }
+
+  .chips { display:flex; flex-wrap:wrap; gap:5px; }
+  .chip  { font-size:10.5px; background:#f1f5f9; color:#475569; border-radius:6px; padding:2px 8px; font-weight:500; }
+
+  .card-footer { padding:12px 20px; border-top:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; }
+  .card-info   { display:flex; gap:14px; }
+  .ci { font-size:11.5px; color:var(--muted); }
+
+  .btn { display:inline-flex; align-items:center; gap:5px; padding:8px 16px; border-radius:9px; font-family:'Syne',sans-serif; font-size:12px; font-weight:700; text-decoration:none; color:#fff; transition:opacity .18s, transform .1s; white-space:nowrap; }
+  .btn:hover { opacity:.86; transform:translateY(-1px); }
+  .btn svg { width:12px; height:12px; }
+
+  /* Color themes */
+  .c1 { --c:#3b82f6; } .c1 .card-accent,.c1 .btn{ background:var(--c); } .c1 .tag{ color:var(--c); border-color:var(--c); background:rgba(59,130,246,.08); }
+  .c2 { --c:#8b5cf6; } .c2 .card-accent,.c2 .btn{ background:var(--c); } .c2 .tag{ color:var(--c); border-color:var(--c); background:rgba(139,92,246,.08); }
+  .c3 { --c:#ec4899; } .c3 .card-accent,.c3 .btn{ background:var(--c); } .c3 .tag{ color:var(--c); border-color:var(--c); background:rgba(236,72,153,.08); }
+  .c4 { --c:#14b8a6; } .c4 .card-accent,.c4 .btn{ background:var(--c); } .c4 .tag{ color:var(--c); border-color:var(--c); background:rgba(20,184,166,.08); }
+  .c5 { --c:#f97316; } .c5 .card-accent,.c5 .btn{ background:var(--c); } .c5 .tag{ color:var(--c); border-color:var(--c); background:rgba(249,115,22,.08); }
+
+  .tips { background:var(--white); border:1.5px solid var(--border); border-radius:var(--radius); padding:22px 24px; display:grid; grid-template-columns:1fr 1fr 1fr; gap:18px; }
+  @media(max-width:600px){ .tips,.grid{ grid-template-columns:1fr; } }
+  .tip { display:flex; gap:10px; }
+  .tip-ico { width:34px; height:34px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; }
+  .tip h4 { font-family:'Syne',sans-serif; font-size:12.5px; font-weight:700; color:var(--navy); margin-bottom:3px; }
+  .tip p  { font-size:11.5px; color:var(--muted); line-height:1.5; }
+
+  footer { background:var(--navy); text-align:center; padding:22px; color:#64748b; font-size:12.5px; }
+  footer span { color:var(--gold); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-badge">📚 apprentissages.faciles — RNCP 37099</div>
+  <h1>Fiches de Révision<br><span>& Quiz Interactifs</span></h1>
+  <p>Toutes vos fiches de révision avec quiz intégrés. Cliquez sur une journée, lisez la fiche, testez-vous et consultez votre score instantanément.</p>
+  <div class="stats">
+    <div class="stat"><strong>19</strong><span>Fiches disponibles</span></div>
+    <div class="stat"><strong>380+</strong><span>Questions de quiz</span></div>
+    <div class="stat"><strong>100%</strong><span>Gratuit & en ligne</span></div>
+    <div class="stat"><strong>📱</strong><span>Compatible mobile</span></div>
+  </div>
+</header>
+
+<div class="how-to">
+  <div class="how-inner">
+    <b>Mode d'emploi :</b>
+    <div class="pill"><span class="n">1</span>Choisissez une fiche</div>
+    <span class="arr">›</span>
+    <div class="pill"><span class="n">2</span>Lisez les notions</div>
+    <span class="arr">›</span>
+    <div class="pill"><span class="n">3</span>Faites le quiz</div>
+    <span class="arr">›</span>
+    <div class="pill"><span class="n">4</span>Consultez score & corrigé</div>
+  </div>
+</div>
+
+<main>
+
+  <!-- ═══ STOCKS & RÉCEPTION ═══ -->
+  <div class="section-label">📦 Gestion des Stocks & Réception</div>
+  <div class="grid">
+
+    <div class="card c1">
+      <div class="card-accent"></div>
+      <div class="card-body">
+        <div class="card-meta"><span class="tag">Journée 3</span><span class="dot"></span></div>
+        <h3>Réception de Marchandises</h3>
+        <p>Procédures de réception, contrôle qualitatif et quantitatif, documents associés et gestion des litiges.</p>
+        <div class="chips"><span class="chip">Bon de livraison</span><span class="chip">Contrôle réception</span><span class="chip">Litiges fournisseurs</span></div>
+      </div>
+      <div class="card-footer">
+        <span class="ci">🎯 Quiz inclus</span>
+        <a href="fiche revision journée 3.html" class="btn">Ouvrir <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      </div>
+    </div>
+
+    <div class="card c1">
+      <div class="card-accent"></div>
+      <div class="card-body">
+        <div class="card-meta"><span class="tag">Journée 4</span><span class="dot"></span></div>
+        <h3>Les Pourcentages</h3>
+        <p>Conversions, calculs de remises, hausses de prix et application de la TVA en contexte commercial.</p>
+        <div class="chips"><span class="chip">% → Décimal</span><span class="chip">Remises</span><span class="chip">Hausses</span><span class="chip">TVA</span></div>
+      </div>
+      <div class="card-footer">
+        <span class="ci">🎯 20 questions</span>
+        <a href="fiche_pourcentages_quiz (2).html" class="btn">Ouvrir <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      </div>
+    </div>
+
+    <div class="card c1">
+      <div class="card-accent"></div>
+      <div class="card-body">
+        <div class="card-meta"><span class="tag">Journée 5</span><span class="dot"></span></div>
+        <h3>La Démarque</h3>
+        <p>Démarque connue vs inconnue, formule de calcul, typologies de voleurs et contrôles en caisse.</p>
+        <div class="chips"><span class="chip">Démarque connue</span><span class="chip">Démarque inconnue</span><span class="chip">5 profils voleurs</span></div>
+      </div>
+      <div class="card-footer">
+        <span class="ci">🎯 20 questions</span>
+        <a href="fiche_demarque_quiz (1).html" class="btn">Ouvrir <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      </div>
+    </div>
+
+    <div class="card c1">
+      <div class="card-accent"></div>
+      <div class="card-body">
+        <div class="card-meta"><span class="tag">Journée 6</span><span class="dot"></span></div>
+        <h3>Les Inventaires</h3>
+        <p>3 types d'inventaires, technologie RFID, préparation et traitement des écarts constatés.</p>
+        <div class="chips"><span class="chip">Annuel / Permanent</span><span class="chip">Tournant ABC</span><span class="chip">RFID</span></div>
+      </div>
+      <div class="card-footer">
+        <span class="ci">🎯 20 questions</span>
+        <a href="fiche_inventaires_quiz.html" class="btn">Ouvrir <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      </div>
+    </div>
+
+    <div class="card c1">
+      <div class="card-accent"></div>
+      <div class="card-body">
+        <div class="card-meta"><span class="tag">Journée 7</span><span class="dot"></span></div>
+        <h3>Les Mouvements de Stocks</h3>
+        <p>Les 7 indicateurs de stock, fiche de stock, rotation et les deux risques majeurs à maîtriser.</p>
+        <div class="chips"><span class="chip">Stock d'alerte</span><span class="chip">Stock sécurité</span><span class="chip">Rupture / Surstockage</span></div>
+      </div>
+      <div class="card-footer">
+        <span class="ci">🎯 20 questions</span>
+        <a href="fiche_mouvements_stocks_quiz.html" class="btn">Ouvrir <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      </div>
+    </div>
+
+    <div class="card c1">
+      <div class="card-accent"></div>
+      <div class="card-body">
+        <div class="card-meta"><span class="tag">Journée 8</span><span class="dot"></span></div>
+        <h3>Outils de Gestion des Stocks</h3>
+        <p>Loi de Pareto (20/80), méthode ABC, cadencier et outils d'optimisation des commandes.</p>
+        <div class="chips"><span class="chip">Pareto 20/80</span><span class="chip">Méthode ABC</span><span class="chip">Cadencier</span></div>
+      </div>
+      <div class="card-footer">
+        <span class="ci">🎯 Quiz inclus</span>
+        <a href="fiche_revision_pareto_cadencier_v3.html" class="btn">Ouvrir <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      </div>
+    </div>
+
+    <div class="card c1">
+      <div class="card-accent"></div>
+      <div class="card-body">
+        <div class="card-meta"><span class="tag">Journée 9</span><span class="dot"></span></div>
+        <h3>Valorisation des Stocks</h3>
+        <p>Méthodes FIFO et CMUP, impact sur les résultats comptables et calcul du coût de revient.</p>
+        <div class="chips"><span class="chip">FIFO</span><span class="chip">CMUP</span><span class="chip">Coût de revient</span></div>
+      </div>
+      <div class="card-footer">
+        <span class="ci">🎯 Quiz inclus</span>
+        <a href="fiche_revision_valorisation_stocks.html" class="btn">Ouvrir <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      </div>
+    </div>
+
+    <div class="card c5">
+      <div class="card-accent"></div>
+      <div class="card-body">
+        <div class="card-meta"><span class="tag">Référentiel</span><span class="dot"></span></div>
+        <h3>DLC / DDM / DCR</h3>
+        <p>Dates limites de consommation, de durabilité minimale et de consommation recommandée — obligations légales.</p>
+        <div class="chips"><span class="chip">Date Limite Conso</span><span class="chip">Durabilité Minimale</span><span class="chip">Obligations légales</span></div>
+      </div>
+      <div class="card-footer">
+        <span class="ci">🎯 Quiz inclus</span>
+        <a href="fiche_revision_DLC_DDM_DCR.html" class="btn">Ouvrir <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ═══ SURFACE DE VENTE ═══ -->
+  <div class="section-label">🏪 Surface de Vente & Merchandising</div>
+  <div class="grid">
+
+    <div class="card c2">
+      <div class="card-accent"></div>
+      <div class="card-body">
+        <div class="card-meta"><span class="tag">Journée 10</span><span class="dot"></span></div>
+        <h3>Détermination du Prix de Vente</h3>
+        <p>Calcul du prix de vente TTC, coefficients multiplicateurs, marge commerciale et taux de marque.</p>
+        <div class="chips"><span class="chip">Prix HT / TTC</span><span class="chip">Marge commerciale</span><span class="chip">Taux de marque</span></div>
+      </div>
+      <div class="card-footer">
+        <span class="ci">🎯 Quiz inclus</span>
+        <a href="fiche_revision_prix_vente_ttc_v2 (1).html" class="btn">Ouvrir <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      </div>
+    </div>
+
+    <div class="card c2">
+      <div class="card-accent"></div>
+      <div class="card-body">
+        <div class="card-meta"><span class="tag">Journée 11</span><span class="dot"></span></div>
+        <h3>Organisation de la Surface de Vente</h3>
+        <p>Implantation des rayons, zones chaudes/froides, facing et règles de merchandising.</p>
+        <div class="chips"><span class="chip">Zones chaudes/froides</span><span class="chip">Facing</span><span class="chip">Implantation rayons</span></div>
+      </div>
+      <div class="card-footer">
+        <span class="ci">🎯 Quiz inclus</span>
+        <a href="fiche_revision_espace_vente_quiz.html" class="btn">Ouvrir <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      </div>
+    </div>
+
+    <div class="card c5">
+      <div class="card-accent"></div>
+      <div class="card-body">
+        <div class="card-meta"><span class="tag">Référentiel</span><span class="dot"></span></div>
+        <h3>Les 3P / Les 5B</h3>
+        <p>Les 3 Pourquoi du merchandising et les 5 Bons : bon produit, bon endroit, bon moment, bonne quantité, bon prix.</p>
+        <div class="chips"><span class="chip">3P merchandising</span><span class="chip">5 Bons</span><span class="chip">Implantation</span></div>
+      </div>
+      <div class="card-footer">
+        <span class="ci">🎯 Quiz inclus</span>
+        <a href="fiche_revision_5B_3P.html" class="btn">Ouvrir <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      </div>
+    </div>
+
+    <div class="card c5">
+      <div class="card-accent"></div>
+      <div class="card-body">
+        <div class="card-meta"><span class="tag">Référentiel</span><span class="dot"></span></div>
+        <h3>ILV / PLV</h3>
+        <p>Information sur le Lieu de Vente et Publicité sur le Lieu de Vente — rôles, supports et règles d'utilisation.</p>
+        <div class="chips"><span class="chip">ILV</span><span class="chip">PLV</span><span class="chip">Supports communication</span></div>
+      </div>
+      <div class="card-footer">
+        <span class="ci">🎯 Quiz inclus</span>
+        <a href="fiche_revision_PLV_ILV.html" class="btn">Ouvrir <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ═══ RELATION CLIENT ═══ -->
+  <div class="section-label">🤝 Relation Client & Vente</div>
+  <div class="grid">
+
+    <div class="card c3">
+      <div class="card-accent"></div>
+      <div class="card-body">
+        <div class="card-meta"><span class="tag">Journée 12</span><span class="dot"></span></div>
+        <h3>Prise en Charge du Client</h3>
+        <p>Accueil, identification des besoins, techniques de questionnement, argumentation et conclusion de vente.</p>
+        <div class="chips"><span class="chip">Accueil client</span><span class="chip">Besoins SONCAS</span><span class="chip">Argumentation</span></div>
+      </div>
+      <div class="card-footer">
+        <span class="ci">🎯 Quiz inclus</span>
+        <a href="fiche_revision_prise_en_charge_client_v2.html" class="btn">Ouvrir <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      </div>
+    </div>
+
+    <div class="card c3">
+      <div class="card-accent"></div>
+      <div class="card-body">
+        <div class="card-meta"><span class="tag">Journée 14</span><span class="dot"></span></div>
+        <h3>Les Moyens de Paiement</h3>
+        <p>Espèces, carte bancaire, chèque, virement, paiement mobile — sécurité, vérification et procédures.</p>
+        <div class="chips"><span class="chip">Carte bancaire</span><span class="chip">Chèque</span><span class="chip">Sécurité paiement</span></div>
+      </div>
+      <div class="card-footer">
+        <span class="ci">🎯 Quiz inclus</span>
+        <a href="fiche_revision_moyens_paiement.html" class="btn">Ouvrir <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      </div>
+    </div>
+
+    <div class="card c3">
+      <div class="card-accent"></div>
+      <div class="card-body">
+        <div class="card-meta"><span class="tag">Journée 15</span><span class="dot"></span></div>
+        <h3>CLS & Fidélisation</h3>
+        <p>Contrat de Licence de Savoir-faire, programmes de fidélisation, satisfaction et indicateurs de fidélité.</p>
+        <div class="chips"><span class="chip">CLS</span><span class="chip">Fidélisation</span><span class="chip">Satisfaction client</span></div>
+      </div>
+      <div class="card-footer">
+        <span class="ci">🎯 Quiz inclus</span>
+        <a href="fiche_revision_CLS_fidelisation_J15.html" class="btn">Ouvrir <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      </div>
+    </div>
+
+    <div class="card c3">
+      <div class="card-accent"></div>
+      <div class="card-body">
+        <div class="card-meta"><span class="tag">Journée 18</span><span class="dot"></span></div>
+        <h3>Traitement des Réclamations</h3>
+        <p>Gestion des réclamations clients, méthodes de résolution, outils de suivi et prévention des insatisfactions.</p>
+        <div class="chips"><span class="chip">Gestion réclamations</span><span class="chip">Méthode ERIC</span><span class="chip">Prévention</span></div>
+      </div>
+      <div class="card-footer">
+        <span class="ci">🎯 Quiz inclus</span>
+        <a href="fiche_revision_reclamations_clients.html" class="btn">Ouvrir <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ═══ ENVIRONNEMENT ═══ -->
+  <div class="section-label">🌐 Environnement Commercial & Tendances</div>
+  <div class="grid">
+
+    <div class="card c4">
+      <div class="card-accent"></div>
+      <div class="card-body">
+        <div class="card-meta"><span class="tag">Journée 16</span><span class="dot"></span></div>
+        <h3>Accompagner le Client en Omnicanal</h3>
+        <p>Stratégie omnicanale, parcours client, click & collect, digital in-store et cohérence des canaux.</p>
+        <div class="chips"><span class="chip">Omnicanal</span><span class="chip">Click & Collect</span><span class="chip">Parcours client</span></div>
+      </div>
+      <div class="card-footer">
+        <span class="ci">🎯 Quiz inclus</span>
+        <a href="fiche_revision_omnicanal_RNCP37099.html" class="btn">Ouvrir <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      </div>
+    </div>
+
+    <div class="card c4">
+      <div class="card-accent"></div>
+      <div class="card-body">
+        <div class="card-meta"><span class="tag">Journée 17</span><span class="dot"></span></div>
+        <h3>Les Transformations du Commerce</h3>
+        <p>Évolutions du commerce, e-commerce, commerce de proximité, nouvelles technologies et RSE.</p>
+        <div class="chips"><span class="chip">E-commerce</span><span class="chip">Commerce proximité</span><span class="chip">RSE</span></div>
+      </div>
+      <div class="card-footer">
+        <span class="ci">🎯 Quiz inclus</span>
+        <a href="fiche_revision_transformations_commerce_RNCP37099.html" class="btn">Ouvrir <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- TIPS -->
+  <div class="section-label">💡 Conseils de révision</div>
+  <div class="tips">
+    <div class="tip">
+      <div class="tip-ico" style="background:#eff6ff;">📋</div>
+      <div><h4>Lisez d'abord la fiche</h4><p>Parcourez toutes les notions avant de démarrer le quiz. Les formules et exemples sont là pour vous guider.</p></div>
+    </div>
+    <div class="tip">
+      <div class="tip-ico" style="background:#f0fdf4;">🎯</div>
+      <div><h4>Testez-vous sans aide</h4><p>Répondez sans consulter la fiche pour mesurer votre niveau réel. Chaque réponse est expliquée après.</p></div>
+    </div>
+    <div class="tip">
+      <div class="tip-ico" style="background:#fff7ed;">🔄</div>
+      <div><h4>Recommencez si besoin</h4><p>En dessous de 65 %, relisez les notions concernées et refaites le quiz. La répétition ancre les savoirs.</p></div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  Fiches de révision RNCP 37099 · Commerce & Vente · <span>apprentissages.faciles</span> · Réalisé avec <span>♥</span> pour vos apprenants
+</footer>
+
+</body>
+</html>
