@@ -1,0 +1,299 @@
+
+<style>
+h2.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+*{box-sizing:border-box}
+.tabs{display:flex;gap:8px;margin-bottom:1.5rem;border-bottom:0.5px solid var(--color-border-tertiary);padding-bottom:0}
+.tab{padding:8px 18px;font-size:14px;font-weight:500;cursor:pointer;border:none;background:transparent;color:var(--color-text-secondary);border-bottom:2px solid transparent;margin-bottom:-0.5px;border-radius:0}
+.tab.active{color:var(--color-text-primary);border-bottom:2px solid #0F6E56}
+.section{margin-bottom:1.5rem}
+.section-title{font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:var(--color-text-secondary);margin-bottom:.75rem;display:flex;align-items:center;gap:6px}
+.def-box{background:var(--color-background-secondary);border-left:3px solid #0F6E56;border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;padding:10px 14px;margin-bottom:10px;font-size:14px;line-height:1.6;color:var(--color-text-primary)}
+.def-box strong{color:#085041}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:12px 14px}
+.card-num{font-size:22px;font-weight:500;color:#0F6E56;line-height:1}
+.card-label{font-size:13px;font-weight:500;margin:4px 0 2px;color:var(--color-text-primary)}
+.card-desc{font-size:12px;color:var(--color-text-secondary);line-height:1.4}
+.tag{display:inline-block;font-size:11px;padding:3px 9px;border-radius:999px;font-weight:500;margin:2px}
+.tag-s{background:#E1F5EE;color:#085041}
+.tag-o{background:#FAEEDA;color:#633806}
+.tag-n{background:#E6F1FB;color:#0C447C}
+.tag-c{background:#FCEBEB;color:#791F1F}
+.tag-a{background:#FBEAF0;color:#72243E}
+.tag-ss{background:#EEEDFE;color:#3C3489}
+.tag-e{background:#EAF3DE;color:#27500A}
+.maslow{display:flex;flex-direction:column;gap:6px}
+.mlevel{border-radius:var(--border-radius-md);padding:8px 12px;font-size:13px}
+.ml5{background:#EEEDFE;border:0.5px solid #AFA9EC}
+.ml5 .mlt{color:#3C3489;font-weight:500}
+.ml5 .mld{color:#534AB7}
+.ml4{background:#E6F1FB;border:0.5px solid #85B7EB}
+.ml4 .mlt{color:#0C447C;font-weight:500}
+.ml4 .mld{color:#185FA5}
+.ml3{background:#E1F5EE;border:0.5px solid #5DCAA5}
+.ml3 .mlt{color:#085041;font-weight:500}
+.ml3 .mld{color:#0F6E56}
+.ml2{background:#FAEEDA;border:0.5px solid #EF9F27}
+.ml2 .mlt{color:#633806;font-weight:500}
+.ml2 .mld{color:#854F0B}
+.ml1{background:#FAECE7;border:0.5px solid #F0997B}
+.ml1 .mlt{color:#993C1D;font-weight:500}
+.ml1 .mld{color:#D85A30}
+.prix-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px}
+.prix-card{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:10px 12px;border:0.5px solid var(--color-border-tertiary)}
+.prix-name{font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:4px}
+.prix-desc{font-size:12px;color:var(--color-text-secondary);line-height:1.4}
+.etapes-list{display:flex;flex-direction:column;gap:6px}
+.etape{display:flex;align-items:flex-start;gap:10px;padding:9px 12px;background:var(--color-background-secondary);border-radius:var(--border-radius-md);font-size:13px;color:var(--color-text-primary);line-height:1.5}
+.etape-num{width:24px;height:24px;border-radius:50%;background:#0F6E56;color:#E1F5EE;font-size:11px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.etape-body strong{color:var(--color-text-primary)}
+.badge{display:inline-block;font-size:10px;padding:2px 7px;border-radius:999px;background:#EEEDFE;color:#3C3489;font-weight:500;margin-left:4px;vertical-align:middle}
+.badge-teal{background:#E1F5EE;color:#085041}
+.badge-amber{background:#FAEEDA;color:#633806}
+.sub-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:5px}
+.quiz-q{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:14px 16px;margin-bottom:12px}
+.q-num{font-size:11px;color:var(--color-text-tertiary);margin-bottom:6px}
+.q-text{font-size:14px;font-weight:500;margin-bottom:10px;line-height:1.5;color:var(--color-text-primary)}
+.q-opts{display:grid;gap:6px}
+.q-opt{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:8px 12px;font-size:13px;cursor:pointer;text-align:left;color:var(--color-text-primary)}
+.q-opt:hover{background:var(--color-background-primary);border-color:var(--color-border-secondary)}
+.q-opt.correct{background:#EAF3DE;border-color:#1D9E75;color:#27500A}
+.q-opt.wrong{background:#FCEBEB;border-color:#E24B4A;color:#791F1F}
+.q-expl{margin-top:8px;font-size:12px;color:var(--color-text-secondary);padding:7px 10px;background:var(--color-background-secondary);border-radius:var(--border-radius-md);display:none}
+.score-bar{background:var(--color-background-secondary);border-radius:999px;height:8px;margin:8px 0}
+.score-fill{height:8px;border-radius:999px;background:#1D9E75;transition:width .4s}
+.score-info{font-size:13px;color:var(--color-text-secondary);margin-bottom:4px}
+.btn{background:transparent;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:6px 14px;font-size:13px;cursor:pointer;color:var(--color-text-primary);margin-top:12px}
+.btn:hover{background:var(--color-background-secondary)}
+.hidden{display:none}
+</style>
+
+<h2 class="sr-only">Fiche de révision mise à jour — Prise en charge du client (Journée 12) avec quiz 20 questions</h2>
+
+<div class="tabs">
+  <button class="tab active" onclick="showTab('fiche',this)"><i class="ti ti-book" aria-hidden="true"></i> Fiche de révision</button>
+  <button class="tab" onclick="showTab('quiz',this)"><i class="ti ti-help" aria-hidden="true"></i> Quiz 20 questions</button>
+</div>
+
+<div id="tab-fiche">
+
+<div class="section">
+  <div class="section-title"><i class="ti ti-info-circle" aria-hidden="true"></i> Définition de la vente</div>
+  <div class="def-box">La vente est une <strong>situation</strong> dans laquelle le <strong>vendeur conseille</strong> le client dans le <strong>choix</strong> du produit ou du service, après avoir <strong>découvert</strong> et <strong>analysé</strong> son <strong>besoin</strong>. Le vendeur doit avoir une parfaite <strong>connaissance</strong> du produit et de l'<strong>univers</strong> associé.<br><span style="font-size:12px;color:var(--color-text-secondary);margin-top:6px;display:block">« L'homme a deux oreilles et une bouche, c'est pour écouter deux fois plus qu'il ne parle. » — Alphonse Allais</span></div>
+</div>
+
+<div class="section">
+  <div class="section-title"><i class="ti ti-list-numbers" aria-hidden="true"></i> Les 8 étapes de l'entretien de vente</div>
+  <div class="etapes-list">
+
+    <div class="etape">
+      <div class="etape-num">1</div>
+      <div class="etape-body">
+        <strong>L'accueil</strong> — règle des 4×20
+        <div style="font-size:12px;color:var(--color-text-secondary);margin-top:2px">Soigner les 20 premiers pas, mots, secondes et la distance sociale avec le client</div>
+      </div>
+    </div>
+
+    <div class="etape">
+      <div class="etape-num">2</div>
+      <div class="etape-body">
+        <strong>La recherche du besoin</strong> <span class="badge">SONCASE à détecter</span>
+        <div style="font-size:12px;color:var(--color-text-secondary);margin-top:4px">Questionner et écouter activement pour identifier le mobile d'achat dominant du client :</div>
+        <div class="sub-tags">
+          <span class="tag tag-s">S — Sécurité</span>
+          <span class="tag tag-o">O — Orgueil</span>
+          <span class="tag tag-n">N — Nouveauté</span>
+          <span class="tag tag-c">C — Confort</span>
+          <span class="tag tag-a">A — Argent</span>
+          <span class="tag tag-ss">S — Sympathie</span>
+          <span class="tag tag-e">E — Écologie</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="etape">
+      <div class="etape-num">3</div>
+      <div class="etape-body">
+        <strong>L'argumentation</strong>
+        <div style="font-size:12px;color:var(--color-text-secondary);margin-top:2px">Présenter les bénéfices produit en lien avec le mobile SONCASE détecté à l'étape 2</div>
+      </div>
+    </div>
+
+    <div class="etape">
+      <div class="etape-num">4</div>
+      <div class="etape-body">
+        <strong>La vente additionnelle</strong>
+        <div style="font-size:12px;color:var(--color-text-secondary);margin-top:2px">Proposer un produit ou service complémentaire pour augmenter le panier moyen</div>
+      </div>
+    </div>
+
+    <div class="etape">
+      <div class="etape-num">5</div>
+      <div class="etape-body">
+        <strong>La réponse aux objections</strong>
+        <div style="font-size:12px;color:var(--color-text-secondary);margin-top:2px">Traiter les freins à l'achat avec empathie et arguments adaptés</div>
+      </div>
+    </div>
+
+    <div class="etape">
+      <div class="etape-num">6</div>
+      <div class="etape-body">
+        <strong>La présentation du prix</strong> <span class="badge badge-amber">5 techniques</span>
+        <div style="font-size:12px;color:var(--color-text-secondary);margin-top:4px">
+          <span style="font-weight:500;color:var(--color-text-primary)">Balance équilibrée</span> : l'avantage principal = équivalent au prix<br>
+          <span style="font-weight:500;color:var(--color-text-primary)">Balance penchée</span> : de nombreux avantages font paraître le prix tout petit<br>
+          <span style="font-weight:500;color:var(--color-text-primary)">Sandwich</span> : avantage – <em>prix</em> – avantage (prix encadré)<br>
+          <span style="font-weight:500;color:var(--color-text-primary)">Soustraction</span> : prix limité dans le temps → urgence à acheter<br>
+          <span style="font-weight:500;color:var(--color-text-primary)">Multiplication</span> : coût relativisé sur la durée et les occasions d'utilisation
+        </div>
+      </div>
+    </div>
+
+    <div class="etape">
+      <div class="etape-num">7</div>
+      <div class="etape-body">
+        <strong>La conclusion</strong> <span class="badge badge-teal">Fidélisation</span>
+        <div style="font-size:12px;color:var(--color-text-secondary);margin-top:4px">
+          Concrétiser la vente et proposer :<br>
+          <span style="font-weight:500;color:var(--color-text-primary)">Carte de fidélité</span> — inscrire le client au programme de fidélité de l'enseigne<br>
+          <span style="font-weight:500;color:var(--color-text-primary)">Moyens de paiement</span> — CB, espèces, chèque, paiement en plusieurs fois, sans contact, etc.
+        </div>
+      </div>
+    </div>
+
+    <div class="etape">
+      <div class="etape-num">8</div>
+      <div class="etape-body">
+        <strong>La prise de congé</strong>
+        <div style="font-size:12px;color:var(--color-text-secondary);margin-top:2px">Laisser une impression positive durable — sourire, remerciement, formule de politesse</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title"><i class="ti ti-user" aria-hidden="true"></i> La règle des 4×20 — détail</div>
+  <div class="cards">
+    <div class="card"><div class="card-num">20</div><div class="card-label">Premiers pas</div><div class="card-desc">Posture, démarche assurée, approche fluide et professionnelle</div></div>
+    <div class="card"><div class="card-num">20</div><div class="card-label">Premiers mots</div><div class="card-desc">Formule d'accueil, ton de voix chaleureux, phrase d'accroche</div></div>
+    <div class="card"><div class="card-num">20</div><div class="card-label">Premières secondes</div><div class="card-desc">1ère impression irréversible — sourire, disponibilité immédiate</div></div>
+    <div class="card" style="border:1.5px solid #1D9E75">
+      <div class="card-num" style="color:#0F6E56">20</div>
+      <div class="card-label">Cm du visage</div>
+      <div class="card-desc"><strong style="color:#085041">Distance sociale vendeur–client.</strong> Ni trop près (invasif), ni trop loin (froid). La zone sociale idéale se situe entre <strong style="color:#085041">45 cm et 1,20 m</strong> — elle favorise l'échange sans envahir l'espace personnel du client.</div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title"><i class="ti ti-pyramid" aria-hidden="true"></i> La pyramide de Maslow (5 niveaux)</div>
+  <div class="maslow">
+    <div class="mlevel ml5"><span class="mlt">5 — Accomplissement</span><div class="mld">Exploiter son potentiel, créer, apprendre, inventer</div></div>
+    <div class="mlevel ml4"><span class="mlt">4 — Estime de soi</span><div class="mld">Reconnaissance, confiance en soi, réputation, gloire</div></div>
+    <div class="mlevel ml3"><span class="mlt">3 — Besoins sociaux</span><div class="mld">Appartenance, amour, amis, groupe, ne pas être seul</div></div>
+    <div class="mlevel ml2"><span class="mlt">2 — Sécurité</span><div class="mld">Logement, revenus, sécurité physique, stabilité familiale</div></div>
+    <div class="mlevel ml1"><span class="mlt">1 — Physiologiques (base)</span><div class="mld">Manger, boire, dormir, se vêtir, se reproduire</div></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title"><i class="ti ti-brain" aria-hidden="true"></i> La méthode SONCASE — 7 mobiles d'achat</div>
+  <div class="cards">
+    <div class="card"><div style="font-size:12px;font-weight:500;color:#085041;margin-bottom:3px">S — Sécurité</div><div class="card-desc">Rassurer sur qualité, labels, garantie, normes, marque<br><em style="font-size:11px">« Je crains que… »</em></div></div>
+    <div class="card"><div style="font-size:12px;font-weight:500;color:#633806;margin-bottom:3px">O — Orgueil</div><div class="card-desc">Marque, prix élevé, design, être au top de la mode<br><em style="font-size:11px">« J'ai l'habitude… »</em></div></div>
+    <div class="card"><div style="font-size:12px;font-weight:500;color:#0C447C;margin-bottom:3px">N — Nouveauté</div><div class="card-desc">Curiosité, exclusivité, innovation, dernier modèle<br><em style="font-size:11px">« C'est moderne… »</em></div></div>
+    <div class="card"><div style="font-size:12px;font-weight:500;color:#791F1F;margin-bottom:3px">C — Confort</div><div class="card-desc">Ergonomie, praticité, livraison facile, moindre effort<br><em style="font-size:11px">« Est-ce pratique ? »</em></div></div>
+    <div class="card"><div style="font-size:12px;font-weight:500;color:#72243E;margin-bottom:3px">A — Argent</div><div class="card-desc">Économies, bonne affaire, investissement rentable<br><em style="font-size:11px">« Quel avantage m'offrez-vous ? »</em></div></div>
+    <div class="card"><div style="font-size:12px;font-weight:500;color:#3C3489;margin-bottom:3px">S — Sympathie</div><div class="card-desc">Attitude, confiance, relation, fidélité à la marque<br><em style="font-size:11px">« Je vais me fier à vous. »</em></div></div>
+    <div class="card"><div style="font-size:12px;font-weight:500;color:#27500A;margin-bottom:3px">E — Écologie</div><div class="card-desc">Environnement, produits bio, éco-responsable, durable<br><em style="font-size:11px">« Il faut accepter le progrès. »</em></div></div>
+  </div>
+</div>
+
+<div style="text-align:center;margin-top:1.5rem">
+  <button class="btn" onclick="showTab('quiz',document.querySelectorAll('.tab')[1])"><i class="ti ti-help" aria-hidden="true"></i> Passer au quiz →</button>
+</div>
+</div>
+
+<div id="tab-quiz" class="hidden">
+  <div class="score-info" id="score-info">Score : 0 / 20</div>
+  <div class="score-bar"><div class="score-fill" id="score-fill" style="width:0%"></div></div>
+  <div id="quiz-container"></div>
+  <button class="btn" onclick="resetQuiz()"><i class="ti ti-refresh" aria-hidden="true"></i> Recommencer le quiz</button>
+</div>
+
+<script>
+const questions=[
+{q:"Quelle est la bonne définition de la vente ?",opts:["Une opération commerciale visant à écouler des stocks","Une situation où le vendeur conseille le client dans son choix après avoir découvert et analysé son besoin","Un échange de biens contre de l'argent sans interaction","Un acte d'achat réalisé par le client seul"],ans:1,expl:"La vente est une situation dans laquelle le vendeur conseille le client dans le choix du produit ou service après avoir découvert et analysé son besoin."},
+{q:"Dans quel ordre correct sont les 8 étapes de l'entretien de vente ?",opts:["Accueil → Argumentation → Besoin → Prix → Objections → Conclusion → Vente add. → Congé","Accueil → Besoin → Argumentation → Vente add. → Objections → Prix → Conclusion → Congé","Accueil → Besoin → Objections → Argumentation → Prix → Conclusion → Vente add. → Congé","Besoin → Accueil → Argumentation → Prix → Conclusion → Congé → Objections → Vente add."],ans:1,expl:"L'ordre est : 1-Accueil, 2-Recherche du besoin, 3-Argumentation, 4-Vente additionnelle, 5-Réponse aux objections, 6-Présentation du prix, 7-Conclusion, 8-Prise de congé."},
+{q:"Lors de la recherche du besoin (étape 2), quelle méthode permet de détecter la motivation d'achat du client ?",opts:["La pyramide de Maslow uniquement","La méthode SONCASE","La technique du sandwich","La règle des 4×20"],ans:1,expl:"À l'étape 2, le vendeur doit détecter le mobile d'achat dominant du client grâce à la méthode SONCASE (Sécurité, Orgueil, Nouveauté, Confort, Argent, Sympathie, Écologie)."},
+{q:"Que signifient les '20 cm du visage' dans la règle des 4×20 ?",opts:["Il faut sourire pendant 20 secondes en regardant le client","C'est la distance à laquelle on lit les expressions du visage du client","C'est la distance sociale idéale entre le vendeur et le client, entre 45 cm et 1,20 m","Il faut se placer à 20 cm du client pour bien l'entendre"],ans:2,expl:"Les 20 cm du visage représentent la distance sociale vendeur–client. La zone idéale se situe entre 45 cm et 1,20 m : ni trop près (invasif), ni trop loin (froid)."},
+{q:"La règle des 4×20 concerne quelle étape de la vente ?",opts:["La présentation du prix","La conclusion","L'accueil du client","La réponse aux objections"],ans:2,expl:"Les 4×20 s'appliquent à l'accueil (étape 1) : on n'a qu'une seule chance de faire bonne impression."},
+{q:"Avec la technique de la 'balance penchée', comment présente-t-on le prix ?",opts:["Le prix est encadré entre deux avantages","L'avantage principal est présenté comme équivalent au prix","De nombreux avantages sont cités pour faire paraître le prix tout petit","Le prix est limité dans le temps pour créer l'urgence"],ans:2,expl:"La balance penchée : on accumule de nombreux avantages sur le plateau pour que le prix (sur l'autre plateau) paraisse beaucoup plus léger — le prix semble tout petit face aux bénéfices."},
+{q:"Avec la technique de la 'balance équilibrée', comment présente-t-on le prix ?",opts:["Le prix est encadré entre deux avantages clients","Le prix limité dans le temps crée l'urgence","L'avantage principal est présenté comme équivalent au prix","Le produit est utilisé de nombreuses fois pour relativiser le coût"],ans:2,expl:"La balance équilibrée : un avantage principal fort est présenté comme valant exactement le prix demandé — le client perçoit l'équité de l'échange."},
+{q:"À l'étape 7 (conclusion), que doit proposer le vendeur en plus de finaliser la vente ?",opts:["Une démonstration produit et un bon de retour","Une carte de fidélité et les moyens de paiement disponibles","Un devis et une livraison à domicile","Une réduction sur le prochain achat et un catalogue"],ans:1,expl:"À la conclusion, le vendeur finalise la vente et propose : la carte de fidélité (fidéliser le client) et les différents moyens de paiement (CB, espèces, chèque, paiement en plusieurs fois, sans contact...)."},
+{q:"Quel est le rôle de la vente additionnelle dans l'entretien de vente ?",opts:["Répondre aux objections du client","Présenter le prix de façon avantageuse","Proposer un produit ou service complémentaire","Conclure la vente rapidement"],ans:2,expl:"La vente additionnelle (étape 4) consiste à proposer un produit complémentaire au produit principal pour augmenter le panier moyen."},
+{q:"Quelle technique de présentation du prix consiste à 'encadrer' le prix entre deux avantages ?",opts:["La balance équilibrée","La soustraction","Le sandwich","La multiplication"],ans:2,expl:"La technique du sandwich : avantage – prix – avantage. Le prix est coincé entre deux avantages majeurs, ce qui minimise son impact psychologique."},
+{q:"Avec la technique de la 'soustraction', comment présente-t-on le prix ?",opts:["En montrant qu'il est équivalent à l'avantage principal","En multipliant les utilisations pour relativiser le coût","En le limitant dans le temps pour créer de l'urgence","En l'encadrant entre deux bénéfices"],ans:2,expl:"La soustraction crée l'urgence : le prix ou l'avantage est limité dans le temps — si le client n'achète pas rapidement, il risque de perdre cet avantage."},
+{q:"Quelle technique de présentation du prix est utilisée quand on dit : 'Ce produit durera 10 ans, soit X€ par an seulement' ?",opts:["La balance penchée","La soustraction","Le sandwich","La multiplication"],ans:3,expl:"La multiplication relativise le prix en le répartissant sur la durée d'utilisation : de nombreuses années, de nombreuses occasions d'usage — le coût paraît alors dérisoire."},
+{q:"Dans SONCASE, que signifie la lettre 'O' ?",opts:["Originalité","Ordre","Orgueil","Optimisation"],ans:2,expl:"O = Orgueil. Le client a besoin de se sentir fier, au-dessus des autres. On valorise la marque, le design, le prix élevé ou le sentiment d'être au top de la mode."},
+{q:"Un client dit 'Je crains que ce produit tombe en panne'. Quelle motivation SONCASE révèle cette phrase ?",opts:["Orgueil","Nouveauté","Confort","Sécurité"],ans:3,expl:"'Je crains que...' exprime une inquiétude sur la fiabilité → motivation Sécurité. Il faut rassurer avec des labels, garanties, normes, marque."},
+{q:"Un client dit 'Est-ce bien pratique ?'. Quelle motivation SONCASE révèle cette phrase ?",opts:["Argent","Confort","Sympathie","Écologie"],ans:1,expl:"'Est-ce pratique ?' renvoie à l'ergonomie et à la facilité d'utilisation → motivation Confort."},
+{q:"Un client dit 'Je vais me fier à vous'. Quelle motivation SONCASE révèle cette phrase ?",opts:["Sécurité","Orgueil","Argent","Sympathie"],ans:3,expl:"'Je vais me fier à vous' traduit une relation de confiance → motivation Sympathie. L'attitude et le comportement du vendeur déclenchent l'achat."},
+{q:"Quel niveau représente la base de la pyramide de Maslow ?",opts:["Les besoins de sécurité","Les besoins d'accomplissement","Les besoins physiologiques primaires","Les besoins sociaux"],ans:2,expl:"La base (niveau 1) correspond aux besoins physiologiques : manger, boire, dormir, se vêtir, se reproduire — les besoins les plus fondamentaux."},
+{q:"Au sommet de la pyramide de Maslow se trouve :",opts:["Les besoins de sécurité","Les besoins d'estime","Les besoins sociaux","Les besoins d'accomplissement"],ans:3,expl:"Le niveau 5 est l'accomplissement : exploiter son potentiel, créer, inventer, apprendre, développer ses compétences personnelles."},
+{q:"Pourquoi propose-t-on une carte de fidélité lors de la conclusion (étape 7) ?",opts:["Pour augmenter le montant de la commission du vendeur","Pour fidéliser le client et entretenir la relation commerciale sur le long terme","Pour éviter les remboursements","Pour remplacer le reçu de caisse"],ans:1,expl:"La carte de fidélité à l'étape 7 vise à fidéliser le client : lui donner une raison de revenir en magasin et de rester attaché à l'enseigne."},
+{q:"Quelle est la dernière étape de l'entretien de vente et quel est son objectif ?",opts:["La conclusion — finaliser le paiement","La présentation du prix — rassurer le client","La prise de congé — laisser une impression positive durable","La vente additionnelle — augmenter le panier"],ans:2,expl:"La prise de congé est la 8ème et dernière étape. Elle vise à laisser une impression positive durable grâce à un sourire, un remerciement et une formule de politesse adaptée."}
+];
+
+let answered=new Array(20).fill(false);
+let score=0;
+
+function buildQuiz(){
+  const c=document.getElementById('quiz-container');
+  c.innerHTML='';
+  questions.forEach((q,i)=>{
+    const div=document.createElement('div');
+    div.className='quiz-q';
+    div.id='q'+i;
+    div.innerHTML=`<div class="q-num">Question ${i+1} / 20</div><div class="q-text">${q.q}</div><div class="q-opts">${q.opts.map((o,j)=>`<button class="q-opt" onclick="answer(${i},${j})">${o}</button>`).join('')}</div><div class="q-expl" id="expl${i}">${q.expl}</div>`;
+    c.appendChild(div);
+  });
+}
+
+function answer(qi,optIdx){
+  if(answered[qi])return;
+  answered[qi]=true;
+  const q=questions[qi];
+  const opts=document.querySelectorAll(`#q${qi} .q-opt`);
+  opts.forEach((o,j)=>{
+    o.disabled=true;
+    if(j===q.ans)o.classList.add('correct');
+    else if(j===optIdx&&optIdx!==q.ans)o.classList.add('wrong');
+  });
+  if(optIdx===q.ans)score++;
+  document.getElementById('expl'+qi).style.display='block';
+  updateScore();
+}
+
+function updateScore(){
+  const done=answered.filter(Boolean).length;
+  document.getElementById('score-info').textContent=`Score : ${score} / ${done} répondu${done>1?'s':''}`;
+  document.getElementById('score-fill').style.width=(score/20*100)+'%';
+}
+
+function resetQuiz(){
+  answered=new Array(20).fill(false);
+  score=0;
+  updateScore();
+  buildQuiz();
+}
+
+function showTab(name,btn){
+  document.getElementById('tab-fiche').classList.toggle('hidden',name!=='fiche');
+  document.getElementById('tab-quiz').classList.toggle('hidden',name!=='quiz');
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  if(name==='quiz'&&document.getElementById('quiz-container').innerHTML==='')buildQuiz();
+}
+</script>
