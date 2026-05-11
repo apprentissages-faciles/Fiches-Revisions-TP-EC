@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Réception de Marchandises – Journée 3 | RNCP37099</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f0f9f6;
+    --surface: #e8f5f1;
+    --card: #ffffff;
+    --border: #d1e8e0;
+    --accent: #0f6e56;
+    --accent2: #185fa5;
+    --accent3: #854f0b;
+    --accent4: #993c1d;
+    --accentv: #3c3489;
+    --accent5: #3b6d11;
+    --text: #1e293b;
+    --muted: #64748b;
+    --radius: 14px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 16px; line-height: 1.65; min-height: 100vh; }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--accent);
+    padding: 48px 24px 36px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before { content:''; position:absolute; width:340px; height:340px; border-radius:50%; background:rgba(255,255,255,0.06); top:-120px; right:-80px; pointer-events:none; }
+  header::after  { content:''; position:absolute; width:240px; height:240px; border-radius:50%; background:rgba(255,255,255,0.04); bottom:-90px; left:-60px; pointer-events:none; }
+  .badge { display:inline-block; background:rgba(255,255,255,0.15); color:#fff; border:1px solid rgba(255,255,255,0.3); border-radius:99px; font-size:12px; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; padding:4px 14px; margin-bottom:14px; }
+  header h1 { font-family:'Syne',sans-serif; font-size:clamp(26px,5vw,48px); font-weight:800; color:#fff; letter-spacing:-0.5px; margin-bottom:8px; }
+  header h1 span { color:#a7f3d0; }
+  header p { color:rgba(255,255,255,0.75); margin-top:8px; font-size:15px; }
+
+  /* ── TABS ── */
+  .tabs { display:flex; justify-content:center; gap:8px; padding:24px 16px 0; flex-wrap:wrap; }
+  .tab-btn { background:#fff; border:1.5px solid var(--border); color:var(--muted); border-radius:99px; padding:10px 22px; font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600; cursor:pointer; transition:all 0.2s; }
+  .tab-btn:hover { border-color:var(--accent); color:var(--accent); }
+  .tab-btn.active { background:var(--accent); border-color:var(--accent); color:#fff; }
+
+  /* ── MAIN ── */
+  main { max-width:860px; margin:0 auto; padding:32px 16px 80px; }
+  .section { display:none; animation:fadeIn 0.35s ease; }
+  .section.active { display:block; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+
+  /* ── FICHE ── */
+  .notion-header { display:flex; align-items:center; gap:14px; margin:36px 0 16px; }
+  .notion-icon { width:44px; height:44px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0; }
+  .notion-header h2 { font-family:'Syne',sans-serif; font-size:19px; font-weight:700; }
+
+  .card { background:var(--card); border:1.5px solid var(--border); border-radius:var(--radius); padding:20px 22px; margin-bottom:14px; }
+  .card-title { font-family:'Syne',sans-serif; font-weight:700; font-size:14px; color:var(--accent); margin-bottom:10px; }
+  .card-title.blue   { color:var(--accent2); }
+  .card-title.amber  { color:var(--accent3); }
+  .card-title.coral  { color:var(--accent4); }
+  .card-title.purple { color:var(--accentv); }
+  .card-title.green2 { color:var(--accent5); }
+
+  .card.c-teal  { border-left:3px solid var(--accent); }
+  .card.c-blue  { border-left:3px solid var(--accent2); }
+  .card.c-amber { border-left:3px solid var(--accent3); }
+  .card.c-coral { border-left:3px solid var(--accent4); }
+  .card.c-purple{ border-left:3px solid var(--accentv); }
+  .card.c-green2{ border-left:3px solid var(--accent5); }
+
+  .two-col { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  @media(max-width:560px){ .two-col{ grid-template-columns:1fr; } }
+
+  .steps-list { list-style:none; padding:0; }
+  .steps-list li { display:flex; gap:12px; align-items:flex-start; padding:8px 0; border-bottom:1px solid var(--border); font-size:14px; color:#374151; }
+  .steps-list li:last-child { border-bottom:none; }
+  .step-num { width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; flex-shrink:0; margin-top:1px; }
+
+  .recap-table { width:100%; border-collapse:collapse; font-size:13px; margin-top:10px; }
+  .recap-table th { background:rgba(15,110,86,0.1); color:var(--accent); padding:8px 12px; text-align:left; font-weight:600; border-bottom:1px solid var(--border); }
+  .recap-table td { padding:8px 12px; border-bottom:1px solid var(--border); color:#374151; vertical-align:top; font-size:13px; }
+  .recap-table tr:last-child td { border-bottom:none; }
+
+  .chips { display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
+  .chip { font-size:12px; border-radius:6px; padding:3px 9px; font-weight:500; }
+  .chip.teal  { background:#e1f5ee; color:#0f6e56; }
+  .chip.blue  { background:#e6f1fb; color:#185fa5; }
+  .chip.amber { background:#faeeda; color:#854f0b; }
+  .chip.coral { background:#faece7; color:#993c1d; }
+
+  .tip-box { background:#e1f5ee; border-left:3px solid var(--accent); border-radius:0 10px 10px 0; padding:12px 16px; margin-top:12px; font-size:13.5px; color:#0f6e56; }
+  .warn-box { background:#faeeda; border-left:3px solid var(--accent3); border-radius:0 10px 10px 0; padding:12px 16px; margin-top:12px; font-size:13.5px; color:#854f0b; }
+
+  .terme-row { display:flex; gap:10px; padding:8px 0; border-bottom:1px solid var(--border); font-size:13.5px; }
+  .terme-row:last-child { border-bottom:none; }
+  .terme { font-weight:600; min-width:130px; color:#1e293b; flex-shrink:0; }
+  .def { color:var(--muted); line-height:1.5; }
+
+  /* ── QUIZ ── */
+  .quiz-header { text-align:center; padding:24px 0 28px; }
+  .quiz-header h2 { font-family:'Syne',sans-serif; font-size:24px; font-weight:800; margin-bottom:8px; }
+  .quiz-header p { color:var(--muted); font-size:14px; }
+  .progress-bar-wrap { background:var(--border); border-radius:99px; height:6px; margin:0 0 28px; overflow:hidden; }
+  .progress-bar-fill { height:100%; background:linear-gradient(90deg,var(--accent),var(--accent2)); border-radius:99px; transition:width 0.4s ease; }
+  .q-counter { text-align:right; font-size:13px; color:var(--muted); margin-bottom:6px; }
+
+  .question-card { background:var(--card); border:1.5px solid var(--border); border-radius:var(--radius); padding:26px 24px; margin-bottom:18px; }
+  .question-card .q-num { font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--accent); margin-bottom:8px; }
+  .question-card .q-text { font-family:'Syne',sans-serif; font-size:16px; font-weight:700; line-height:1.4; margin-bottom:18px; color:#1e293b; }
+
+  .options { display:flex; flex-direction:column; gap:9px; }
+  .opt-btn { background:#f8fffe; border:1.5px solid var(--border); border-radius:10px; padding:12px 16px; text-align:left; font-family:'DM Sans',sans-serif; font-size:14px; color:var(--text); cursor:pointer; transition:all 0.18s; display:flex; align-items:center; gap:10px; }
+  .opt-btn:hover:not(:disabled) { border-color:var(--accent); background:#e1f5ee; }
+  .opt-btn .opt-letter { width:26px; height:26px; border-radius:8px; background:var(--border); display:flex; align-items:center; justify-content:center; font-family:'DM Mono',monospace; font-weight:500; font-size:12px; flex-shrink:0; }
+  .opt-btn.correct { border-color:var(--accent); background:#e1f5ee; color:#0f6e56; }
+  .opt-btn.correct .opt-letter { background:var(--accent); color:#fff; }
+  .opt-btn.wrong { border-color:#f09595; background:#fcebeb; color:#a32d2d; }
+  .opt-btn.wrong .opt-letter { background:#a32d2d; color:#fff; }
+
+  .feedback-box { margin-top:14px; padding:12px 16px; border-radius:10px; font-size:13.5px; display:none; }
+  .feedback-box.show { display:block; }
+  .feedback-box.ok { background:#e1f5ee; color:#0f6e56; border:1px solid #5dcaa5; }
+  .feedback-box.ko { background:#fcebeb; color:#a32d2d; border:1px solid #f09595; }
+
+  .quiz-nav { display:flex; justify-content:space-between; align-items:center; margin-top:6px; gap:10px; flex-wrap:wrap; }
+  .btn-primary { background:var(--accent); color:#fff; border:none; border-radius:10px; padding:11px 26px; font-family:'Syne',sans-serif; font-weight:700; font-size:14px; cursor:pointer; transition:opacity 0.2s, transform 0.1s; }
+  .btn-primary:hover { opacity:0.88; transform:translateY(-1px); }
+  .btn-primary:disabled { opacity:0.35; cursor:not-allowed; transform:none; }
+  .btn-secondary { background:transparent; color:var(--muted); border:1.5px solid var(--border); border-radius:10px; padding:10px 20px; font-family:'DM Sans',sans-serif; font-weight:600; font-size:13px; cursor:pointer; transition:all 0.18s; }
+  .btn-secondary:hover { border-color:var(--accent); color:var(--accent); }
+
+  .results-screen { text-align:center; padding:36px 0; display:none; }
+  .results-screen.show { display:block; }
+  .score-ring { width:140px; height:140px; border-radius:50%; margin:0 auto 22px; display:flex; align-items:center; justify-content:center; flex-direction:column; border:4px solid var(--accent); background:#e1f5ee; }
+  .score-ring .score-num { font-family:'Syne',sans-serif; font-size:38px; font-weight:800; color:var(--accent); line-height:1; }
+  .score-ring .score-label { font-size:12px; color:var(--muted); margin-top:3px; }
+  .results-screen h2 { font-family:'Syne',sans-serif; font-size:22px; font-weight:800; margin-bottom:8px; }
+  .results-screen p { color:var(--muted); font-size:14px; margin-bottom:24px; }
+  .result-details { list-style:none; text-align:left; max-width:520px; margin:0 auto 28px; }
+  .result-details li { display:flex; align-items:flex-start; gap:8px; padding:9px 0; border-bottom:1px solid var(--border); font-size:13px; color:#374151; }
+  .result-details li:last-child { border-bottom:none; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="badge">RNCP 37099 · Journée 3</div>
+  <h1>Réception de <span>Marchandises</span></h1>
+  <p>Réceptionner, approvisionner &amp; mettre en rayon · Commerce &amp; Vente</p>
+</header>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="showTab('fiche')">📋 Fiche de révision</button>
+  <button class="tab-btn" onclick="showTab('quiz')">🎯 Quiz (20 questions)</button>
+</div>
+
+<main>
+
+<!-- ══════════ FICHE ══════════ -->
+<div class="section active" id="fiche">
+
+  <!-- Procédure réception -->
+  <div class="notion-header">
+    <div class="notion-icon" style="background:#e1f5ee;">🚛</div>
+    <h2>Notion 1 — Procédure de réception (4 étapes)</h2>
+  </div>
+  <div class="card c-teal">
+    <ul class="steps-list">
+      <li><span class="step-num" style="background:#0f6e56;color:#fff;">1</span><span><strong>Accueil du fournisseur</strong> et déchargement des produits à l'endroit prévu (magasin, entrepôt…)</span></li>
+      <li><span class="step-num" style="background:#0f6e56;color:#fff;">2</span><span><strong>Présentation des documents de livraison :</strong> bon de livraison (BL) si livraison directe, lettre de voiture (LV) si transporteur</span></li>
+      <li><span class="step-num" style="background:#0f6e56;color:#fff;">3</span><span><strong>Contrôle des produits :</strong> quantités (colis + contenu) et qualité (état, conformité de référence)</span></li>
+      <li><span class="step-num" style="background:#0f6e56;color:#fff;">4</span><span><strong>Acceptation / Refus / Réserves</strong> selon les anomalies constatées</span></li>
+    </ul>
+  </div>
+
+  <!-- Documents -->
+  <div class="notion-header">
+    <div class="notion-icon" style="background:#e6f1fb;">📄</div>
+    <h2>Notion 2 — Documents de livraison</h2>
+  </div>
+  <div class="two-col">
+    <div class="card c-blue">
+      <div class="card-title blue">📗 Bon de Livraison (BL)</div>
+      <ul class="steps-list">
+        <li style="border:none;padding:4px 0;">Émis par le <strong>fournisseur</strong></li>
+        <li style="border:none;padding:4px 0;">Mentionne : nom, produits, quantités, date</li>
+        <li style="border:none;padding:4px 0;">Signature = réception conforme</li>
+      </ul>
+    </div>
+    <div class="card c-blue">
+      <div class="card-title blue">📘 Lettre de Voiture (LV)</div>
+      <ul class="steps-list">
+        <li style="border:none;padding:4px 0;">Émise par le <strong>transporteur</strong></li>
+        <li style="border:none;padding:4px 0;">Formalise le contrat de transport</li>
+        <li style="border:none;padding:4px 0;">Signature = <strong>libère le transporteur</strong> de sa responsabilité</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 3 situations -->
+  <div class="notion-header">
+    <div class="notion-icon" style="background:#faeeda;">⚠️</div>
+    <h2>Notion 3 — 3 Situations à la réception</h2>
+  </div>
+  <div class="card c-amber">
+    <ul class="steps-list">
+      <li><span class="step-num" style="background:#22c55e;color:#fff;">✓</span><span><strong>Aucune anomalie</strong> → signature du BL, livraison validée</span></li>
+      <li><span class="step-num" style="background:#f97316;color:#fff;">!</span><span><strong>Quelques anomalies</strong> → signature + <strong>réserves</strong> notées sur le BL → confirmation par LRAR dans les <strong>72h</strong></span></li>
+      <li><span class="step-num" style="background:#ef4444;color:#fff;">✗</span><span><strong>Nombreuses anomalies</strong> → refus de signature, fournisseur repart avec la marchandise</span></li>
+    </ul>
+    <div class="warn-box">⏱ Les réserves doivent être confirmées par <strong>LRAR dans les 72 heures</strong> (lettre recommandée avec accusé de réception).</div>
+  </div>
+
+  <!-- Contrôle qualitatif -->
+  <div class="notion-header">
+    <div class="notion-icon" style="background:#eeedfe;">🔍</div>
+    <h2>Notion 4 — Contrôle qualitatif par catégorie</h2>
+  </div>
+  <div class="card c-purple">
+    <table class="recap-table">
+      <tr><th>Catégorie</th><th>Points de contrôle clés</th></tr>
+      <tr><td><strong>Fruits &amp; légumes</strong></td><td>Emballage intact · poids · DLC · calibre · absence de moisissures</td></tr>
+      <tr><td><strong>Surgelés</strong></td><td>T° &lt; −18°C · absence de givre ou d'humidité · DLC</td></tr>
+      <tr><td><strong>Produits frais</strong></td><td>T° &lt; +5°C · DLC · état de l'emballage</td></tr>
+      <tr><td><strong>Épicerie</strong></td><td>Emballage intact · DDM</td></tr>
+      <tr><td><strong>Non alimentaire</strong></td><td>Emballage intact · produits non cassés ou abîmés</td></tr>
+    </table>
+    <div class="tip-box" style="background:#eeedfe;border-color:#3c3489;color:#3c3489;margin-top:12px;">🛠️ Matériel : compas calibreur, thermomètre infrarouge, balance de contrôle</div>
+  </div>
+
+  <!-- Réserve -->
+  <div class="notion-header">
+    <div class="notion-icon" style="background:#e6f1fb;">🏭</div>
+    <h2>Notion 5 — La Réserve</h2>
+  </div>
+  <div class="card c-blue">
+    <div class="card-title blue">Espaces de stockage</div>
+    <div class="chips">
+      <span class="chip blue">Stockage sur palette</span>
+      <span class="chip blue">Stockage sur étagères</span>
+      <span class="chip blue">Chambre froide positive</span>
+      <span class="chip blue">Chambre froide négative</span>
+      <span class="chip blue">Quai de déchargement</span>
+      <span class="chip blue">Stockage sécurisé</span>
+    </div>
+  </div>
+  <div class="two-col">
+    <div class="card">
+      <div class="card-title blue">Rupture de RAYON</div>
+      <p style="font-size:13.5px;color:#374151;">Produit <strong>absent du linéaire</strong> mais disponible en réserve.<br>→ Action : <strong>réassortir</strong> depuis la réserve.</p>
+    </div>
+    <div class="card">
+      <div class="card-title coral">Rupture de STOCK</div>
+      <p style="font-size:13.5px;color:#374151;">Produit absent du rayon <strong>ET de la réserve</strong>.<br>→ Action : <strong>passer commande</strong> au fournisseur.</p>
+    </div>
+  </div>
+
+  <!-- Mise en rayon -->
+  <div class="notion-header">
+    <div class="notion-icon" style="background:#faece7;">🛒</div>
+    <h2>Notion 6 — La Mise en Rayon</h2>
+  </div>
+  <div class="card c-coral">
+    <ul class="steps-list">
+      <li><span class="step-num" style="background:#993c1d;color:#fff;">1</span><span><strong>Réassortiment</strong> — aller chercher en réserve les produits manquants</span></li>
+      <li><span class="step-num" style="background:#993c1d;color:#fff;">2</span><span><strong>Rotation FIFO</strong> — dates les plus courtes <strong>devant</strong> · action anti-gaspillage si DDM &lt; 3 mois</span></li>
+      <li><span class="step-num" style="background:#993c1d;color:#fff;">3</span><span><strong>Facing</strong> — produits avancés sur le devant de la tablette, face la plus attractive visible, alignés</span></li>
+    </ul>
+  </div>
+
+  <!-- PCB -->
+  <div class="card" style="margin-top:0;">
+    <div class="card-title">📦 Calcul de réassortiment avec le PCB</div>
+    <p style="font-size:13.5px;color:#374151;margin-bottom:10px;"><strong>PCB</strong> (= « Par Combien ») = nombre d'unités dans un carton. Aussi appelé UC ou UCV.</p>
+    <div style="background:#f0fdf4;border:1.5px solid #bbf7d0;border-radius:10px;padding:12px 16px;font-family:'DM Mono',monospace;font-size:13px;color:#0f6e56;text-align:center;">
+      Cartons à prendre = Quantités manquantes ÷ PCB
+    </div>
+    <div class="tip-box" style="margin-top:10px;">Exemple : Capacité rayon = 12, stock rayon = 0, PCB = 6 → 12 ÷ 6 = <strong>2 cartons</strong> à aller chercher en réserve.</div>
+  </div>
+
+  <!-- Vocabulaire -->
+  <div class="notion-header">
+    <div class="notion-icon" style="background:#eaf3de;">📖</div>
+    <h2>Notion 7 — Vocabulaire clé</h2>
+  </div>
+  <div class="card c-green2">
+    <div class="terme-row"><span class="terme">BL / LV</span><span class="def">Bon de Livraison (fournisseur) / Lettre de Voiture (transporteur)</span></div>
+    <div class="terme-row"><span class="terme">LRAR</span><span class="def">Lettre Recommandée avec Accusé de Réception — pour confirmer les réserves sous 72h</span></div>
+    <div class="terme-row"><span class="terme">PCB / UC / UCV</span><span class="def">« Par Combien » = nombre d'unités par carton (ex : PCB 6 = 6 unités/carton)</span></div>
+    <div class="terme-row"><span class="terme">Facing</span><span class="def">Présentation des articles vus de face, sur le devant, sous leur face la plus vendeuse</span></div>
+    <div class="terme-row"><span class="terme">FIFO</span><span class="def">First In First Out = dates les plus courtes devant (rotation des produits)</span></div>
+    <div class="terme-row"><span class="terme">DLC / DDM</span><span class="def">Date Limite de Consommation (périssables) / Date de Durabilité Minimale (épicerie)</span></div>
+  </div>
+
+</div><!-- /fiche -->
+
+<!-- ══════════ QUIZ ══════════ -->
+<div class="section" id="quiz">
+  <div class="quiz-header">
+    <h2>🎯 Quiz — Journée 3</h2>
+    <p>20 questions pour valider vos acquis · RNCP 37099</p>
+  </div>
+  <div id="quiz-area">
+    <div class="q-counter" id="q-counter">Question 1 / 20</div>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progress-bar" style="width:5%"></div></div>
+    <div id="question-container"></div>
+    <div class="quiz-nav">
+      <span id="score-live" style="font-size:13px;color:var(--muted);">Score : 0 / 0</span>
+      <button class="btn-primary" id="btn-next" onclick="nextQuestion()" disabled>Question suivante →</button>
+    </div>
+  </div>
+  <div class="results-screen" id="results-screen">
+    <div class="score-ring"><div class="score-num" id="final-score">0</div><div class="score-label">/ 20</div></div>
+    <h2 id="results-title"></h2>
+    <p id="results-msg"></p>
+    <ul class="result-details" id="result-details"></ul>
+    <button class="btn-primary" onclick="restartQuiz()">🔄 Recommencer le quiz</button>
+    &nbsp;
+    <button class="btn-secondary" onclick="showTab('fiche')">📋 Revoir la fiche</button>
+  </div>
+</div>
+
+</main>
+
+<script>
+function showTab(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.tab-btn')[id === 'fiche' ? 0 : 1].classList.add('active');
+  if (id === 'quiz') initQuiz();
+}
+
+const questions = [
+  { q: "Quelle est la première étape de la procédure de réception des marchandises ?", opts: ["Contrôler les produits livrés", "Accueillir le fournisseur et décharger les produits", "Signer le bon de livraison", "Vérifier la qualité des produits"], a: 1, exp: "L'accueil du fournisseur et le déchargement des produits est toujours la première étape. Un lieu et horaire précis ont été communiqués." },
+  { q: "Quel document est émis par le fournisseur lors d'une livraison directe (sans transporteur) ?", opts: ["La lettre de voiture", "Le bon de commande", "Le bon de livraison (BL)", "Le bon de réception signé"], a: 2, exp: "Le bon de livraison (BL) est émis par le vendeur/fournisseur. Il mentionne ses coordonnées, les produits et la date de livraison." },
+  { q: "Quel document est émis par le transporteur quand le fournisseur ne livre pas lui-même ?", opts: ["Le bon de livraison", "La lettre de voiture (LV)", "La facture", "Le bon de commande"], a: 1, exp: "La lettre de voiture (LV) est émise par le transporteur. Sa signature par le client libère le transporteur de sa responsabilité." },
+  { q: "Que signifie signer la lettre de voiture (LV) ?", opts: ["On valide les quantités reçues", "On libère le transporteur de sa responsabilité", "On accepte la facture", "On confirme la commande"], a: 1, exp: "La signature de la lettre de voiture par le destinataire libère le transporteur de sa responsabilité sur le transport." },
+  { q: "Des réserves ont été formulées lors d'une livraison. Dans quel délai doivent-elles être confirmées par LRAR ?", opts: ["24 heures", "48 heures", "72 heures", "1 semaine"], a: 2, exp: "Les réserves doivent être confirmées par lettre recommandée avec accusé de réception (LRAR) dans les 72 heures (3 jours)." },
+  { q: "À quelle température maximale les produits frais doivent-ils être livrés ?", opts: ["0°C", "+ 5°C", "+ 8°C", "+ 12°C"], a: 1, exp: "Les produits frais doivent être livrés à une température inférieure ou égale à + 5°C selon les normes de contrôle qualitatif." },
+  { q: "À quelle température maximale les produits surgelés doivent-ils être livrés ?", opts: ["− 12°C", "− 15°C", "− 18°C", "− 25°C"], a: 2, exp: "Les surgelés doivent être livrés à une température inférieure à − 18°C. La présence de givre ou d'humidité est un signe de rupture de la chaîne du froid." },
+  { q: "Que signifie l'acronyme PCB ?", opts: ["Prix Commercial Brut", "Par Combien (unités dans un carton)", "Produit Contrôlé Brut", "Portée du Colis de Base"], a: 1, exp: "PCB = « Par Combien » correspond au nombre d'unités dans un carton. Ex. PCB 6 = 6 produits par carton. On l'appelle aussi UC ou UCV." },
+  { q: "Qu'est-ce qu'une rupture de rayon ?", opts: ["Un produit absent de la réserve et du rayon", "Un produit abîmé sur le rayon", "Un produit absent du linéaire alors qu'il y en a en réserve", "Un rayon mal organisé"], a: 2, exp: "La rupture de rayon = produit absent du linéaire mais disponible en réserve. La solution : réassortir (aller chercher en réserve)." },
+  { q: "Que faut-il faire en cas de rupture de stock (et non de rayon) ?", opts: ["Faire le facing", "Réassortir depuis la réserve", "Passer commande au fournisseur", "Signaler au responsable et attendre"], a: 2, exp: "En rupture de stock, la marchandise manque à la fois en rayon ET en réserve. Il faut se réapprovisionner en passant commande au fournisseur." },
+  { q: "Lors de la mise en rayon, comment doit-on placer les produits en termes de dates ?", opts: ["Les dates les plus longues devant", "Les dates les plus courtes devant", "Sans ordre particulier", "Par ordre alphabétique de marque"], a: 1, exp: "La rotation FIFO (premier entré, premier sorti) : les dates les plus courtes doivent être placées à l'avant du rayon pour être vendues en priorité." },
+  { q: "Qu'est-ce que le FACING ?", opts: ["L'étiquetage des prix sur les rayons", "La présentation des articles vus de face, sur le devant de la tablette, sous leur face la plus vendeuse", "Le rangement des stocks en réserve", "La vérification des DLC"], a: 1, exp: "Le facing consiste à disposer les articles vus de face, sur le devant de la tablette, sous leur face la plus attractive (vendeuse)." },
+  { q: "Dans le cadre de l'anti-gaspillage, quel est le seuil pour les produits à destockage ?", opts: ["DDM inférieure à 1 mois", "DDM inférieure à 2 mois", "DDM inférieure à 3 mois", "DDM inférieure à 6 mois"], a: 2, exp: "L'action anti-gaspillage s'applique aux conserves dont la date (DDM) est inférieure à 3 mois." },
+  { q: "Quelle est la différence entre DLC et DDM ?", opts: ["Ce sont deux termes identiques", "DLC concerne les produits frais périssables ; DDM concerne l'épicerie (meilleure qualité jusqu'à cette date)", "DDM concerne les surgelés uniquement", "DLC s'applique aux produits non alimentaires"], a: 1, exp: "DLC = Date Limite de Consommation (produits périssables). DDM = Date de Durabilité Minimale (épicerie) : produit consommable mais qualité peut baisser après." },
+  { q: "Quel outil permet de mesurer le calibre des fruits et légumes lors du contrôle ?", opts: ["Le thermomètre infrarouge", "Le compas calibreur (calibreur à boucle)", "La balance de contrôle", "Une règle graduée"], a: 1, exp: "Le calibreur à boucle (ou compas calibreur) permet de vérifier que le calibre des fruits et légumes est conforme aux exigences du bon de commande." },
+  { q: "Si aucune anomalie n'est constatée à la réception, que fait le réceptionnaire ?", opts: ["Il refuse de signer", "Il signe le BL et remet l'original au fournisseur en conservant sa copie", "Il contacte son responsable avant de signer", "Il formule des réserves par précaution"], a: 1, exp: "Sans anomalie : le réceptionnaire signe, remet le BL signé au fournisseur et conserve le bon de réception signé." },
+  { q: "Capacité rayon : 12 places, 0 article en rayon, PCB 6. Combien de cartons faut-il aller chercher ?", opts: ["1 carton", "2 cartons", "3 cartons", "0 carton"], a: 1, exp: "Quantités manquantes = 12 − 0 = 12 articles. 12 ÷ 6 (PCB) = 2 cartons à aller chercher en réserve." },
+  { q: "Lequel de ces espaces N'est PAS un espace de stockage de la réserve ?", opts: ["Chambre froide négative", "Quai de déchargement", "Le linéaire (rayon en magasin)", "Stockage sur palette"], a: 2, exp: "Le linéaire est l'espace de vente en magasin, pas un espace de stockage en réserve. La réserve comprend : palettes, étagères, chambres froides, quai de déchargement." },
+  { q: "Lors du contrôle qualitatif, que vérifie-t-on en priorité pour les produits non alimentaires ?", opts: ["La date de péremption et la température", "L'emballage intact et l'absence de produits cassés ou abîmés", "Le calibre et le poids", "La présence de givre ou d'humidité"], a: 1, exp: "Pour les produits non alimentaires : on vérifie que l'emballage est fermé et intact, et que les produits ne sont pas cassés ou abîmés." },
+  { q: "Un produit est dans le fond du rayon, loin des clients. Quelle action de facing faut-il réaliser ?", opts: ["Changer l'étiquette de prix", "Avancer les articles sur le devant de la tablette", "Empiler les articles par 2 en hauteur", "Mettre le produit sur sa face la plus attractive"], a: 1, exp: "Quand les produits sont dans le fond du rayon, le facing consiste à les avancer sur le devant de la tablette pour les rendre accessibles et visibles." }
+];
+
+let current = 0, score = 0, answered = false, userAnswers = [], initialized = false;
+
+function initQuiz() {
+  if (initialized) return;
+  initialized = true;
+  current = 0; score = 0; answered = false; userAnswers = [];
+  document.getElementById('quiz-area').style.display = 'block';
+  document.getElementById('results-screen').classList.remove('show');
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = questions[current];
+  const letters = ['A','B','C','D'];
+  answered = false;
+  document.getElementById('btn-next').disabled = true;
+  document.getElementById('q-counter').textContent = `Question ${current + 1} / ${questions.length}`;
+  document.getElementById('progress-bar').style.width = ((current) / questions.length * 100) + '%';
+  document.getElementById('score-live').textContent = `Score : ${score} / ${current}`;
+  let html = `<div class="question-card"><div class="q-num">Question ${current + 1}</div><div class="q-text">${q.q}</div><div class="options">`;
+  q.opts.forEach((opt, i) => {
+    html += `<button class="opt-btn" id="opt-${i}" onclick="selectAnswer(${i})"><span class="opt-letter">${letters[i]}</span>${opt}</button>`;
+  });
+  html += `</div><div class="feedback-box" id="feedback"></div></div>`;
+  document.getElementById('question-container').innerHTML = html;
+}
+
+function selectAnswer(idx) {
+  if (answered) return;
+  answered = true;
+  const q = questions[current];
+  const correct = q.a === idx;
+  if (correct) score++;
+  userAnswers.push({ q: q.q, userIdx: idx, correctIdx: q.a, correct });
+  document.querySelectorAll('.opt-btn').forEach((btn, i) => {
+    btn.disabled = true;
+    if (i === q.a) btn.classList.add('correct');
+    if (i === idx && !correct) btn.classList.add('wrong');
+  });
+  const fb = document.getElementById('feedback');
+  fb.classList.add('show', correct ? 'ok' : 'ko');
+  fb.innerHTML = (correct ? '✅ <strong>Bonne réponse !</strong> ' : '❌ <strong>Pas tout à fait.</strong> ') + q.exp;
+  document.getElementById('btn-next').disabled = false;
+  if (current === questions.length - 1) document.getElementById('btn-next').textContent = 'Voir les résultats 🏆';
+}
+
+function nextQuestion() {
+  current++;
+  if (current >= questions.length) showResults();
+  else { document.getElementById('btn-next').textContent = 'Question suivante →'; renderQuestion(); }
+}
+
+function showResults() {
+  document.getElementById('quiz-area').style.display = 'none';
+  document.getElementById('results-screen').classList.add('show');
+  document.getElementById('final-score').textContent = score;
+  const pct = Math.round((score / questions.length) * 100);
+  let title, msg;
+  if (pct >= 85) { title = '🏆 Excellent !'; msg = 'Parfaite maîtrise des notions de la journée 3. Vous êtes prêt(e) pour l\'évaluation !'; }
+  else if (pct >= 65) { title = '👍 Bien joué !'; msg = 'Bonne base ! Relisez les points sur lesquels vous avez hésité pour consolider vos connaissances.'; }
+  else if (pct >= 50) { title = '📚 À revoir'; msg = 'Consultez la fiche de révision et retravaillez les notions clés avant l\'évaluation.'; }
+  else { title = '💪 À retravailler'; msg = 'Reprenez la fiche de révision en détail. N\'hésitez pas à relire le cours et recommencer ce quiz !'; }
+  document.getElementById('results-title').textContent = title;
+  document.getElementById('results-msg').textContent = msg + ` (${score}/20 — ${pct} %)`;
+  const details = document.getElementById('result-details');
+  details.innerHTML = userAnswers.map((ua, i) => {
+    const opts = questions[i].opts;
+    const wrongInfo = ua.correct ? '' : ` → Bonne réponse : <strong>${opts[ua.correctIdx]}</strong>`;
+    return `<li><span style="flex-shrink:0">${ua.correct ? '✅' : '❌'}</span><span>Q${i+1}. ${questions[i].q.slice(0,60)}…${wrongInfo}</span></li>`;
+  }).join('');
+}
+
+function restartQuiz() {
+  current = 0; score = 0; answered = false; userAnswers = []; initialized = false;
+  document.getElementById('quiz-area').style.display = 'block';
+  document.getElementById('results-screen').classList.remove('show');
+  document.getElementById('btn-next').textContent = 'Question suivante →';
+  initQuiz();
+}
+</script>
+</body>
+</html>
