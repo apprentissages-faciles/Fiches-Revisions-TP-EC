@@ -1,0 +1,288 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.wrap{padding:1.5rem 1rem;max-width:680px}
+h1{font-size:22px;font-weight:500;color:var(--color-text-primary);margin-bottom:.25rem}
+h2{font-size:16px;font-weight:500;color:var(--color-text-primary);margin-bottom:.75rem}
+.sub{font-size:14px;color:var(--color-text-secondary);margin:.4rem 0 1.25rem}
+.tab-row{display:flex;gap:6px;margin-bottom:1.25rem}
+.tab-btn{flex:1;padding:.5rem;border-radius:var(--border-radius-md);border:.5px solid var(--color-border-secondary);background:var(--color-background-secondary);font-size:14px;color:var(--color-text-secondary);cursor:pointer;font-weight:400}
+.tab-btn.active{background:#185FA5;border-color:#185FA5;color:white;font-weight:500}
+.card{background:var(--color-background-primary);border:.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem 1.25rem;margin-bottom:1rem}
+.card-title{font-size:15px;font-weight:500;color:var(--color-text-primary);margin-bottom:.6rem;display:flex;align-items:center;gap:8px}
+.def-box{background:var(--color-background-secondary);border-left:3px solid #378ADD;border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;padding:.6rem .8rem;margin-bottom:.75rem;font-size:14px;color:var(--color-text-primary);line-height:1.5}
+.def-box.amber{border-left-color:#BA7517}
+.def-box.purple{border-left-color:#534AB7}
+.b-grid{display:grid;grid-template-columns:1fr;gap:8px;margin-top:.5rem}
+.b-item{display:flex;align-items:flex-start;gap:10px;padding:.6rem .8rem;background:var(--color-background-secondary);border-radius:var(--border-radius-md);border:.5px solid var(--color-border-tertiary)}
+.b-num{font-size:13px;font-weight:500;min-width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#B5D4F4;color:#0C447C}
+.b-content{flex:1}
+.b-title{font-size:14px;font-weight:500;color:var(--color-text-primary)}
+.b-desc{font-size:13px;color:var(--color-text-secondary);margin-top:2px}
+.p-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:.5rem}
+.p-card{border-radius:var(--border-radius-md);padding:.75rem;text-align:center}
+.p-card.prix{background:#E6F1FB;border:.5px solid #B5D4F4}
+.p-card.plein{background:#EAF3DE;border:.5px solid #C0DD97}
+.p-card.propre{background:#EEEDFE;border:.5px solid #CECBF6}
+.p-letter{font-size:26px;font-weight:500;margin-bottom:4px}
+.p-letter.prix{color:#0C447C}
+.p-letter.plein{color:#27500A}
+.p-letter.propre{color:#3C3489}
+.p-word{font-size:13px;font-weight:500;margin-bottom:4px}
+.p-word.prix{color:#185FA5}
+.p-word.plein{color:#3B6D11}
+.p-word.propre{color:#534AB7}
+.p-detail{font-size:12px;color:var(--color-text-secondary);line-height:1.4}
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.compare-c{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:.75rem}
+.compare-c h3{font-size:13px;font-weight:500;margin-bottom:.5rem}
+.compare-c ul{list-style:none;padding:0}
+.compare-c ul li{font-size:12px;color:var(--color-text-secondary);padding:2px 0;line-height:1.5}
+.compare-c ul li::before{content:"→ ";color:var(--color-text-tertiary)}
+.key-list{display:flex;flex-direction:column;gap:7px}
+.key-row{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--color-text-secondary);line-height:1.5}
+.key-num{color:#378ADD;font-weight:500;min-width:18px}
+.progress-bar{width:100%;height:5px;background:var(--color-background-secondary);border-radius:4px;margin-bottom:1.5rem;overflow:hidden}
+.progress-fill{height:100%;background:#378ADD;border-radius:4px;transition:width .3s}
+.q-meta{display:flex;justify-content:space-between;font-size:13px;color:var(--color-text-secondary);margin-bottom:1rem}
+.question-card{background:var(--color-background-primary);border:.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1.25rem;margin-bottom:1rem}
+.q-num{font-size:12px;color:var(--color-text-tertiary);margin-bottom:.4rem}
+.q-text{font-size:15px;color:var(--color-text-primary);margin-bottom:1rem;line-height:1.6}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt-btn{text-align:left;padding:.6rem 1rem;border-radius:var(--border-radius-md);border:.5px solid var(--color-border-secondary);background:var(--color-background-secondary);font-size:14px;color:var(--color-text-primary);cursor:pointer;line-height:1.4}
+.opt-btn:hover:not(:disabled){background:var(--color-background-tertiary);border-color:var(--color-border-primary)}
+.opt-btn.correct{background:#EAF3DE;border-color:#639922;color:#27500A}
+.opt-btn.wrong{background:#FCEBEB;border-color:#A32D2D;color:#501313}
+.opt-btn:disabled{cursor:default}
+.feedback{font-size:13px;margin-top:.75rem;padding:.5rem .75rem;border-radius:var(--border-radius-md);line-height:1.5}
+.feedback.ok{background:#EAF3DE;color:#27500A}
+.feedback.ko{background:#FCEBEB;color:#501313}
+.nav-row{display:flex;justify-content:flex-end;margin-top:1rem}
+.next-btn{padding:.5rem 1.2rem;border-radius:var(--border-radius-md);border:.5px solid var(--color-border-secondary);background:var(--color-background-secondary);font-size:14px;color:var(--color-text-primary);cursor:pointer}
+.score-card{background:var(--color-background-secondary);border-radius:var(--border-radius-lg);padding:1.5rem;text-align:center}
+.score-num{font-size:36px;font-weight:500;color:var(--color-text-primary)}
+.score-lbl{font-size:14px;color:var(--color-text-secondary);margin-bottom:1rem}
+</style>
+
+<div class="wrap">
+  <p style="font-size:11px;color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.25rem">TP Employé Commercial · RNCP37099</p>
+  <h1>Les 5B & les 3P — Fiche de révisions</h1>
+  <p class="sub">Règles fondamentales de la mise en rayon · fiche + quiz de 20 questions</p>
+
+  <div class="tab-row">
+    <button class="tab-btn active" onclick="showTab('fiche')">📋 Fiche de cours</button>
+    <button class="tab-btn" onclick="showTab('quiz')">🎯 Quiz (20 Q)</button>
+  </div>
+
+  <div id="tab-fiche">
+    <div class="card">
+      <div class="card-title"><i class="ti ti-star" aria-hidden="true"></i> Les 5B — règle de la mise en rayon efficace</div>
+      <div class="def-box">Les 5B sont les 5 conditions à respecter pour qu'un produit soit correctement mis en rayon et disponible pour le client au bon moment.</div>
+      <div class="b-grid">
+        <div class="b-item"><div class="b-num">1</div><div class="b-content"><div class="b-title">Bon produit</div><div class="b-desc">Référencé et attendu par la clientèle — le bon article, pas un substitut</div></div></div>
+        <div class="b-item"><div class="b-num">2</div><div class="b-content"><div class="b-title">Bon endroit</div><div class="b-desc">Placé à l'emplacement prévu dans le plan de merchandising</div></div></div>
+        <div class="b-item"><div class="b-num">3</div><div class="b-content"><div class="b-title">Bon moment</div><div class="b-desc">Disponible selon la saison, la promotion ou l'événement en cours</div></div></div>
+        <div class="b-item"><div class="b-num">4</div><div class="b-content"><div class="b-title">Bonne quantité</div><div class="b-desc">Ni trop (surstockage), ni trop peu (rupture) — juste ce qu'il faut</div></div></div>
+        <div class="b-item"><div class="b-num">5</div><div class="b-content"><div class="b-title">Bon prix</div><div class="b-desc">Étiquette conforme, visible et cohérente avec le ticket de caisse</div></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><i class="ti ti-checks" aria-hidden="true"></i> Les 3P — présentation du rayon</div>
+      <div class="def-box amber">Les 3P sont les 3 critères à vérifier pour s'assurer qu'un rayon est bien présenté et donne envie d'acheter.</div>
+      <div class="p-grid">
+        <div class="p-card prix">
+          <div class="p-letter prix">P</div>
+          <div class="p-word prix">Prix</div>
+          <div class="p-detail">Visible, lisible et exact sur chaque produit</div>
+        </div>
+        <div class="p-card plein">
+          <div class="p-letter plein">P</div>
+          <div class="p-word plein">Plein</div>
+          <div class="p-detail">Pas de rupture, rayon approvisionné en permanence</div>
+        </div>
+        <div class="p-card propre">
+          <div class="p-letter propre">P</div>
+          <div class="p-word propre">Propre</div>
+          <div class="p-detail">Rayonnage et produits soignés, sans salissure ni emballage ouvert</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><i class="ti ti-arrows-diff" aria-hidden="true"></i> 5B vs 3P — les différences clés</div>
+      <div class="compare-grid">
+        <div class="compare-c">
+          <h3 style="color:#185FA5">5B</h3>
+          <ul>
+            <li>Concerne la <strong>mise en rayon</strong></li>
+            <li>Logique d'<strong>approvisionnement</strong></li>
+            <li>Vérifié avant et pendant la mise en rayon</li>
+            <li>S'applique à tout point de vente</li>
+          </ul>
+        </div>
+        <div class="compare-c">
+          <h3 style="color:#3B6D11">3P</h3>
+          <ul>
+            <li>Concerne la <strong>présentation</strong> du rayon</li>
+            <li>Logique de <strong>qualité visuelle</strong></li>
+            <li>Vérifié lors des contrôles de rayon</li>
+            <li>S'applique au linéaire fini</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><i class="ti ti-bulb" aria-hidden="true"></i> Points clés à retenir</div>
+      <div class="key-list">
+        <div class="key-row"><span class="key-num">1.</span>Les 5B s'appliquent à tout type de commerce, pas seulement au drive</div>
+        <div class="key-row"><span class="key-num">2.</span>Un rayon vide (rupture) = manque à gagner + client insatisfait → les 3P ne sont pas respectés</div>
+        <div class="key-row"><span class="key-num">3.</span>Le prix doit être visible ET exact — un écart entre étiquette et caisse est une non-conformité légale</div>
+        <div class="key-row"><span class="key-num">4.</span>Le «bon moment» dans les 5B s'applique aux saisonnalités (Ex : bûches en décembre) et aux promotions</div>
+        <div class="key-row"><span class="key-num">5.</span>La «bonne quantité» vise à éviter deux erreurs : la rupture (trop peu) et le surstockage (trop)</div>
+        <div class="key-row"><span class="key-num">6.</span>5B + 3P ensemble = rayon optimal qui satisfait le client et maximise les ventes</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab-quiz" style="display:none">
+    <div id="quiz-start">
+      <div class="score-card">
+        <div style="font-size:32px;margin-bottom:.5rem">🎯</div>
+        <div style="font-size:18px;font-weight:500;color:var(--color-text-primary);margin-bottom:.5rem">Quiz 5B & 3P</div>
+        <div style="font-size:14px;color:var(--color-text-secondary);margin-bottom:1.25rem;line-height:1.6">20 questions pour valider tes connaissances sur la mise en rayon, conformes aux compétences du RNCP37099 Employé Commercial.</div>
+        <button onclick="startQuiz()" style="padding:.6rem 1.5rem;border-radius:var(--border-radius-md);border:.5px solid var(--color-border-secondary);background:var(--color-background-primary);font-size:14px;color:var(--color-text-primary);cursor:pointer">Commencer →</button>
+      </div>
+    </div>
+
+    <div id="quiz-run" style="display:none">
+      <div class="progress-bar"><div class="progress-fill" id="prog"></div></div>
+      <div class="q-meta">
+        <span id="q-counter">Question 1/20</span>
+        <span id="score-live">Score : 0</span>
+      </div>
+      <div class="question-card">
+        <div class="q-num" id="q-num"></div>
+        <div class="q-text" id="q-text"></div>
+        <div class="opts" id="q-opts"></div>
+        <div id="q-feedback" style="display:none" class="feedback"></div>
+      </div>
+      <div class="nav-row">
+        <button id="next-btn" class="next-btn" onclick="nextQ()" style="display:none">Suivant →</button>
+      </div>
+    </div>
+
+    <div id="quiz-end" style="display:none">
+      <div class="score-card">
+        <div style="font-size:28px;margin-bottom:.5rem" id="end-medals"></div>
+        <div class="score-num" id="end-score"></div>
+        <div class="score-lbl" id="end-lbl"></div>
+        <div style="font-size:13px;color:var(--color-text-secondary);margin-bottom:1rem" id="end-msg"></div>
+        <button onclick="startQuiz()" style="padding:.6rem 1.5rem;border-radius:var(--border-radius-md);border:.5px solid var(--color-border-secondary);background:var(--color-background-primary);font-size:14px;color:var(--color-text-primary);cursor:pointer">Recommencer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function showTab(t){
+  document.getElementById('tab-fiche').style.display=t==='fiche'?'block':'none';
+  document.getElementById('tab-quiz').style.display=t==='quiz'?'block':'none';
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',(i===0&&t==='fiche')||(i===1&&t==='quiz')));
+}
+
+const Q=[
+  {q:"Combien de «B» composent la règle des 5B ?",opts:["3","4","5","6"],a:2,e:"Les 5B sont : Bon produit, Bon endroit, Bon moment, Bonne quantité, Bon prix."},
+  {q:"Que signifie le 1er B : «Bon produit» ?",opts:["Un produit en promotion","Un produit référencé et attendu par le client","Le produit le moins cher","Un produit frais"],a:1,e:"Le bon produit est celui qui est référencé dans l'assortiment et attendu par la clientèle."},
+  {q:"Que signifie le 2ème B : «Bon endroit» ?",opts:["Le magasin le mieux situé","Le produit placé à l'emplacement prévu dans le plan de merchandising","La vitrine la mieux éclairée","Le rayon le plus fréquenté"],a:1,e:"Le bon endroit = respecter l'emplacement défini dans le plan de merchandising."},
+  {q:"Que signifie le 3ème B : «Bon moment» ?",opts:["Ouvrir le magasin tôt","Livrer la nuit","Mettre le produit disponible selon la saison ou la promotion en cours","Faire la mise en rayon le matin"],a:2,e:"Le bon moment = saisonnalité (ex: bûches en décembre) et promotions. On ne vend pas du ski en plein été."},
+  {q:"Que signifie le 4ème B : «Bonne quantité» ?",opts:["Mettre le maximum de produits","Ni trop (surstockage) ni trop peu (rupture)","Vider le stock en réserve","Commander tous les mois"],a:1,e:"La bonne quantité évite deux écueils : la rupture (trop peu = client déçu) et le surstockage (trop = désordre et coûts)."},
+  {q:"Que signifie le 5ème B : «Bon prix» ?",opts:["Le prix le plus bas du marché","Un prix promotionnel obligatoire","Étiquette conforme, visible et exacte","Un prix négocié avec le client"],a:2,e:"Le bon prix = étiquette conforme à la réalité, lisible et cohérente avec le ticket de caisse."},
+  {q:"Les 5B concernent-ils seulement le drive ?",opts:["Oui, uniquement le drive","Oui, le drive et la livraison","Non, ils s'appliquent à tout type de commerce","Non, uniquement les grandes surfaces"],a:2,e:"FAUX : les 5B s'appliquent à tout point de vente, qu'il s'agisse d'une épicerie, d'une grande surface ou d'un drive."},
+  {q:"Combien de «P» composent la règle des 3P ?",opts:["2","3","4","5"],a:1,e:"Les 3P sont : Prix, Plein, Propre. Trois critères pour vérifier la présentation d'un rayon."},
+  {q:"Que signifie le 1er P : «Prix» dans les 3P ?",opts:["Proposer une remise","Un prix visible, lisible et exact sur chaque produit","Mettre des étiquettes de couleur","Afficher le prix du concurrent"],a:1,e:"Le P de Prix = l'étiquette doit être présente, lisible et correspondre au prix réel du produit."},
+  {q:"Que signifie le 2ème P : «Plein» dans les 3P ?",opts:["Un rayon avec beaucoup de références","Un rayon sans rupture de stock, bien approvisionné","Un rayon trop chargé","Un rayon rempli de PLV"],a:1,e:"Le P de Plein = pas de trou dans le rayon, pas de rupture. Le linéaire doit être garni en permanence."},
+  {q:"Que signifie le 3ème P : «Propre» dans les 3P ?",opts:["Un rayon avec des produits bio","Un rayon sans emballage abîmé ni salissure","Un rayon avec un sol nettoyé uniquement","Un rayon neuf"],a:1,e:"Le P de Propre = rayonnage propre, pas de poussière, pas de boîte ouverte, pas de salissure sur les produits."},
+  {q:"Un rayon vide signifie que quel(s) critère(s) des 3P n'est (ne sont) pas respecté(s) ?",opts:["Prix uniquement","Propre uniquement","Plein uniquement","Plein et Propre"],a:2,e:"Un rayon vide = rupture = le P de Plein n'est pas respecté."},
+  {q:"Quelle est la principale différence entre les 5B et les 3P ?",opts:["Les 5B concernent le prix, les 3P concernent la propreté","Les 5B portent sur la mise en rayon, les 3P sur la présentation du rayon","Les 5B sont pour les grandes surfaces, les 3P pour les petits magasins","Il n'y a pas de différence"],a:1,e:"Les 5B = conditions de mise en rayon (logistique/approvisionnement). Les 3P = qualité visuelle et présentation du linéaire fini."},
+  {q:"Un produit de Noël mis en rayon en août respecte-t-il le 3ème B ?",opts:["Oui, car le rayon est plein","Non, ce n'est pas le bon moment","Oui, car le prix est correct","Non, car le produit n'est pas référencé"],a:1,e:"Le bon moment = respecter la saisonnalité. Mettre des produits de Noël en août ne respecte pas le 3ème B."},
+  {q:"Pourquoi une étiquette de prix manquante est-elle un problème ?",opts:["Elle gêne visuellement le rayon","Elle viole le B de Bon endroit","Elle ne respecte ni le 5ème B (Bon prix) ni le 1er P (Prix)","Elle est uniquement gênante pour le client"],a:2,e:"L'absence d'étiquette viole le 5ème B (Bon prix) ET le P de Prix des 3P. C'est aussi une obligation légale d'affichage des prix."},
+  {q:"Un employé commercial trouve un rayon avec des emballages déchirés et de la poussière. Quel(s) critère(s) n'est (ne sont) pas respecté(s) ?",opts:["Prix","Plein","Propre","Bon endroit"],a:2,e:"Des emballages abîmés et de la poussière = le rayon n'est pas Propre. Le P de Propre n'est pas respecté."},
+  {q:"Que risque le magasin si le prix en rayon diffère du prix en caisse ?",opts:["Rien, c'est fréquent","Un manque à gagner uniquement","Un problème légal et une perte de confiance client","Uniquement une réclamation interne"],a:2,e:"L'écart entre le prix affiché et le prix encaissé est une non-conformité légale (obligation d'affichage) et nuit à la confiance du client."},
+  {q:"Quelle règle (5B ou 3P) vérifie-t-on principalement lors d'un contrôle visuel du linéaire ?",opts:["Les 5B uniquement","Les 3P uniquement","Les 5B et les 3P à parts égales","Ni les 5B ni les 3P"],a:1,e:"Le contrôle visuel du linéaire vérifie les 3P : est-ce que le rayon est Plein, les Prix affichés, et le rayon Propre ?"},
+  {q:"Dans les 5B, qu'est-ce que «ni trop, ni trop peu» illustre ?",opts:["Le bon prix","Le bon produit","Le bon endroit","La bonne quantité"],a:3,e:"«Ni trop, ni trop peu» décrit la Bonne quantité : éviter la rupture (trop peu) et le surstockage (trop)."},
+  {q:"Un rayon qui respecte les 5B ET les 3P permet de :",opts:["Réduire uniquement les coûts logistiques","Satisfaire le client et maximiser les ventes","Supprimer les promotions","Réduire le nombre d'employés"],a:1,e:"5B + 3P = rayon optimal : le bon produit, bien présenté, au bon prix, en quantité suffisante, propre → client satisfait et ventes maximisées."}
+];
+
+let cur=0,score=0,answered=false;
+
+function startQuiz(){
+  cur=0;score=0;answered=false;
+  document.getElementById('quiz-start').style.display='none';
+  document.getElementById('quiz-end').style.display='none';
+  document.getElementById('quiz-run').style.display='block';
+  renderQ();
+}
+
+function renderQ(){
+  const q=Q[cur];
+  document.getElementById('prog').style.width=((cur/20)*100)+'%';
+  document.getElementById('q-counter').textContent='Question '+(cur+1)+'/20';
+  document.getElementById('score-live').textContent='Score : '+score;
+  document.getElementById('q-num').textContent='Question '+(cur+1);
+  document.getElementById('q-text').textContent=q.q;
+  document.getElementById('q-feedback').style.display='none';
+  document.getElementById('next-btn').style.display='none';
+  answered=false;
+  const opts=document.getElementById('q-opts');
+  opts.innerHTML='';
+  q.opts.forEach((o,i)=>{
+    const b=document.createElement('button');
+    b.className='opt-btn';b.textContent=o;
+    b.onclick=()=>answer(i);
+    opts.appendChild(b);
+  });
+}
+
+function answer(i){
+  if(answered)return;
+  answered=true;
+  const q=Q[cur];
+  document.querySelectorAll('.opt-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('q-feedback');
+  if(i===q.a){
+    score++;
+    document.querySelectorAll('.opt-btn')[i].classList.add('correct');
+    fb.className='feedback ok';fb.textContent='✓ Bonne réponse ! '+q.e;
+  }else{
+    document.querySelectorAll('.opt-btn')[i].classList.add('wrong');
+    document.querySelectorAll('.opt-btn')[q.a].classList.add('correct');
+    fb.className='feedback ko';fb.textContent='✗ Mauvaise réponse. '+q.e;
+  }
+  fb.style.display='block';
+  document.getElementById('score-live').textContent='Score : '+score;
+  document.getElementById('next-btn').style.display='block';
+}
+
+function nextQ(){
+  cur++;
+  if(cur>=20){showResult();return;}
+  renderQ();
+}
+
+function showResult(){
+  document.getElementById('quiz-run').style.display='none';
+  document.getElementById('quiz-end').style.display='block';
+  const pct=Math.round((score/20)*100);
+  document.getElementById('end-score').textContent=score+'/20';
+  document.getElementById('end-lbl').textContent='Soit '+pct+'% de bonnes réponses';
+  let m='',msg='';
+  if(score>=18){m='🥇🌟';msg='Excellent ! Tu maîtrises parfaitement les 5B et les 3P. Prêt(e) pour le TP !';}
+  else if(score>=14){m='🥈';msg='Très bien ! Relis juste les différences entre 5B et 3P, tu y es presque !';}
+  else if(score>=10){m='🥉';msg='Pas mal ! Concentre-toi sur ce que signifie chaque B et chaque P et retente le quiz.';}
+  else{m='📚';msg='Continue tes révisions ! Commence par mémoriser les 5B (mise en rayon) et les 3P (présentation) séparément.';}
+  document.getElementById('end-medals').textContent=m;
+  document.getElementById('end-msg').textContent=msg;
+}
+</script>

@@ -1,0 +1,221 @@
+
+<style>
+h2.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+*{box-sizing:border-box}
+body{margin:0;font-family:var(--font-sans);color:var(--color-text-primary)}
+.tabs{display:flex;gap:8px;margin-bottom:1.5rem;border-bottom:0.5px solid var(--color-border-tertiary);padding-bottom:0}
+.tab{padding:8px 18px;font-size:14px;font-weight:500;cursor:pointer;border:none;background:transparent;color:var(--color-text-secondary);border-bottom:2px solid transparent;margin-bottom:-0.5px;border-radius:0}
+.tab.active{color:var(--color-text-primary);border-bottom:2px solid #3C3489}
+.section{margin-bottom:1.5rem}
+.section-title{font-size:13px;font-weight:500;text-transform:uppercase;letter-spacing:.05em;color:var(--color-text-secondary);margin-bottom:.75rem;display:flex;align-items:center;gap:6px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:12px 14px}
+.card-label{font-size:12px;color:var(--color-text-secondary);margin-bottom:4px}
+.card-val{font-size:14px;font-weight:500;line-height:1.5}
+.tag{display:inline-block;font-size:11px;padding:3px 9px;border-radius:999px;font-weight:500;margin:2px 2px 2px 0}
+.tag-blue{background:#E6F1FB;color:#0C447C}
+.tag-coral{background:#FAECE7;color:#993C1D}
+.tag-green{background:#EAF3DE;color:#27500A}
+.tag-amber{background:#FAEEDA;color:#633806}
+.tag-purple{background:#EEEDFE;color:#3C3489}
+.tag-teal{background:#E1F5EE;color:#085041}
+.def-box{background:var(--color-background-secondary);border-left:3px solid #534AB7;border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;padding:10px 14px;margin-bottom:10px;font-size:14px;line-height:1.6}
+.def-box strong{color:#3C3489}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:var(--color-background-secondary);font-weight:500;padding:7px 10px;text-align:left;border-bottom:0.5px solid var(--color-border-secondary)}
+td{padding:7px 10px;border-bottom:0.5px solid var(--color-border-tertiary);vertical-align:top}
+.schema{background:var(--color-background-secondary);border-radius:var(--border-radius-lg);padding:14px;font-size:13px;display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.zone-box{border-radius:var(--border-radius-md);padding:10px 12px}
+.zone-froide{background:#FAEEDA;border:0.5px solid #EF9F27}
+.zone-froide .zt{color:#633806;font-weight:500}
+.zone-froide .zd{color:#854F0B;font-size:12px}
+.zone-chaude{background:#E1F5EE;border:0.5px solid #1D9E75}
+.zone-chaude .zt{color:#085041;font-weight:500}
+.zone-chaude .zd{color:#0F6E56;font-size:12px}
+.quiz-q{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:14px 16px;margin-bottom:12px}
+.q-num{font-size:11px;color:var(--color-text-tertiary);margin-bottom:6px}
+.q-text{font-size:14px;font-weight:500;margin-bottom:10px;line-height:1.5}
+.q-opts{display:grid;gap:6px}
+.q-opt{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:8px 12px;font-size:13px;cursor:pointer;text-align:left;color:var(--color-text-primary);transition:background .15s}
+.q-opt:hover{background:var(--color-background-primary);border-color:var(--color-border-secondary)}
+.q-opt.correct{background:#EAF3DE;border-color:#1D9E75;color:#27500A}
+.q-opt.wrong{background:#FCEBEB;border-color:#E24B4A;color:#791F1F}
+.q-expl{margin-top:8px;font-size:12px;color:var(--color-text-secondary);padding:7px 10px;background:var(--color-background-secondary);border-radius:var(--border-radius-md);display:none}
+.score-bar{background:var(--color-background-secondary);border-radius:999px;height:8px;margin:8px 0}
+.score-fill{height:8px;border-radius:999px;background:#1D9E75;transition:width .4s}
+.score-info{font-size:13px;color:var(--color-text-secondary);margin-bottom:4px}
+.btn-reset{background:transparent;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:6px 14px;font-size:13px;cursor:pointer;color:var(--color-text-primary);margin-top:12px}
+.btn-reset:hover{background:var(--color-background-secondary)}
+.hidden{display:none}
+</style>
+
+<h2 class="sr-only">Fiche de révision — Organisation de l'espace de vente (Journée 11) avec quiz de 20 questions</h2>
+
+<div class="tabs">
+  <button class="tab active" onclick="showTab('fiche',this)"><i class="ti ti-book" aria-hidden="true"></i> Fiche de révision</button>
+  <button class="tab" onclick="showTab('quiz',this)"><i class="ti ti-help" aria-hidden="true"></i> Quiz 20 questions</button>
+</div>
+
+<div id="tab-fiche">
+
+<div class="section">
+  <div class="section-title"><i class="ti ti-info-circle" aria-hidden="true"></i> Définition</div>
+  <div class="def-box">L'organisation de la surface de vente participe à l'<strong>attractivité</strong> du point de vente. Elle doit faciliter la <strong>circulation</strong> des clients, rendre l'<strong>offre</strong> lisible et contribuer à la <strong>rentabilité</strong> du magasin.</div>
+</div>
+
+<div class="section">
+  <div class="section-title"><i class="ti ti-building-store" aria-hidden="true"></i> Agencement extérieur</div>
+  <div class="cards">
+    <div class="card"><div class="card-label">L'enseigne</div><div class="card-val">Visible jour et nuit — représente l'image de marque et guide les clients</div></div>
+    <div class="card"><div class="card-label">La façade</div><div class="card-val">Vision totale du magasin, dimensionnée pour une visibilité optimale</div></div>
+    <div class="card"><div class="card-label">La vitrine</div><div class="card-val">Espace de communication : bien agencée, correctement éclairée, présentation attractive</div></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title"><i class="ti ti-shopping-cart" aria-hidden="true"></i> Les 4 types d'achat</div>
+  <div class="cards">
+    <div class="card"><div class="card-label"><span class="tag tag-coral">Corvée</span></div><div class="card-val">Produits de 1ère nécessité — besoins physiologiques<br><span style="font-size:12px;color:var(--color-text-secondary)">→ Produits banals</span></div></div>
+    <div class="card"><div class="card-label"><span class="tag tag-blue">Plaisir</span></div><div class="card-val">Achats non essentiels, souhaités<br><span style="font-size:12px;color:var(--color-text-secondary)">→ Deux sous-catégories</span></div></div>
+    <div class="card"><div class="card-label"><span class="tag tag-purple">Réfléchis</span></div><div class="card-val">Produits techniques, coûteux, demandent réflexion<br><span style="font-size:12px;color:var(--color-text-secondary)">→ Produits anomaux</span></div></div>
+    <div class="card"><div class="card-label"><span class="tag tag-amber">Impulsion</span></div><div class="card-val">Achats non prévus déclenchés par une MEA, promotion, animation</div></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title"><i class="ti ti-layout-grid" aria-hidden="true"></i> Les univers produits</div>
+  <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px">
+    <span class="tag tag-teal">Loisirs & culture</span>
+    <span class="tag tag-blue">Équipement maison</span>
+    <span class="tag tag-purple">Équipement personne</span>
+    <span class="tag tag-coral">DPH</span>
+    <span class="tag tag-amber">Saisonnier</span>
+    <span class="tag tag-green">Ultra-frais</span>
+    <span class="tag tag-blue">Frais</span>
+    <span class="tag tag-teal">Épicerie sèche</span>
+    <span class="tag tag-coral">Liquides</span>
+  </div>
+  <div class="def-box" style="border-color:#1D9E75">Les produits sont implantés par <strong style="color:#085041">univers</strong> — chaque univers répond à un même besoin. Favorise le repérage client et les achats d'impulsion.</div>
+</div>
+
+<div class="section">
+  <div class="section-title"><i class="ti ti-map-2" aria-hidden="true"></i> Zones intérieures</div>
+  <div class="schema">
+    <div class="zone-chaude zone-box">
+      <div class="zt">🟢 Zone chaude</div>
+      <div class="zd">Zone avant — circulation naturelle<br>Produits anomaux (plaisir, réfléchis ou impulsion)<br>Électroménager, multimédia, bazar</div>
+    </div>
+    <div class="zone-froide zone-box">
+      <div class="zt">🟡 Zone froide</div>
+      <div class="zd">Zone arrière/fond — circulation incitée<br>Produits 1ère nécessité (corvée)<br>Épicerie, DPH, produits frais</div>
+    </div>
+  </div>
+  <div class="def-box" style="font-size:13px">La clientèle se déplace dans le sens <strong>inverse</strong> des aiguilles d'une montre. Elle tourne à <strong>droite</strong> en entrant, se rend au fond à <strong>gauche</strong> pour les achats corvée, puis se dirige vers la <strong>caisse</strong>. 70% de la surface est consacrée à la <strong>circulation</strong>, 30% à la <strong>présentation</strong> des produits.</div>
+</div>
+
+<div class="section">
+  <div class="section-title"><i class="ti ti-arrows-shuffle" aria-hidden="true"></i> Types d'implantation des rayons</div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Type</th><th>Principe</th><th>Enseignes typiques</th></tr></thead>
+      <tbody>
+        <tr><td><strong>En grille</strong></td><td>Rayons en quadrillage, logique des allées</td><td>Carrefour, Cora (GSA)</td></tr>
+        <tr><td><strong>Circulation dirigée</strong></td><td>Client contraint de passer par tous les rayons</td><td>Conforama, Jouet Club (GSS)</td></tr>
+        <tr><td><strong>Circuit libre</strong></td><td>Client circule librement</td><td>Jennifer, Armand Thiéry (prêt-à-porter) / Galeries Lafayette (grands magasins)</td></tr>
+        <tr><td><strong>En corner</strong></td><td>Espace dédié à une marque ou enseigne</td><td>Présent dans GMS, grands magasins</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div style="text-align:center;margin-top:1.5rem">
+  <button class="btn-reset" onclick="showTab('quiz',document.querySelectorAll('.tab')[1])"><i class="ti ti-help" aria-hidden="true"></i> Passer au quiz →</button>
+</div>
+
+</div>
+
+<div id="tab-quiz" class="hidden">
+  <div class="score-info" id="score-info">Score : 0 / 20</div>
+  <div class="score-bar"><div class="score-fill" id="score-fill" style="width:0%"></div></div>
+  <div id="quiz-container"></div>
+  <button class="btn-reset" onclick="resetQuiz()"><i class="ti ti-refresh" aria-hidden="true"></i> Recommencer le quiz</button>
+</div>
+
+<script>
+const questions = [
+  {q:"L'organisation de l'espace de vente vise principalement à :",opts:["Réduire les coûts de personnel","Favoriser l'attractivité, la circulation et la rentabilité","Augmenter le nombre de références en rayon","Diminuer les zones de stockage"],ans:1,expl:"Elle doit faciliter la circulation des clients, rendre l'offre lisible et contribuer à la rentabilité."},
+  {q:"Quelle est la fonction principale de l'enseigne ?",opts:["Décorer la façade du magasin","Être visible jour et nuit et représenter l'image de marque","Indiquer les horaires d'ouverture","Afficher les promotions en cours"],ans:1,expl:"L'enseigne guide les clients vers le magasin et représente l'image de la marque."},
+  {q:"Les achats corvée correspondent à :",opts:["Des achats coûteux nécessitant réflexion","Des achats déclenchés par une promotion","Des achats de produits de première nécessité","Des achats non prévus en entrant en magasin"],ans:2,expl:"Les achats corvée concernent les produits banals répondant aux besoins physiologiques."},
+  {q:"Les produits anomaux sont associés à quel type d'achat ?",opts:["Achats corvée","Achats d'impulsion","Achats réfléchis","Achats saisonniers"],ans:2,expl:"Les achats réfléchis portent sur des produits techniques, coûteux = produits anomaux."},
+  {q:"Qu'est-ce qu'un achat d'impulsion ?",opts:["Un achat planifié avant d'entrer en magasin","Un achat de produit de 1ère nécessité","Un achat non prévu, souvent déclenché par une MEA ou promotion","Un achat en ligne"],ans:2,expl:"Les achats d'impulsion sont non prévus et déclenchés par une mise en avant, animation ou promotion."},
+  {q:"Qu'est-ce qu'un univers produits ?",opts:["Un ensemble de produits d'une même marque","Un regroupement de produits répondant à un même besoin","Un linéaire organisé par prix croissants","Un rayon réservé aux promotions"],ans:1,expl:"Chaque univers regroupe des produits répondant à un même besoin (ex : univers frais, DPH...)."},
+  {q:"La zone chaude dans un magasin est :",opts:["La zone la moins fréquentée, au fond","La zone de circulation naturelle, en avant du magasin","La zone où sont stockés les surgelés","La zone des caisses"],ans:1,expl:"La zone chaude est la zone avant, de circulation naturelle, très fréquentée."},
+  {q:"Quels produits sont implantés en zone froide ?",opts:["Les produits anomaux (électroménager, bijoux)","Les produits de 1ère nécessité (achats corvée)","Les promotions du moment","Les produits saisonniers"],ans:1,expl:"La zone froide regroupe les produits de première nécessité pour obliger le client à traverser tout le magasin."},
+  {q:"Dans quel sens la clientèle se déplace-t-elle naturellement ?",opts:["Dans le sens des aiguilles d'une montre","Dans le sens inverse des aiguilles d'une montre","Toujours en ligne droite vers le fond","De droite à gauche uniquement"],ans:1,expl:"La clientèle se déplace dans le sens inverse des aiguilles d'une montre, tournant à droite en entrant."},
+  {q:"Quelle proportion de la surface est consacrée à la circulation en libre-service ?",opts:["30 %","50 %","70 %","90 %"],ans:2,expl:"70% de la surface est dédiée à la circulation, 30% à la présentation des produits."},
+  {q:"L'implantation en grille se caractérise par :",opts:["Un client contraint de suivre un parcours imposé","Des rayons disposés en quadrillage suivant la logique des allées","Un espace dédié à une seule marque","Une liberté totale de déplacement pour le client"],ans:1,expl:"L'implantation en grille forme un quadrillage de rayons suivant la logique des allées — typique des GSA."},
+  {q:"Quelle enseigne est un exemple de GSA avec implantation en grille ?",opts:["Galeries Lafayette","Conforama","Carrefour","Jennifer"],ans:2,expl:"Carrefour (et Cora) sont des GSA organisés principalement en grille."},
+  {q:"La circulation dirigée consiste à :",opts:["Laisser le client circuler librement","Contraindre le client à passer par tous les rayons","Dédier un espace à une marque","Organiser les rayons en quadrillage"],ans:1,expl:"En circulation dirigée, le parcours est imposé — le client est contraint de voir tous les rayons."},
+  {q:"Quel type d'implantation utilisent généralement les grands magasins ?",opts:["Grille","Circulation dirigée","Circuit libre","Aucune organisation particulière"],ans:2,expl:"Les grands magasins (Galeries Lafayette, Le Printemps) utilisent le circuit libre."},
+  {q:"Qu'est-ce qu'un corner ?",opts:["Un rayon de produits frais","Un espace dédié exclusivement à une marque ou enseigne","Une allée secondaire du magasin","La zone des caisses"],ans:1,expl:"Un corner est un espace du magasin exclusivement consacré à une marque ou une enseigne."},
+  {q:"Où entre naturellement le client dans un magasin ?",opts:["À gauche","Au centre","À droite","Au fond"],ans:2,expl:"Le client entre et tourne naturellement à droite (zone d'entrée), où l'on place des achats impulsifs."},
+  {q:"DPH signifie :",opts:["Droguerie, Parfumerie, Hygiène","Distribution, Promotion, Hypermarché","Département, Produits, Habillement","Délai, Prix, Hygiène"],ans:0,expl:"DPH = Droguerie, Parfumerie, Hygiène — un univers produits à part entière en GMS."},
+  {q:"Pourquoi les produits de 1ère nécessité sont-ils placés en zone froide (au fond) ?",opts:["Pour éviter qu'ils soient volés","Pour obliger le client à traverser le magasin et créer des achats d'impulsion","Parce qu'ils nécessitent une réfrigération","Pour les séparer des produits anomaux"],ans:1,expl:"En plaçant les produits indispensables au fond, le magasin pousse le client à traverser tous les rayons, créant des achats d'impulsion."},
+  {q:"Un hypermarché organise généralement ses rayons vêtements ou fruits & légumes en :",opts:["Grille stricte","Circulation dirigée","Circuit libre","Corner exclusif"],ans:2,expl:"Pour rompre la monotonie de la grille, les hypermarchés agencent certains rayons (vêtements, F&L) en circuit libre."},
+  {q:"La vitrine d'un magasin doit avant tout être :",opts:["La plus grande possible","Bien agencée, correctement éclairée et présenter l'offre de façon attractive","Sobre et sans produits exposés","Réservée aux publicités de marques"],ans:1,expl:"La vitrine est un espace de communication essentiel : agencée, éclairée, elle attire les passants et expose l'offre de manière attractive."}
+];
+
+let answered = new Array(20).fill(false);
+let score = 0;
+
+function buildQuiz(){
+  const c = document.getElementById('quiz-container');
+  c.innerHTML = '';
+  questions.forEach((q,i)=>{
+    const div = document.createElement('div');
+    div.className = 'quiz-q';
+    div.id = 'q'+i;
+    div.innerHTML = `<div class="q-num">Question ${i+1} / 20</div><div class="q-text">${q.q}</div><div class="q-opts">${q.opts.map((o,j)=>`<button class="q-opt" onclick="answer(${i},${j})">${o}</button>`).join('')}</div><div class="q-expl" id="expl${i}">${q.expl}</div>`;
+    c.appendChild(div);
+  });
+}
+
+function answer(qi,optIdx){
+  if(answered[qi]) return;
+  answered[qi] = true;
+  const q = questions[qi];
+  const opts = document.querySelectorAll(`#q${qi} .q-opt`);
+  opts.forEach((o,j)=>{
+    o.disabled = true;
+    if(j===q.ans) o.classList.add('correct');
+    else if(j===optIdx && optIdx!==q.ans) o.classList.add('wrong');
+  });
+  if(optIdx===q.ans) score++;
+  document.getElementById('expl'+qi).style.display='block';
+  updateScore();
+}
+
+function updateScore(){
+  const done = answered.filter(Boolean).length;
+  document.getElementById('score-info').textContent = `Score : ${score} / ${done} répondu${done>1?'s':''}`;
+  document.getElementById('score-fill').style.width = (score/20*100)+'%';
+}
+
+function resetQuiz(){
+  answered = new Array(20).fill(false);
+  score = 0;
+  updateScore();
+  buildQuiz();
+}
+
+function showTab(name, btn){
+  document.getElementById('tab-fiche').classList.toggle('hidden', name!=='fiche');
+  document.getElementById('tab-quiz').classList.toggle('hidden', name!=='quiz');
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  if(name==='quiz' && document.getElementById('quiz-container').innerHTML==='') buildQuiz();
+}
+
+buildQuiz();
+</script>

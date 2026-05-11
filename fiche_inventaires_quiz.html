@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Les Inventaires – Journée 6 | RNCP37099</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --card: #1c2230;
+    --border: #263040;
+    --accent: #e05c3a;
+    --accent2: #3a7bd5;
+    --accent3: #2ecc71;
+    --accent4: #e74c3c;
+    --accentv: #f39c12;
+    --text: #e6edf3;
+    --muted: #6e7e94;
+    --radius: 14px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: linear-gradient(135deg, #1a0a06 0%, #2d1208 50%, #1a0a06 100%);
+    border-bottom: 2px solid var(--accent);
+    padding: 48px 24px 36px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '📦';
+    position: absolute;
+    font-size: 220px;
+    opacity: 0.04;
+    top: -30px; right: -10px;
+    pointer-events: none;
+  }
+  .badge {
+    display: inline-block;
+    background: rgba(224,92,58,0.14);
+    color: var(--accent);
+    border: 1px solid rgba(224,92,58,0.4);
+    border-radius: 99px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 4px 14px;
+    margin-bottom: 14px;
+  }
+  header h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(28px, 6vw, 52px);
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -1px;
+  }
+  header h1 span { color: var(--accent); }
+  header p { color: var(--muted); margin-top: 10px; font-size: 15px; }
+
+  /* ── TABS ── */
+  .tabs { display: flex; justify-content: center; gap: 8px; padding: 24px 16px 0; flex-wrap: wrap; }
+  .tab-btn {
+    background: var(--surface); border: 1.5px solid var(--border); color: var(--muted);
+    border-radius: 99px; padding: 10px 22px; font-family: 'DM Sans', sans-serif;
+    font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s;
+  }
+  .tab-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .tab-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+  /* ── MAIN ── */
+  main { max-width: 940px; margin: 0 auto; padding: 32px 16px 80px; }
+  .section { display: none; animation: fadeIn 0.35s ease; }
+  .section.active { display: block; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+
+  /* ── NOTION HEADER ── */
+  .notion-header { display: flex; align-items: center; gap: 14px; margin: 38px 0 18px; }
+  .notion-icon { width: 46px; height: 46px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+  .notion-header h2 { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 700; color: var(--text); }
+
+  /* ── CARDS ── */
+  .card { background: var(--card); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 22px 24px; margin-bottom: 14px; transition: border-color 0.2s; }
+  .card:hover { border-color: #334155; }
+  .card-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14.5px; color: var(--accent); margin-bottom: 10px; letter-spacing: 0.3px; }
+  .card p, .card li { font-size: 14.5px; color: #b0bec5; }
+  .card ul { padding-left: 18px; }
+  .card li { margin-bottom: 6px; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 580px) { .two-col { grid-template-columns: 1fr; } }
+  .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+  @media (max-width: 700px) { .three-col { grid-template-columns: 1fr; } }
+
+  .card.c-red   { border-left: 3px solid var(--accent); }
+  .card.c-blue  { border-left: 3px solid var(--accent2); }
+  .card.c-green { border-left: 3px solid var(--accent3); }
+  .card.c-orange{ border-left: 3px solid var(--accentv); }
+  .card-title.blue  { color: var(--accent2); }
+  .card-title.green { color: var(--accent3); }
+  .card-title.orange{ color: var(--accentv); }
+  .card-title.red   { color: var(--accent); }
+
+  /* formula */
+  .formula-box {
+    background: rgba(224,92,58,0.08); border: 1.5px solid rgba(224,92,58,0.25);
+    border-radius: 10px; padding: 14px 18px; font-family: 'DM Mono', monospace;
+    font-size: 14px; color: #f0a080; margin: 12px 0; text-align: center; line-height: 2;
+  }
+  .formula-box.blue { background: rgba(58,123,213,0.08); border-color: rgba(58,123,213,0.25); color: #90b8f8; }
+  .formula-box.green { background: rgba(46,204,113,0.08); border-color: rgba(46,204,113,0.25); color: #7de8a8; }
+
+  /* icon list */
+  .icon-list { list-style: none; padding: 0; }
+  .icon-list li { display: flex; gap: 10px; align-items: flex-start; padding: 7px 0; border-bottom: 1px solid var(--border); font-size: 14px; color: #b0bec5; }
+  .icon-list li:last-child { border-bottom: none; }
+  .icon-list .ico { flex-shrink: 0; font-size: 15px; margin-top: 3px; }
+
+  /* type cards (inventaires) */
+  .inv-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 6px; }
+  @media (max-width: 650px) { .inv-grid { grid-template-columns: 1fr; } }
+  .inv-card {
+    background: var(--surface); border: 1.5px solid var(--border);
+    border-radius: 12px; padding: 18px 16px;
+  }
+  .inv-card .inv-title { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
+  .inv-card .inv-sub { font-size: 11px; color: var(--muted); font-style: italic; margin-bottom: 10px; }
+  .inv-card .avantage { color: #7de8a8; font-size: 12.5px; margin-bottom: 4px; }
+  .inv-card .inconvenient { color: #f0a080; font-size: 12.5px; margin-bottom: 4px; }
+  .inv-card .label { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin: 8px 0 4px; }
+  .inv-card .label.g { color: var(--accent3); }
+  .inv-card .label.r { color: var(--accent); }
+
+  /* steps */
+  .steps-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 6px; }
+  @media (max-width: 650px) { .steps-row { grid-template-columns: 1fr; } }
+  .step-card {
+    background: var(--surface); border: 1.5px solid var(--border);
+    border-radius: 12px; padding: 18px 16px; position: relative;
+  }
+  .step-num {
+    width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center;
+    justify-content: center; font-family: 'Syne', sans-serif; font-weight: 800; font-size: 15px;
+    color: #fff; margin-bottom: 10px;
+  }
+  .step-card h4 { font-family: 'Syne', sans-serif; font-size: 13.5px; font-weight: 700; margin-bottom: 8px; }
+  .step-card ul { padding-left: 14px; }
+  .step-card li { font-size: 12.5px; color: #b0bec5; margin-bottom: 4px; }
+
+  /* recap table */
+  .recap-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 12px; }
+  .recap-table th { background: rgba(224,92,58,0.1); color: var(--accent); padding: 9px 12px; text-align: left; font-weight: 600; border-bottom: 1px solid var(--border); }
+  .recap-table td { padding: 9px 12px; border-bottom: 1px solid var(--border); color: #b0bec5; vertical-align: top; }
+  .recap-table tr:last-child td { border-bottom: none; }
+  .recap-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+  .tip-box { background: rgba(46,204,113,0.07); border-left: 3px solid var(--accent3); border-radius: 0 10px 10px 0; padding: 12px 16px; margin-top: 14px; font-size: 14px; color: #7de8a8; }
+  .tip-box strong { color: var(--accent3); }
+  .warn-box { background: rgba(224,92,58,0.07); border-left: 3px solid var(--accent); border-radius: 0 10px 10px 0; padding: 12px 16px; margin-top: 14px; font-size: 14px; color: #f0a080; }
+  .chip { display: inline-block; border-radius: 6px; padding: 2px 9px; font-family: 'DM Mono', monospace; font-size: 12.5px; font-weight: 500; }
+  .chip.green { background: rgba(46,204,113,0.12); color: #7de8a8; }
+  .chip.red   { background: rgba(224,92,58,0.12); color: #f0a080; }
+  .chip.blue  { background: rgba(58,123,213,0.12); color: #90b8f8; }
+
+  /* memo */
+  .memo-card { background: rgba(224,92,58,0.05); border: 1.5px solid rgba(224,92,58,0.22); border-radius: var(--radius); padding: 22px 24px; margin-top: 32px; }
+
+  /* ── QUIZ ── */
+  .quiz-header { text-align: center; padding: 24px 0 32px; }
+  .quiz-header h2 { font-family: 'Syne', sans-serif; font-size: 26px; font-weight: 800; margin-bottom: 8px; }
+  .quiz-header p { color: var(--muted); font-size: 14px; }
+  .progress-bar-wrap { background: var(--border); border-radius: 99px; height: 6px; margin: 0 0 32px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accentv)); border-radius: 99px; transition: width 0.4s ease; }
+  .q-counter { text-align: right; font-size: 13px; color: var(--muted); margin-bottom: 6px; }
+
+  .question-card { background: var(--card); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 28px 26px; margin-bottom: 20px; }
+  .question-card .q-num { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+  .question-card .q-text { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 700; line-height: 1.4; margin-bottom: 20px; color: #f0f4ff; }
+
+  .options { display: flex; flex-direction: column; gap: 10px; }
+  .opt-btn {
+    background: var(--surface); border: 1.5px solid var(--border); border-radius: 10px;
+    padding: 13px 18px; text-align: left; font-family: 'DM Sans', sans-serif;
+    font-size: 14.5px; color: var(--text); cursor: pointer; transition: all 0.18s;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .opt-btn:hover:not(:disabled) { border-color: var(--accent); background: rgba(224,92,58,0.07); color: #fff; }
+  .opt-btn .opt-letter {
+    width: 28px; height: 28px; border-radius: 8px; background: var(--border);
+    display: flex; align-items: center; justify-content: center; font-family: 'DM Mono', monospace;
+    font-weight: 500; font-size: 13px; flex-shrink: 0; transition: background 0.18s;
+  }
+  .opt-btn.correct { border-color: var(--accent3); background: rgba(46,204,113,0.08); color: #7de8a8; }
+  .opt-btn.correct .opt-letter { background: var(--accent3); color: #0d1117; }
+  .opt-btn.wrong { border-color: var(--accent4); background: rgba(231,76,60,0.08); color: #f1948a; }
+  .opt-btn.wrong .opt-letter { background: var(--accent4); color: #fff; }
+
+  .feedback-box { margin-top: 16px; padding: 14px 18px; border-radius: 10px; font-size: 14px; display: none; }
+  .feedback-box.show { display: block; }
+  .feedback-box.ok { background: rgba(46,204,113,0.08); color: #7de8a8; border: 1px solid rgba(46,204,113,0.25); }
+  .feedback-box.ko { background: rgba(231,76,60,0.07); color: #f1948a; border: 1px solid rgba(231,76,60,0.22); }
+
+  .quiz-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; gap: 12px; flex-wrap: wrap; }
+  .btn-primary { background: var(--accent); color: #fff; border: none; border-radius: 10px; padding: 12px 28px; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 15px; cursor: pointer; transition: opacity 0.2s, transform 0.1s; }
+  .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+  .btn-primary:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
+  .btn-secondary { background: transparent; color: var(--muted); border: 1.5px solid var(--border); border-radius: 10px; padding: 11px 22px; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.18s; }
+  .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* results */
+  .results-screen { text-align: center; padding: 40px 0; display: none; }
+  .results-screen.show { display: block; }
+  .score-ring { width: 150px; height: 150px; border-radius: 50%; margin: 0 auto 24px; display: flex; align-items: center; justify-content: center; flex-direction: column; border: 4px solid var(--accent); background: rgba(224,92,58,0.06); }
+  .score-ring .score-num { font-family: 'Syne', sans-serif; font-size: 40px; font-weight: 800; color: var(--accent); line-height: 1; }
+  .score-ring .score-label { font-size: 13px; color: var(--muted); margin-top: 4px; }
+  .results-screen h2 { font-family: 'Syne', sans-serif; font-size: 24px; font-weight: 800; margin-bottom: 10px; }
+  .results-screen p { color: var(--muted); font-size: 15px; margin-bottom: 28px; }
+  .result-details { list-style: none; text-align: left; max-width: 520px; margin: 0 auto 32px; }
+  .result-details li { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13.5px; color: #b0bec5; }
+  .result-details li:last-child { border-bottom: none; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="badge">RNCP 37099 · Journée 6</div>
+  <h1>Les <span>Inventaires</span></h1>
+  <p>Fiche de révision + Quiz interactif · Commerce &amp; Vente</p>
+</header>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="showTab('fiche')">📋 Fiche de révision</button>
+  <button class="tab-btn" onclick="showTab('quiz')">🎯 Quiz (20 questions)</button>
+</div>
+
+<main>
+
+<!-- ══════════ FICHE ══════════ -->
+<div class="section active" id="fiche">
+
+  <!-- N1 : Définition & objectifs -->
+  <div class="notion-header">
+    <div class="notion-icon" style="background:rgba(224,92,58,0.14);">📖</div>
+    <h2>Notion 1 — Définition & Objectifs</h2>
+  </div>
+  <div class="card c-red">
+    <div class="card-title">Définition</div>
+    <p>L'inventaire est le <strong>décompte manuel des quantités de marchandises stockées</strong>. Il consiste à déterminer la <strong>quantité et la valeur</strong> des marchandises présentes <strong>en magasin ET en réserve</strong>.</p>
+  </div>
+  <div class="card">
+    <div class="card-title">3 Objectifs clés</div>
+    <ul class="icon-list">
+      <li><span class="ico">📊</span>Connaître la <strong>valeur réelle du stock</strong> à un instant précis</li>
+      <li><span class="ico">🔄</span>Corriger les <strong>différences entre stock réel et stock théorique</strong></li>
+      <li><span class="ico">🔍</span>Calculer la <strong>démarque inconnue</strong></li>
+    </ul>
+  </div>
+
+  <!-- N2 : Les 3 types -->
+  <div class="notion-header">
+    <div class="notion-icon" style="background:rgba(58,123,213,0.14);">🗂️</div>
+    <h2>Notion 2 — Les 3 Types d'Inventaire</h2>
+  </div>
+  <div class="inv-grid">
+    <div class="inv-card" style="border-top:3px solid var(--accent);">
+      <div class="inv-title" style="color:var(--accent);">📅 Annuel</div>
+      <div class="inv-sub">Obligation légale — fin d'exercice comptable</div>
+      <div class="label g">✅ Avantages</div>
+      <div class="avantage">• Vision complète de l'ensemble des marchandises</div>
+      <div class="avantage">• Permet de comparer la démarque d'une année à l'autre</div>
+      <div class="label r">⚠️ Inconvénients</div>
+      <div class="inconvenient">• Charge de travail très importante</div>
+      <div class="inconvenient">• Nécessite souvent du personnel intérimaire</div>
+      <div class="inconvenient">• Peut nécessiter une fermeture partielle du magasin</div>
+    </div>
+    <div class="inv-card" style="border-top:3px solid var(--accent2);">
+      <div class="inv-title" style="color:var(--accent2);">♾️ Permanent</div>
+      <div class="inv-sub">Ou inventaire perpétuel — mis à jour en temps réel</div>
+      <div class="label g">✅ Avantages</div>
+      <div class="avantage">• Évite les ruptures de stock</div>
+      <div class="avantage">• Vision globale et instantanée du stock</div>
+      <div class="label r">⚠️ Inconvénients</div>
+      <div class="inconvenient">• Coûts d'installation élevés</div>
+      <div class="inconvenient">• Nécessite nouveaux équipements + logiciel</div>
+    </div>
+    <div class="inv-card" style="border-top:3px solid var(--accent3);">
+      <div class="inv-title" style="color:var(--accent3);">🔁 Tournant</div>
+      <div class="inv-sub">Ou inventaire cyclique — comptages réguliers par groupes</div>
+      <div class="label g">✅ Avantages</div>
+      <div class="avantage">• Réduit le risque de rupture</div>
+      <div class="avantage">• Meilleur suivi des références</div>
+      <div class="avantage">• Facilite la détection d'erreurs</div>
+      <div class="label r">⚠️ Inconvénients</div>
+      <div class="inconvenient">• Exige assiduité dans les cycles</div>
+      <div class="inconvenient">• Nécessite une bonne connaissance des stocks</div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:14px;">
+    <div class="card-title orange">Classification ABC pour l'inventaire tournant</div>
+    <table class="recap-table">
+      <tr><th>Classe</th><th>Importance</th><th>Fréquence de comptage</th></tr>
+      <tr><td><span class="chip red">Classe A</span></td><td>Articles à forte valeur / très vendus</td><td><strong>12 rotations / an</strong> (mensuel)</td></tr>
+      <tr><td><span class="chip blue">Classe B</span></td><td>Articles de valeur / rotation moyenne</td><td><strong>6 rotations / an</strong> (bimestriel)</td></tr>
+      <tr><td><span class="chip green">Classe C</span></td><td>Articles peu coûteux / faible rotation</td><td><strong>1 rotation / an</strong></td></tr>
+    </table>
+  </div>
+
+  <!-- N3 : La RFID -->
+  <div class="notion-header">
+    <div class="notion-icon" style="background:rgba(243,156,18,0.14);">📡</div>
+    <h2>Notion 3 — La RFID (technologie d'inventaire)</h2>
+  </div>
+  <div class="card c-orange">
+    <div class="card-title orange">Qu'est-ce que la RFID ?</div>
+    <p>Système d'<strong>identification par radiofréquence</strong> qui permet d'écrire, stocker et lire des informations sur des <strong>étiquettes électroniques</strong> (puce + antenne) intégrées aux produits. Contrairement au code-barres, <strong>pas besoin de visibilité directe</strong>.</p>
+    <div class="formula-box" style="background:rgba(243,156,18,0.08);border-color:rgba(243,156,18,0.25);color:#f9d06a;margin-top:14px;">
+      RFID = réduction des temps d'inventaire de 80 % → économies de coûts
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">Avantages de la RFID</div>
+    <div class="two-col" style="margin-top:6px;">
+      <ul class="icon-list">
+        <li><span class="ico">📡</span>Identification <strong>sans contact</strong></li>
+        <li><span class="ico">👁️‍🗨️</span>Pas besoin de ligne de vue</li>
+        <li><span class="ico">📦</span>Plusieurs étiquettes lues simultanément</li>
+        <li><span class="ico">🔑</span>Chaque étiquette est <strong>unique</strong></li>
+      </ul>
+      <ul class="icon-list">
+        <li><span class="ico">✏️</span>Données modifiables</li>
+        <li><span class="ico">💾</span>Grande capacité de stockage</li>
+        <li><span class="ico">📋</span>Peut enregistrer plusieurs informations</li>
+        <li><span class="ico">⚙️</span>Programmable pour des tâches spécifiques</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- N4 : Mise en place — 3 étapes -->
+  <div class="notion-header">
+    <div class="notion-icon" style="background:rgba(46,204,113,0.14);">🗓️</div>
+    <h2>Notion 4 — Les 3 Étapes de l'Inventaire</h2>
+  </div>
+  <div class="steps-row">
+    <div class="step-card">
+      <div class="step-num" style="background:var(--accent);">1</div>
+      <h4 style="color:var(--accent);">AVANT — Préparation</h4>
+      <ul>
+        <li>Fixer date et horaire</li>
+        <li>Recenser/embaucher le personnel</li>
+        <li>Former les équipes</li>
+        <li>Préparer le matériel (balances, stylos, feuilles, calculatrices, terminaux code-barres)</li>
+        <li>Ranger magasin et réserve</li>
+        <li>Diviser en zones balisées</li>
+        <li>Établir les zones de comptage</li>
+        <li>Arrêter les mouvements de stock</li>
+      </ul>
+    </div>
+    <div class="step-card">
+      <div class="step-num" style="background:var(--accent2);">2</div>
+      <h4 style="color:var(--accent2);">PENDANT — Mise en œuvre</h4>
+      <ul>
+        <li>Donner les procédures aux équipes</li>
+        <li>Déterminer un responsable par zone</li>
+        <li>Compter <strong>de gauche à droite, de bas en haut</strong></li>
+        <li>Remplir les documents de comptage (manuel)</li>
+        <li>Scanner les codes-barres (informatisé)</li>
+        <li>Superviser le travail</li>
+        <li>Réaliser le comptage puis le contrôle</li>
+      </ul>
+    </div>
+    <div class="step-card">
+      <div class="step-num" style="background:var(--accent3);">3</div>
+      <h4 style="color:var(--accent3);">APRÈS — Clôture</h4>
+      <ul>
+        <li>Rassembler les feuilles de comptage</li>
+        <li>Rassembler les chiffres physiques</li>
+        <li>Rapprocher stock physique et stock théorique</li>
+        <li>Enregistrer les écarts d'inventaire</li>
+        <li>Transférer les pièces manquantes</li>
+        <li>Élaborer les documents comptables</li>
+        <li>Déterminer les indicateurs de performance</li>
+      </ul>
+    </div>
+  </div>
+  <div class="warn-box">
+    <strong>⚠️ ATTENTION :</strong> Il ne faut <strong>pas vider les rayons</strong> avant l'inventaire pour aller plus vite ! Le faible gain de temps ne compense pas la perte générée par des clients insatisfaits face à des rayons vides.
+  </div>
+
+  <!-- N5 : Bonnes pratiques en réserve -->
+  <div class="notion-header">
+    <div class="notion-icon" style="background:rgba(58,123,213,0.14);">🏪</div>
+    <h2>Notion 5 — Bonnes Pratiques de Préparation</h2>
+  </div>
+  <div class="two-col">
+    <div class="card c-blue">
+      <div class="card-title blue">Semaines avant — En réserve</div>
+      <ul class="icon-list">
+        <li><span class="ico">📁</span><strong>REGROUPER</strong> les articles par famille, sous-famille, référence</li>
+        <li><span class="ico">↩️</span><strong>RETOURNER</strong> les emballages consignés</li>
+        <li><span class="ico">↩️</span><strong>RETOURNER</strong> les marchandises à condition ou en consignation</li>
+        <li><span class="ico">💰</span><strong>VENDRE</strong> les déchets négociables, jeter les autres</li>
+        <li><span class="ico">🚚</span><strong>LIVRER</strong> les articles payés par les clients</li>
+      </ul>
+    </div>
+    <div class="card c-blue">
+      <div class="card-title blue">La veille — Magasin & Réserve</div>
+      <ul class="icon-list">
+        <li><span class="ico">🧹</span><strong>DÉGAGER</strong> les réceptions et chaînes de marque</li>
+        <li><span class="ico">📥</span><strong>RAMENER</strong> le maximum en magasin</li>
+        <li><span class="ico">📚</span><strong>RANGEMENT</strong> en piles identiques (par 5 ou 10)</li>
+        <li><span class="ico">❌</span><strong>ÉCARTER</strong> les articles n'appartenant pas au magasin</li>
+        <li><span class="ico">🚪</span><strong>FERMER</strong> les communications réserve/magasin</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- N6 : Traitement des écarts -->
+  <div class="notion-header">
+    <div class="notion-icon" style="background:rgba(224,92,58,0.14);">📐</div>
+    <h2>Notion 6 — Traitement des Écarts d'Inventaire</h2>
+  </div>
+  <div class="card c-red">
+    <div class="card-title">Formule de l'écart</div>
+    <div class="formula-box">Écart = Stock Physique (réel) − Stock Théorique</div>
+    <div class="two-col" style="margin-top:12px;">
+      <div style="background:rgba(46,204,113,0.07);border:1px solid rgba(46,204,113,0.2);border-radius:10px;padding:12px;">
+        <p style="color:#7de8a8;font-weight:700;font-size:13px;margin-bottom:6px;">✅ Écart POSITIF → Surmarque</p>
+        <p style="font-size:13px;color:#b0bec5;">Stock réel > Stock théorique<br>Causes : erreur de saisie, réception non enregistrée, erreur de préparation</p>
+      </div>
+      <div style="background:rgba(224,92,58,0.07);border:1px solid rgba(224,92,58,0.2);border-radius:10px;padding:12px;">
+        <p style="color:#f0a080;font-weight:700;font-size:13px;margin-bottom:6px;">❌ Écart NÉGATIF → Démarque</p>
+        <p style="font-size:13px;color:#b0bec5;">Stock réel &lt; Stock théorique<br>Causes : vol, problème de conservation, mauvaise rotation, perte</p>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">Analyse des écarts — causes et solutions</div>
+    <table class="recap-table">
+      <tr><th>Type d'écart</th><th>Causes possibles</th><th>Solutions envisageables</th></tr>
+      <tr><td><span class="chip green">+ Positif</span></td><td>Erreur de saisie, réception non enregistrée informatiquement, erreur lors d'une préparation</td><td>Contrôle des saisies par l'opérateur ou une tierce personne. Procédure qualité avant expédition.</td></tr>
+      <tr><td><span class="chip red">− Négatif</span></td><td>Vol, problème de conservation, erreur de saisie lors d'une sortie, mauvaise rotation des stocks, perte/produit ouvert</td><td>Système de surveillance, registre des produits abîmés/périmés, augmenter les inventaires tournants, insister sur les DLC.</td></tr>
+    </table>
+    <div class="tip-box" style="margin-top:14px;"><strong>💡 Règle d'or :</strong> Un écart = une enquête ! Tout écart positif ou négatif doit être analysé, ses causes identifiées et des actions correctives mises en place.</div>
+  </div>
+
+  <!-- MÉMO -->
+  <div class="memo-card">
+    <div class="card-title" style="font-size:16px;margin-bottom:14px;">⭐ MÉMO RÉCAPITULATIF — Les Inventaires en un coup d'œil</div>
+    <table class="recap-table">
+      <tr><th>Notion</th><th>Clé à retenir</th></tr>
+      <tr><td>Définition</td><td>Décompte manuel des quantités + valeur en magasin ET réserve</td></tr>
+      <tr><td>Inventaire annuel</td><td>Obligation légale, fin d'exercice, vision complète mais lourde</td></tr>
+      <tr><td>Inventaire permanent</td><td>Temps réel, chaque entrée/sortie enregistrée (coûteux à installer)</td></tr>
+      <tr><td>Inventaire tournant</td><td>Comptages cycliques par groupes, priorisés selon valeur/rotation/DLC</td></tr>
+      <tr><td>Classification ABC</td><td>A = 12x/an · B = 6x/an · C = 1x/an</td></tr>
+      <tr><td>RFID</td><td>Identification sans contact, −80% temps d'inventaire</td></tr>
+      <tr><td>Étape 1 — Avant</td><td>Planifier, former, préparer matériel, ranger, baliser les zones</td></tr>
+      <tr><td>Étape 2 — Pendant</td><td>Compter de gauche à droite, bas en haut, superviser</td></tr>
+      <tr><td>Étape 3 — Après</td><td>Rapprocher stocks, enregistrer écarts, documents comptables</td></tr>
+      <tr><td>Formule écart</td><td>Écart = Stock Physique − Stock Théorique</td></tr>
+      <tr><td>Écart positif</td><td>Surmarque → erreur de saisie / réception non enregistrée</td></tr>
+      <tr><td>Écart négatif</td><td>Démarque → vol, perte, mauvaise conservation</td></tr>
+    </table>
+  </div>
+
+</div><!-- /fiche -->
+
+
+<!-- ══════════ QUIZ ══════════ -->
+<div class="section" id="quiz">
+  <div class="quiz-header">
+    <h2>🎯 Quiz — Les Inventaires</h2>
+    <p>20 questions pour valider vos acquis · RNCP 37099 Journée 6</p>
+  </div>
+  <div id="quiz-area">
+    <div class="q-counter" id="q-counter">Question 1 / 20</div>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progress-bar" style="width:5%"></div></div>
+    <div id="question-container"></div>
+    <div class="quiz-nav">
+      <span id="score-live" style="font-size:14px;color:var(--muted);">Score : 0 / 0</span>
+      <button class="btn-primary" id="btn-next" onclick="nextQuestion()" disabled>Question suivante →</button>
+    </div>
+  </div>
+  <div class="results-screen" id="results-screen">
+    <div class="score-ring"><div class="score-num" id="final-score">0</div><div class="score-label">/ 20</div></div>
+    <h2 id="results-title"></h2>
+    <p id="results-msg"></p>
+    <ul class="result-details" id="result-details"></ul>
+    <button class="btn-primary" onclick="restartQuiz()">🔄 Recommencer le quiz</button>
+    &nbsp;
+    <button class="btn-secondary" onclick="showTab('fiche')">📋 Revoir la fiche</button>
+  </div>
+</div>
+
+</main>
+
+<script>
+function showTab(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.tab-btn')[id === 'fiche' ? 0 : 1].classList.add('active');
+  if (id === 'quiz') initQuiz();
+}
+
+const questions = [
+  {
+    q: "Quelle est la définition de l'inventaire ?",
+    opts: [
+      "Le calcul automatique du chiffre d'affaires mensuel",
+      "Le décompte manuel des quantités de marchandises stockées en magasin et en réserve",
+      "Le calcul des commandes à passer aux fournisseurs",
+      "La liste des produits en rupture de stock"
+    ],
+    a: 1,
+    exp: "L'inventaire est le décompte manuel des quantités de marchandises stockées. Il consiste à déterminer la quantité ET la valeur des marchandises en magasin ET en réserve."
+  },
+  {
+    q: "Parmi ces objectifs, lequel N'EST PAS un objectif de l'inventaire ?",
+    opts: [
+      "Connaître la valeur réelle du stock à un instant précis",
+      "Calculer la démarque inconnue",
+      "Augmenter le chiffre d'affaires du magasin",
+      "Corriger les différences entre stock réel et stock théorique"
+    ],
+    a: 2,
+    exp: "L'inventaire a 3 objectifs : connaître la valeur réelle du stock, corriger les différences de stock, et calculer la démarque inconnue. Augmenter le CA n'est pas un objectif direct de l'inventaire."
+  },
+  {
+    q: "Quel type d'inventaire est une obligation légale ?",
+    opts: ["L'inventaire tournant", "L'inventaire permanent", "L'inventaire annuel", "L'inventaire cyclique"],
+    a: 2,
+    exp: "L'inventaire annuel est une obligation légale. Il est réclamé par les contrôleurs financiers lors du calcul des soldes de gestion, à la fin de chaque exercice comptable."
+  },
+  {
+    q: "L'inventaire permanent est aussi appelé :",
+    opts: ["Inventaire cyclique", "Inventaire tournant", "Inventaire annuel", "Inventaire perpétuel"],
+    a: 3,
+    exp: "L'inventaire permanent est aussi appelé inventaire perpétuel. Il est constamment mis à jour en enregistrant chaque entrée et sortie d'articles."
+  },
+  {
+    q: "Quel est le principal inconvénient de l'inventaire permanent ?",
+    opts: [
+      "Il ne permet pas d'éviter les ruptures de stock",
+      "Il nécessite une fermeture partielle du magasin",
+      "Les coûts d'installation élevés (équipements + logiciel)",
+      "Il ne donne pas une vision en temps réel"
+    ],
+    a: 2,
+    exp: "Le principal inconvénient de l'inventaire permanent sont les coûts d'installation : la plupart des systèmes nécessitent l'achat de nouveaux équipements et d'un logiciel d'inventaire."
+  },
+  {
+    q: "L'inventaire tournant priorise le comptage de certaines références selon :",
+    opts: [
+      "L'ordre alphabétique des produits",
+      "Leur valeur, leur rotation ou leur date de péremption",
+      "La couleur de l'emballage",
+      "L'ordre d'arrivée en magasin"
+    ],
+    a: 1,
+    exp: "L'inventaire tournant priorise le comptage en fonction de la valeur des articles, de leur rotation ou de leur date de péremption (DLC). C'est la classification ABC qui guide ces fréquences."
+  },
+  {
+    q: "Avec la classification ABC, quelle est la fréquence de comptage pour les articles de classe A ?",
+    opts: ["1 rotation par an", "6 rotations par an", "12 rotations par an", "24 rotations par an"],
+    a: 2,
+    exp: "Classe A = 12 rotations/an (mensuel) pour les articles les plus importants. Classe B = 6x/an. Classe C = 1x/an."
+  },
+  {
+    q: "Que signifie RFID ?",
+    opts: [
+      "Répertoire de Fiches d'Inventaire Différé",
+      "Relevé de Fréquence et Identification Digitale",
+      "Radio-Frequency IDentification (Identification par radiofréquence)",
+      "Registre de Formation et d'Inventaire Détaillé"
+    ],
+    a: 2,
+    exp: "RFID = Radio-Frequency IDentification. C'est un système d'identification par radiofréquence utilisant des étiquettes électroniques (puce + antenne) intégrées aux produits."
+  },
+  {
+    q: "Quelle est la principale différence entre la RFID et le code à barres ?",
+    opts: [
+      "La RFID est moins chère que le code à barres",
+      "La RFID ne permet pas de stocker des données",
+      "La RFID fonctionne sans ligne de vue directe entre l'étiquette et le lecteur",
+      "Le code à barres peut être lu à plus grande distance"
+    ],
+    a: 2,
+    exp: "La RFID permet une communication sans visibilité directe, à distance ou à l'intérieur de matériaux opaques. Le code à barres nécessite une ligne de vue directe entre le lecteur et le code."
+  },
+  {
+    q: "En utilisant la RFID, de combien estime-t-on la réduction des temps d'inventaire ?",
+    opts: ["20 %", "50 %", "80 %", "95 %"],
+    a: 2,
+    exp: "On estime qu'en utilisant la technologie RFID, la réduction des temps d'inventaire est de 80 %, permettant des économies de coûts significatives."
+  },
+  {
+    q: "Quelle est la PREMIÈRE étape d'un inventaire ?",
+    opts: [
+      "Compter les produits et scanner les codes-barres",
+      "Rapprocher le stock physique du stock théorique",
+      "La préparation : planifier, former, préparer matériel et zones",
+      "Élaborer les documents comptables"
+    ],
+    a: 2,
+    exp: "La 1ère étape (AVANT) consiste à préparer : fixer la date, recenser et former le personnel, préparer le matériel, ranger le magasin/réserve, diviser en zones balisées."
+  },
+  {
+    q: "Pendant le comptage, dans quel sens doit-on compter les produits dans le rayon ?",
+    opts: [
+      "De droite à gauche, de haut en bas",
+      "De gauche à droite, de bas en haut",
+      "Dans l'ordre des codes-barres",
+      "En commençant par les produits les plus chers"
+    ],
+    a: 1,
+    exp: "La procédure de comptage impose de compter de gauche à droite, de bas en haut. C'est une règle d'organisation pour ne rien oublier et éviter les doublons."
+  },
+  {
+    q: "Lors de la clôture de l'inventaire (étape 3 — APRÈS), quelle action réalise-t-on ?",
+    opts: [
+      "On distribue les zones de comptage au personnel",
+      "On prépare le matériel nécessaire (balances, stylos)",
+      "On rapproche le stock physique du stock théorique et on élabore les documents comptables",
+      "On arrête les mouvements de stock"
+    ],
+    a: 2,
+    exp: "Après l'inventaire : on rassemble les chiffres, on rapproche stock physique et théorique, on enregistre les écarts, on transfère les pièces manquantes, on élabore les documents comptables."
+  },
+  {
+    q: "Quelle est la formule pour calculer l'écart lors de l'inventaire ?",
+    opts: [
+      "Écart = Stock Théorique − Stock Physique",
+      "Écart = Stock Physique + Stock Théorique",
+      "Écart = Stock Physique − Stock Théorique",
+      "Écart = Stock Théorique × 100"
+    ],
+    a: 2,
+    exp: "Écart = Stock Physique (réel) − Stock Théorique. Un résultat négatif = démarque (manque). Un résultat positif = surmarque (excédent)."
+  },
+  {
+    q: "Un stock théorique est de 25 et le stock physique compté est de 20. Quel est l'écart et son interprétation ?",
+    opts: [
+      "+5, c'est une surmarque",
+      "−5, c'est une démarque (perte ou vol)",
+      "+45, c'est une surmarque",
+      "0, il n'y a pas d'écart"
+    ],
+    a: 1,
+    exp: "Écart = 20 − 25 = −5. L'écart est négatif : il manque 5 articles. C'est une démarque (perte, vol, mauvaise conservation, etc.)."
+  },
+  {
+    q: "Qu'est-ce qu'un écart POSITIF à l'inventaire peut indiquer comme cause probable ?",
+    opts: [
+      "Un vol de marchandises",
+      "Un problème de conservation des produits",
+      "Une réception non enregistrée informatiquement ou une erreur de saisie",
+      "Une mauvaise rotation des stocks"
+    ],
+    a: 2,
+    exp: "Un écart positif (surmarque) est souvent dû à une réception non enregistrée informatiquement ou une erreur de saisie lors d'une préparation."
+  },
+  {
+    q: "Que doit-on faire pour préparer la réserve dans les semaines qui précèdent l'inventaire ?",
+    opts: [
+      "Vider la réserve pour avoir moins d'articles à compter",
+      "Regrouper les articles par famille et retourner les emballages consignés",
+      "Fermer la réserve au personnel",
+      "Commander de nouveaux produits pour remplir les rayons"
+    ],
+    a: 1,
+    exp: "Dans les semaines qui précèdent : REGROUPER par famille/référence, RETOURNER les emballages consignés et les marchandises en consignation, VENDRE les déchets, LIVRER les articles payés."
+  },
+  {
+    q: "Quelle est la bonne pratique concernant les rayons PENDANT la période d'inventaire ?",
+    opts: [
+      "Vider les rayons pour compter plus vite",
+      "Ne pas mettre de nouveaux produits pour simplifier le comptage",
+      "Maintenir les rayons pleins : le gain de temps ne compense pas la perte liée aux clients insatisfaits",
+      "Fermer les rayons concernés aux clients"
+    ],
+    a: 2,
+    exp: "Il faut éviter les ruptures et les rayons vides ! Le faible gain de temps résultant d'avoir moins d'articles à compter ne compense pas la perte générée par des clients insatisfaits."
+  },
+  {
+    q: "Un avantage de l'inventaire ANNUEL est :",
+    opts: [
+      "Il ne nécessite aucune ressource humaine supplémentaire",
+      "Il permet de comparer l'évolution de la démarque inconnue par rapport aux années précédentes",
+      "Il peut se faire sans arrêter les mouvements de stock",
+      "Il évite complètement les ruptures de stock"
+    ],
+    a: 1,
+    exp: "L'inventaire annuel permet de comparer les évolutions de la démarque inconnue par rapport aux années précédentes et de constater l'efficacité des plans d'action mis en place."
+  },
+  {
+    q: "Quel matériel est prévu pour un inventaire manuel (non informatisé) ?",
+    opts: [
+      "Uniquement des terminaux RFID et des smartphones",
+      "Balances, stylos, feuilles numérotées et calculatrices",
+      "Des caisses enregistreuses supplémentaires",
+      "Des étiquettes code-barres et des imprimantes"
+    ],
+    a: 1,
+    exp: "Pour un inventaire manuel, le matériel nécessaire comprend : balances, stylos, feuilles avec numéro d'ordre et calculatrices. Si informatisé, on peut aussi utiliser des terminaux portables de saisie code-barres."
+  }
+];
+
+let current = 0, score = 0, answered = false, userAnswers = [], initialized = false;
+
+function initQuiz() {
+  if (initialized) return;
+  initialized = true;
+  current = 0; score = 0; answered = false; userAnswers = [];
+  document.getElementById('quiz-area').style.display = 'block';
+  document.getElementById('results-screen').classList.remove('show');
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = questions[current];
+  const letters = ['A','B','C','D'];
+  answered = false;
+  document.getElementById('btn-next').disabled = true;
+  document.getElementById('q-counter').textContent = `Question ${current + 1} / ${questions.length}`;
+  document.getElementById('progress-bar').style.width = ((current) / questions.length * 100) + '%';
+  document.getElementById('score-live').textContent = `Score : ${score} / ${current}`;
+  let html = `<div class="question-card"><div class="q-num">Question ${current + 1}</div><div class="q-text">${q.q}</div><div class="options">`;
+  q.opts.forEach((opt, i) => {
+    html += `<button class="opt-btn" id="opt-${i}" onclick="selectAnswer(${i})"><span class="opt-letter">${letters[i]}</span>${opt}</button>`;
+  });
+  html += `</div><div class="feedback-box" id="feedback"></div></div>`;
+  document.getElementById('question-container').innerHTML = html;
+}
+
+function selectAnswer(idx) {
+  if (answered) return;
+  answered = true;
+  const q = questions[current];
+  const correct = q.a === idx;
+  if (correct) score++;
+  userAnswers.push({ q: q.q, userIdx: idx, correctIdx: q.a, correct });
+  document.querySelectorAll('.opt-btn').forEach((btn, i) => {
+    btn.disabled = true;
+    if (i === q.a) btn.classList.add('correct');
+    if (i === idx && !correct) btn.classList.add('wrong');
+  });
+  const fb = document.getElementById('feedback');
+  fb.classList.add('show', correct ? 'ok' : 'ko');
+  fb.innerHTML = (correct ? '✅ <strong>Bonne réponse !</strong> ' : '❌ <strong>Pas tout à fait.</strong> ') + q.exp;
+  document.getElementById('btn-next').disabled = false;
+  if (current === questions.length - 1) document.getElementById('btn-next').textContent = 'Voir les résultats 🏆';
+}
+
+function nextQuestion() {
+  current++;
+  if (current >= questions.length) showResults();
+  else { document.getElementById('btn-next').textContent = 'Question suivante →'; renderQuestion(); }
+}
+
+function showResults() {
+  document.getElementById('quiz-area').style.display = 'none';
+  document.getElementById('results-screen').classList.add('show');
+  document.getElementById('final-score').textContent = score;
+  const pct = Math.round((score / questions.length) * 100);
+  let title, msg;
+  if (pct >= 85) { title = '🏆 Excellent !'; msg = 'Vous maîtrisez parfaitement les inventaires. Compétence RNCP validée !'; }
+  else if (pct >= 65) { title = '👍 Bien joué !'; msg = 'Bon niveau ! Quelques notions à consolider.'; }
+  else if (pct >= 50) { title = '📚 En progression'; msg = 'Des bases présentes. Relisez la fiche et réessayez !'; }
+  else { title = '💪 À retravailler'; msg = 'Retournez consulter la fiche de révision — vous y arriverez !'; }
+  document.getElementById('results-title').textContent = title;
+  document.getElementById('results-msg').textContent = msg + ` (${score}/20 — ${pct} %)`;
+  const details = document.getElementById('result-details');
+  details.innerHTML = userAnswers.map((ua, i) => {
+    const opts = questions[i].opts;
+    const wrongInfo = ua.correct ? '' : ` → Bonne réponse : <strong>${opts[ua.correctIdx]}</strong>`;
+    return `<li><span style="flex-shrink:0">${ua.correct ? '✅' : '❌'}</span><span>Q${i+1}. ${questions[i].q.slice(0,60)}…${wrongInfo}</span></li>`;
+  }).join('');
+}
+
+function restartQuiz() {
+  current = 0; score = 0; answered = false; userAnswers = []; initialized = false;
+  document.getElementById('quiz-area').style.display = 'block';
+  document.getElementById('results-screen').classList.remove('show');
+  document.getElementById('btn-next').textContent = 'Question suivante →';
+  initQuiz();
+}
+</script>
+</body>
+</html>

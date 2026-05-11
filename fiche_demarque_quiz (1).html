@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La Démarque – Journée 5 | RNCP37099</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0b0f14;
+    --surface: #131820;
+    --card: #191f28;
+    --border: #252e3d;
+    --accent: #38bdf8;
+    --accent2: #f97316;
+    --accent3: #4ade80;
+    --accent4: #f87171;
+    --accentv: #a78bfa;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --radius: 14px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: linear-gradient(135deg, #0c1624 0%, #0f2133 50%, #0d1f2d 100%);
+    border-bottom: 2px solid var(--accent);
+    padding: 48px 24px 36px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '🔍';
+    position: absolute;
+    font-size: 200px;
+    opacity: 0.04;
+    top: -30px; right: 0;
+    pointer-events: none;
+  }
+  .badge {
+    display: inline-block;
+    background: rgba(56,189,248,0.12);
+    color: var(--accent);
+    border: 1px solid rgba(56,189,248,0.35);
+    border-radius: 99px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 4px 14px;
+    margin-bottom: 14px;
+  }
+  header h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(28px, 6vw, 52px);
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -1px;
+  }
+  header h1 span { color: var(--accent); }
+  header p { color: var(--muted); margin-top: 10px; font-size: 15px; }
+
+  /* ── TABS ── */
+  .tabs {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    padding: 24px 16px 0;
+    flex-wrap: wrap;
+  }
+  .tab-btn {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    color: var(--muted);
+    border-radius: 99px;
+    padding: 10px 22px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .tab-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .tab-btn.active { background: var(--accent); border-color: var(--accent); color: #0b0f14; }
+
+  /* ── MAIN ── */
+  main { max-width: 940px; margin: 0 auto; padding: 32px 16px 80px; }
+  .section { display: none; animation: fadeIn 0.35s ease; }
+  .section.active { display: block; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+
+  /* ── NOTION HEADER ── */
+  .notion-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 38px 0 18px;
+  }
+  .notion-icon {
+    width: 46px; height: 46px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; flex-shrink: 0;
+  }
+  .notion-header h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px 24px;
+    margin-bottom: 14px;
+    transition: border-color 0.2s;
+  }
+  .card:hover { border-color: #2d3a4f; }
+  .card-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 14.5px;
+    color: var(--accent);
+    margin-bottom: 10px;
+    letter-spacing: 0.3px;
+  }
+  .card p, .card li { font-size: 14.5px; color: #b8c8d8; }
+  .card ul { padding-left: 18px; }
+  .card li { margin-bottom: 6px; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 580px) { .two-col { grid-template-columns: 1fr; } }
+
+  .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+  @media (max-width: 700px) { .three-col { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 440px) { .three-col { grid-template-columns: 1fr; } }
+
+  /* coloured card variants */
+  .card.c-blue  { border-left: 3px solid var(--accent); }
+  .card.c-orange{ border-left: 3px solid var(--accent2); }
+  .card.c-green { border-left: 3px solid var(--accent3); }
+  .card.c-red   { border-left: 3px solid var(--accent4); }
+  .card.c-purple{ border-left: 3px solid var(--accentv); }
+
+  .card-title.orange { color: var(--accent2); }
+  .card-title.green  { color: var(--accent3); }
+  .card-title.red    { color: var(--accent4); }
+  .card-title.purple { color: var(--accentv); }
+
+  /* formula / highlight boxes */
+  .formula-box {
+    background: rgba(56,189,248,0.08);
+    border: 1.5px solid rgba(56,189,248,0.25);
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-family: 'DM Mono', monospace;
+    font-size: 15px;
+    color: #7dd3fc;
+    margin: 12px 0;
+    text-align: center;
+    line-height: 2;
+  }
+  .formula-box.orange {
+    background: rgba(249,115,22,0.08);
+    border-color: rgba(249,115,22,0.25);
+    color: #fdba74;
+  }
+
+  .chip {
+    display: inline-block;
+    border-radius: 6px;
+    padding: 2px 9px;
+    font-family: 'DM Mono', monospace;
+    font-size: 12.5px;
+    font-weight: 500;
+  }
+  .chip.blue  { background: rgba(56,189,248,0.12); color: #7dd3fc; }
+  .chip.orange{ background: rgba(249,115,22,0.12); color: #fdba74; }
+  .chip.green { background: rgba(74,222,128,0.12); color: #86efac; }
+  .chip.red   { background: rgba(248,113,113,0.12); color: #fca5a5; }
+
+  /* icon list */
+  .icon-list { list-style: none; padding: 0; }
+  .icon-list li {
+    display: flex; gap: 10px; align-items: flex-start;
+    padding: 7px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px; color: #b8c8d8;
+  }
+  .icon-list li:last-child { border-bottom: none; }
+  .icon-list .ico { flex-shrink: 0; font-size: 16px; margin-top: 2px; }
+
+  /* voleur cards */
+  .voleur-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 6px; }
+  @media (max-width: 550px) { .voleur-grid { grid-template-columns: 1fr; } }
+  .voleur-card {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+  }
+  .voleur-card .v-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .voleur-card p { font-size: 13px; color: #94a3b8; }
+
+  /* recap table */
+  .recap-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+    margin-top: 12px;
+  }
+  .recap-table th {
+    background: rgba(56,189,248,0.1);
+    color: var(--accent);
+    padding: 10px 12px;
+    text-align: left;
+    font-weight: 600;
+    border-bottom: 1px solid var(--border);
+  }
+  .recap-table td {
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--border);
+    color: #b8c8d8;
+    vertical-align: top;
+  }
+  .recap-table tr:last-child td { border-bottom: none; }
+  .recap-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+  .tip-box {
+    background: rgba(74,222,128,0.07);
+    border-left: 3px solid var(--accent3);
+    border-radius: 0 10px 10px 0;
+    padding: 12px 16px;
+    margin-top: 14px;
+    font-size: 14px;
+    color: #86efac;
+  }
+  .tip-box strong { color: var(--accent3); }
+
+  .warn-box {
+    background: rgba(249,115,22,0.08);
+    border-left: 3px solid var(--accent2);
+    border-radius: 0 10px 10px 0;
+    padding: 12px 16px;
+    margin-top: 14px;
+    font-size: 14px;
+    color: #fed7aa;
+  }
+
+  /* memo recap */
+  .memo-card {
+    background: rgba(56,189,248,0.06);
+    border: 1.5px solid rgba(56,189,248,0.25);
+    border-radius: var(--radius);
+    padding: 22px 24px;
+    margin-top: 32px;
+  }
+  .memo-card .card-title { color: var(--accent); font-size: 16px; margin-bottom: 14px; }
+
+  /* ── QUIZ ── */
+  .quiz-header { text-align: center; padding: 24px 0 32px; }
+  .quiz-header h2 { font-family: 'Syne', sans-serif; font-size: 26px; font-weight: 800; margin-bottom: 8px; }
+  .quiz-header p { color: var(--muted); font-size: 14px; }
+
+  .progress-bar-wrap { background: var(--border); border-radius: 99px; height: 6px; margin: 0 0 32px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 99px; transition: width 0.4s ease; }
+  .q-counter { text-align: right; font-size: 13px; color: var(--muted); margin-bottom: 6px; }
+
+  .question-card { background: var(--card); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 28px 26px; margin-bottom: 20px; }
+  .question-card .q-num { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+  .question-card .q-text { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 700; line-height: 1.4; margin-bottom: 20px; color: #f0f4ff; }
+
+  .options { display: flex; flex-direction: column; gap: 10px; }
+  .opt-btn {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 13px 18px;
+    text-align: left;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14.5px;
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.18s;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .opt-btn:hover:not(:disabled) { border-color: var(--accent); background: rgba(56,189,248,0.06); color: #fff; }
+  .opt-btn .opt-letter {
+    width: 28px; height: 28px;
+    border-radius: 8px;
+    background: var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'DM Mono', monospace;
+    font-weight: 500; font-size: 13px;
+    flex-shrink: 0; transition: background 0.18s;
+  }
+  .opt-btn.correct { border-color: var(--accent3); background: rgba(74,222,128,0.08); color: #86efac; }
+  .opt-btn.correct .opt-letter { background: var(--accent3); color: #0b0f14; }
+  .opt-btn.wrong { border-color: var(--accent4); background: rgba(248,113,113,0.08); color: #fca5a5; }
+  .opt-btn.wrong .opt-letter { background: var(--accent4); color: #fff; }
+
+  .feedback-box { margin-top: 16px; padding: 14px 18px; border-radius: 10px; font-size: 14px; display: none; }
+  .feedback-box.show { display: block; }
+  .feedback-box.ok { background: rgba(74,222,128,0.08); color: #86efac; border: 1px solid rgba(74,222,128,0.25); }
+  .feedback-box.ko { background: rgba(248,113,113,0.07); color: #fca5a5; border: 1px solid rgba(248,113,113,0.22); }
+
+  .quiz-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; gap: 12px; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--accent); color: #0b0f14; border: none; border-radius: 10px;
+    padding: 12px 28px; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 15px;
+    cursor: pointer; transition: opacity 0.2s, transform 0.1s;
+  }
+  .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+  .btn-primary:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
+  .btn-secondary {
+    background: transparent; color: var(--muted); border: 1.5px solid var(--border);
+    border-radius: 10px; padding: 11px 22px; font-family: 'DM Sans', sans-serif;
+    font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.18s;
+  }
+  .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* results */
+  .results-screen { text-align: center; padding: 40px 0; display: none; }
+  .results-screen.show { display: block; }
+  .score-ring {
+    width: 150px; height: 150px; border-radius: 50%;
+    margin: 0 auto 24px;
+    display: flex; align-items: center; justify-content: center; flex-direction: column;
+    border: 4px solid var(--accent);
+    background: rgba(56,189,248,0.06);
+  }
+  .score-ring .score-num { font-family: 'Syne', sans-serif; font-size: 40px; font-weight: 800; color: var(--accent); line-height: 1; }
+  .score-ring .score-label { font-size: 13px; color: var(--muted); margin-top: 4px; }
+  .results-screen h2 { font-family: 'Syne', sans-serif; font-size: 24px; font-weight: 800; margin-bottom: 10px; }
+  .results-screen p { color: var(--muted); font-size: 15px; margin-bottom: 28px; }
+  .result-details { list-style: none; text-align: left; max-width: 520px; margin: 0 auto 32px; }
+  .result-details li { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13.5px; color: #b8c8d8; }
+  .result-details li:last-child { border-bottom: none; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="badge">RNCP 37099 · Journée 5</div>
+  <h1>La <span>Démarque</span></h1>
+  <p>Fiche de révision + Quiz interactif · Commerce &amp; Vente</p>
+</header>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="showTab('fiche')">📋 Fiche de révision</button>
+  <button class="tab-btn" onclick="showTab('quiz')">🎯 Quiz (20 questions)</button>
+</div>
+
+<main>
+
+<!-- ══════════════════════════ FICHE ══════════════════════════ -->
+<div class="section active" id="fiche">
+
+  <!-- N1 : Définition -->
+  <div class="notion-header">
+    <div class="notion-icon" style="background:rgba(56,189,248,0.12);">📖</div>
+    <h2>Notion 1 — Définition de la Démarque</h2>
+  </div>
+  <div class="card c-blue">
+    <div class="card-title">Définition officielle</div>
+    <p>La démarque correspond à l'<strong>ensemble des pertes de marchandises</strong> constatées par l'entreprise et qui ne figurent plus en stock (réserve et magasin). C'est une <strong>charge financière importante</strong> et une lutte quotidienne pour le commerce.</p>
+  </div>
+  <div class="two-col">
+    <div class="card c-blue">
+      <div class="card-title">📗 Démarque CONNUE</div>
+      <p>Pertes <strong>enregistrées et comptabilisées régulièrement</strong>, anticipées par le magasin.</p>
+      <ul style="margin-top:10px;">
+        <li>Casse enregistrée, produits détruits</li>
+        <li>Vol reconnu (emballage vide)</li>
+        <li>Produits périmés (DLC dépassée)</li>
+        <li>Soldes, remises, rabais</li>
+        <li>Alignement de prix</li>
+        <li>Retour de marchandises pour défaut</li>
+      </ul>
+    </div>
+    <div class="card c-orange">
+      <div class="card-title orange">📕 Démarque INCONNUE</div>
+      <p>Pertes <strong>mises en évidence uniquement lors de l'inventaire</strong>, non anticipées.</p>
+      <ul style="margin-top:10px;">
+        <li>Vol client ou vol employé</li>
+        <li>Réceptions mal vérifiées</li>
+        <li>Consommation sur place</li>
+        <li>Erreur de tarage des balances</li>
+        <li>Confusion dans les références</li>
+        <li>Erreur d'inventaire</li>
+      </ul>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">⚖️ La Surmarque — le contraire</div>
+    <p>La <strong>surmarque</strong> est le contraire de la démarque : excédent de marge sur un produit ou stocks plus importants que prévu lors de l'inventaire. L'écart de stock est <strong>positif</strong>.</p>
+  </div>
+
+  <!-- N2 : Calcul -->
+  <div class="notion-header">
+    <div class="notion-icon" style="background:rgba(249,115,22,0.12);">🧮</div>
+    <h2>Notion 2 — Calculer la Démarque Inconnue</h2>
+  </div>
+  <div class="card c-orange">
+    <div class="card-title orange">Formule clé — 2 étapes</div>
+    <div class="formula-box orange">
+      <span style="font-size:12px;color:#94a3b8;display:block;margin-bottom:4px;">ÉTAPE 1 — Démarque globale</span>
+      Stock Réel − Stock Théorique = Démarque Globale
+    </div>
+    <div class="formula-box orange">
+      <span style="font-size:12px;color:#94a3b8;display:block;margin-bottom:4px;">ÉTAPE 2 — Isoler la part inconnue</span>
+      Démarque Globale − Démarque Connue = Démarque Inconnue
+    </div>
+    <p style="font-size:14px;color:#94a3b8;margin-top:10px;">Si l'écart (Stock Réel − Stock Théorique) est <span class="chip red">négatif</span> → perte (démarque) &nbsp;|&nbsp; Si <span class="chip green">positif</span> → Surmarque (excédent)</p>
+  </div>
+  <div class="card">
+    <div class="card-title">Exemple de tableau (chocolats)</div>
+    <table class="recap-table">
+      <tr><th>Produit</th><th>Prix HT</th><th>Stock théo.</th><th>Stock réel</th><th>Écart</th><th>Démarque</th><th>Surmarque</th></tr>
+      <tr><td>Choc. lait 200g</td><td>0,65 €</td><td>11</td><td>5</td><td>−6</td><td>3,90 €</td><td>—</td></tr>
+      <tr><td>Choc. lait 400g</td><td>1,10 €</td><td>24</td><td>25</td><td>+1</td><td>—</td><td>1,10 €</td></tr>
+      <tr><td>Choc. noisettes 200g</td><td>0,75 €</td><td>16</td><td>9</td><td>−7</td><td>5,25 €</td><td>—</td></tr>
+      <tr><td>Choc. noisettes 400g</td><td>1,30 €</td><td>12</td><td>15</td><td>+3</td><td>—</td><td>3,90 €</td></tr>
+      <tr><td>Choc. blanc coco 200g</td><td>1,15 €</td><td>18</td><td>12</td><td>−6</td><td>6,90 €</td><td>—</td></tr>
+      <tr><td><strong>SOLDE NET</strong></td><td>—</td><td>—</td><td>—</td><td>—</td><td><strong>16,05 €</strong></td><td><strong>5,00 €</strong></td></tr>
+    </table>
+    <div class="tip-box"><strong>Solde final :</strong> 16,05 € − 5,00 € = <strong>11,05 € de démarque nette</strong></div>
+  </div>
+
+  <!-- N3 : Conséquences -->
+  <div class="notion-header">
+    <div class="notion-icon" style="background:rgba(248,113,113,0.12);">📉</div>
+    <h2>Notion 3 — Conséquences & Balisage</h2>
+  </div>
+  <div class="two-col">
+    <div class="card c-red">
+      <div class="card-title red">Conséquences des ruptures & démarque</div>
+      <ul class="icon-list">
+        <li><span class="ico">🖼️</span> Perte d'image pour le magasin</li>
+        <li><span class="ico">🏃</span> Fuite de la clientèle</li>
+        <li><span class="ico">💸</span> Baisse du chiffre d'affaires</li>
+        <li><span class="ico">📊</span> Charge financière lourde</li>
+      </ul>
+    </div>
+    <div class="card c-blue">
+      <div class="card-title">Règles du Balisage obligatoire</div>
+      <ul class="icon-list">
+        <li><span class="ico">✅</span> Étiquette propre, lisible, en parfait état</li>
+        <li><span class="ico">📌</span> Posée en bas à gauche du produit</li>
+        <li><span class="ico">🔍</span> Vérifier la correspondance étiquette/produit</li>
+        <li><span class="ico">⚠️</span> Conséquence du non-respect : « Pas vu, pas pris »</li>
+      </ul>
+    </div>
+  </div>
+  <div class="two-col">
+    <div class="card">
+      <div class="card-title">Rupture PARTIELLE</div>
+      <p>Produits présents <strong>en réserve</strong> mais non disponibles à la vente en rayon.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Rupture COMPLÈTE</div>
+      <p><strong>Absence totale</strong> des produits en magasin (réserve et rayon).</p>
+    </div>
+  </div>
+
+  <!-- N4 : Lutter -->
+  <div class="notion-header">
+    <div class="notion-icon" style="background:rgba(74,222,128,0.12);">🛡️</div>
+    <h2>Notion 4 — Lutter contre la Démarque</h2>
+  </div>
+  <div class="card c-green">
+    <div class="card-title green">Stratégies de lutte — synthèse</div>
+    <table class="recap-table">
+      <tr><th>Type de risque</th><th>Actions préventives</th></tr>
+      <tr><td>🥛 Casse / destruction</td><td>Bonne mise en rayon, bouteilles couchées, vigilance produits frais</td></tr>
+      <tr><td>🍓 Produits périssables</td><td>Rotation des produits (FIFO), stocks limités, commandes justes, anti-gaspillage</td></tr>
+      <tr><td>🧑‍💼 Vol client</td><td>Vigilance personnel, antivols, caméras, contrôle caddies en caisse</td></tr>
+      <tr><td>📦 Erreurs réception</td><td>Vérification nb palettes/colis, quantité, qualité</td></tr>
+      <tr><td>🏷️ Erreurs références/prix</td><td>Contrôles balisage réguliers en rayon</td></tr>
+      <tr><td>📋 Erreurs inventaire</td><td>Comptages rigoureux, auto-contrôle, personnes efficaces sur produits chers</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <div class="card-title">Moyens anti-vol (dispositifs)</div>
+    <div class="three-col" style="margin-top:10px;">
+      <div style="text-align:center;padding:14px;background:var(--surface);border-radius:10px;font-size:13px;color:#94a3b8;">
+        <div style="font-size:28px;margin-bottom:6px;">📷</div>Caméras de surveillance
+      </div>
+      <div style="text-align:center;padding:14px;background:var(--surface);border-radius:10px;font-size:13px;color:#94a3b8;">
+        <div style="font-size:28px;margin-bottom:6px;">🚪</div>Portiques antivols
+      </div>
+      <div style="text-align:center;padding:14px;background:var(--surface);border-radius:10px;font-size:13px;color:#94a3b8;">
+        <div style="font-size:28px;margin-bottom:6px;">🔒</div>Antivols sur produits
+      </div>
+    </div>
+  </div>
+
+  <!-- N5 : Typologies de voleurs -->
+  <div class="notion-header">
+    <div class="notion-icon" style="background:rgba(167,139,250,0.12);">🕵️</div>
+    <h2>Notion 5 — Les 5 Typologies de Voleurs</h2>
+  </div>
+  <div class="voleur-grid">
+    <div class="voleur-card" style="border-top:3px solid #f87171;">
+      <div class="v-title" style="color:#f87171;">😈 Par Impulsion</div>
+      <p>Pas de valeur morale. Cède à la tentation du moment. Tout le monde a connu cette sensation.</p>
+    </div>
+    <div class="voleur-card" style="border-top:3px solid #fb923c;">
+      <div class="v-title" style="color:#fb923c;">💸 Par Compensation</div>
+      <p>Niveau culturel élevé. S'accorde une « ristourne » car il juge le magasin peu reconnaissant.</p>
+    </div>
+    <div class="voleur-card" style="border-top:3px solid #facc15;">
+      <div class="v-title" style="color:#facc15;">🎲 Par Jeu</div>
+      <p>Milieu aisé. Vol par goût du risque, pari ou concours. Fier de raconter ses prouesses.</p>
+    </div>
+    <div class="voleur-card" style="border-top:3px solid #4ade80;">
+      <div class="v-title" style="color:#4ade80;">🍞 Par Nécessité</div>
+      <p>Situation précaire. Ne peut pas se permettre d'acheter les produits exposés.</p>
+    </div>
+    <div class="voleur-card" style="border-top:3px solid var(--accentv);grid-column:span 2;">
+      <div class="v-title" style="color:var(--accentv);">💰 Par Appât du Gain</div>
+      <p>But lucratif : vole pour revendre. Travaille souvent en bande et en réseau. Professionnel.</p>
+    </div>
+  </div>
+  <div class="warn-box" style="margin-top:14px;">
+    <strong>⚠️ Périodes propices aux vols :</strong> Fêtes de fin d'année (foule, vêtements épais, articles de valeur exposés, fort taux de rotation du personnel, désir de faire des cadeaux).
+  </div>
+
+  <!-- N6 : Contrôles en caisse -->
+  <div class="notion-header">
+    <div class="notion-icon" style="background:rgba(56,189,248,0.12);">🛒</div>
+    <h2>Notion 6 — Points de Contrôle en Caisse & Paiement</h2>
+  </div>
+  <div class="card c-blue">
+    <div class="card-title">Contrôles physiques obligatoires</div>
+    <ul class="icon-list">
+      <li><span class="ico">🛒</span> Contrôler caddie/panier jusqu'au fond (poussette, siège bébé, crochet, sous les packs)</li>
+      <li><span class="ico">🧸</span> Vérifier couvertures/couettes — produits cachés dans les plis</li>
+      <li><span class="ico">☂️</span> Attention aux parapluies : articles peuvent y être dissimulés</li>
+      <li><span class="ico">📦</span> Contrôler les cartons et coffrets (vin, électroménager)</li>
+      <li><span class="ico">🥬</span> Connaître les variétés de fruits et légumes + codes produits</li>
+      <li><span class="ico">🏷️</span> Comparer prix affiché et produit scanné régulièrement</li>
+      <li><span class="ico">🎟️</span> Vérifier bons de réduction (date, bon produit)</li>
+    </ul>
+  </div>
+  <div class="two-col">
+    <div class="card">
+      <div class="card-title">💵 Espèces — Méthode TRI</div>
+      <p style="font-size:15px;font-weight:600;color:var(--accent);margin-bottom:8px;">T · R · I</p>
+      <ul class="icon-list">
+        <li><span class="ico">👋</span><strong>T</strong>oucher le billet</li>
+        <li><span class="ico">👁️</span><strong>R</strong>egarder le filigrane</li>
+        <li><span class="ico">↗️</span><strong>I</strong>ncliner pour voir l'hologramme</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">💳 Carte / Chèque</div>
+      <ul class="icon-list">
+        <li><span class="ico">❌</span>Carte refusée → ne jamais laisser partir avec la marchandise</li>
+        <li><span class="ico">🪪</span>Chèque : vérifier concordance nom carte d'identité / chèque</li>
+        <li><span class="ico">📋</span>Suivre les procédures du magasin</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- MÉMO -->
+  <div class="memo-card">
+    <div class="card-title">⭐ MÉMO RÉCAPITULATIF — La Démarque en un coup d'œil</div>
+    <table class="recap-table">
+      <tr><th>Notion</th><th>Clé à retenir</th></tr>
+      <tr><td>Démarque connue</td><td>Pertes enregistrées régulièrement (casse, DLC, soldes, rabais…)</td></tr>
+      <tr><td>Démarque inconnue</td><td>Pertes découvertes à l'inventaire (vols, erreurs, consommation…)</td></tr>
+      <tr><td>Surmarque</td><td>Écart positif = plus de stock que prévu (contraire démarque)</td></tr>
+      <tr><td>Formule calcul</td><td>① Stock Réel − Stock Théorique = Démarque globale<br>② Démarque globale − Démarque Connue = Démarque Inconnue</td></tr>
+      <tr><td>Balisage</td><td>Étiquette propre, lisible, bas à gauche, vérifiée</td></tr>
+      <tr><td>Rupture partielle</td><td>En réserve mais pas en rayon</td></tr>
+      <tr><td>Rupture complète</td><td>Absent de tout le magasin</td></tr>
+      <tr><td>5 typologies voleurs</td><td>Impulsion / Compensation / Jeu / Nécessité / Appât du gain</td></tr>
+      <tr><td>Méthode caisse billets</td><td>T.R.I = Toucher, Regarder, Incliner</td></tr>
+    </table>
+  </div>
+
+</div><!-- /fiche -->
+
+
+<!-- ══════════════════════════ QUIZ ══════════════════════════ -->
+<div class="section" id="quiz">
+  <div class="quiz-header">
+    <h2>🎯 Quiz — La Démarque</h2>
+    <p>20 questions pour valider vos acquis · RNCP 37099 Journée 5</p>
+  </div>
+  <div id="quiz-area">
+    <div class="q-counter" id="q-counter">Question 1 / 20</div>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-fill" id="progress-bar" style="width:5%"></div>
+    </div>
+    <div id="question-container"></div>
+    <div class="quiz-nav">
+      <span id="score-live" style="font-size:14px;color:var(--muted);">Score : 0 / 0</span>
+      <button class="btn-primary" id="btn-next" onclick="nextQuestion()" disabled>Question suivante →</button>
+    </div>
+  </div>
+  <div class="results-screen" id="results-screen">
+    <div class="score-ring">
+      <div class="score-num" id="final-score">0</div>
+      <div class="score-label">/ 20</div>
+    </div>
+    <h2 id="results-title"></h2>
+    <p id="results-msg"></p>
+    <ul class="result-details" id="result-details"></ul>
+    <button class="btn-primary" onclick="restartQuiz()">🔄 Recommencer le quiz</button>
+    &nbsp;
+    <button class="btn-secondary" onclick="showTab('fiche')">📋 Revoir la fiche</button>
+  </div>
+</div>
+
+</main>
+
+<script>
+function showTab(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.tab-btn')[id === 'fiche' ? 0 : 1].classList.add('active');
+  if (id === 'quiz') initQuiz();
+}
+
+const questions = [
+  {
+    q: "Que désigne la démarque en commerce ?",
+    opts: ["L'excédent de stock lors de l'inventaire", "L'ensemble des pertes de marchandises ne figurant plus en stock", "Les remises accordées aux clients fidèles", "Les produits en attente de mise en rayon"],
+    a: 1,
+    exp: "La démarque = ensemble des pertes de marchandises constatées par l'entreprise, absentes du stock (réserve + magasin)."
+  },
+  {
+    q: "La démarque connue se caractérise par :",
+    opts: ["Des pertes découvertes uniquement à l'inventaire", "Des pertes enregistrées et comptabilisées régulièrement", "Des vols non détectés par le personnel", "Des erreurs de tarage des balances"],
+    a: 1,
+    exp: "La démarque connue est enregistrée et comptabilisée au fur et à mesure (casse, DLC, soldes, remises...)."
+  },
+  {
+    q: "Lequel de ces exemples est une démarque INCONNUE ?",
+    opts: ["Un yaourt avec DLC dépassée retiré du rayon", "Des soldes de fin de saison", "Un vol client non détecté (jambon dissimulé)", "Un retour fournisseur pour défaut"],
+    a: 2,
+    exp: "Le vol client non détecté est une démarque inconnue car il n'est révélé qu'à l'inventaire."
+  },
+  {
+    q: "Lequel de ces exemples est une démarque CONNUE ?",
+    opts: ["Une consommation sur place non payée", "Une réception mal vérifiée (cartons manquants)", "Un bouchon de lessive cassé enregistré", "Une erreur de tarage de balance"],
+    a: 2,
+    exp: "La casse enregistrée est une démarque connue : elle est comptabilisée au moment où elle se produit."
+  },
+  {
+    q: "Qu'est-ce que la surmarque ?",
+    opts: ["Une perte de marchandises non enregistrée", "Un manque à gagner lié aux soldes", "Un excédent de marge ou de stock par rapport aux prévisions", "Une erreur d'étiquetage constatée en caisse"],
+    a: 2,
+    exp: "La surmarque est le contraire de la démarque : excédent de marge ou stock plus important que prévu à l'inventaire (écart positif)."
+  },
+  {
+    q: "Quelle est la formule correcte pour calculer la démarque inconnue ?",
+    opts: [
+      "Stock théorique − Démarque connue − Stock réel",
+      "① Stock Réel − Stock Théorique = Démarque globale, puis ② Démarque globale − Démarque connue = Démarque inconnue",
+      "Démarque connue + Stock réel − Stock théorique",
+      "Stock théorique + Stock réel − Démarque connue"
+    ],
+    a: 1,
+    exp: "En 2 étapes : ① Stock Réel − Stock Théorique = Démarque globale (l'écart total). ② Démarque globale − Démarque Connue = Démarque Inconnue (la part non enregistrée)."
+  },
+  {
+    q: "Un produit a un stock théorique de 20, une démarque connue de 2 et un stock réel de 15. Quel est le solde ?",
+    opts: ["−7 (démarque inconnue)", "−3 (démarque inconnue)", "+3 (surmarque)", "+5 (surmarque)"],
+    a: 1,
+    exp: "① Stock Réel − Stock Théorique = 15 − 20 = −5 (démarque globale). ② −5 − (−2) = −5 + 2 = −3 → démarque inconnue de 3 unités. On retire la démarque connue qui est elle-même une perte, donc on l'ajoute algébriquement."
+  },
+  {
+    q: "Quelles sont les conséquences des ruptures de stock pour le magasin ?",
+    opts: [
+      "Augmentation du chiffre d'affaires et fidélisation",
+      "Perte d'image, fuite de clientèle, baisse du CA",
+      "Surmarque et augmentation du stock",
+      "Aucune conséquence si la rupture est partielle"
+    ],
+    a: 1,
+    exp: "Les ruptures (partielles ou complètes) entraînent une perte d'image, une fuite de clientèle et une baisse du chiffre d'affaires."
+  },
+  {
+    q: "Une rupture PARTIELLE, c'est quand :",
+    opts: [
+      "Le produit est absent de tout le magasin",
+      "Le produit est en réserve mais pas disponible en rayon",
+      "Le produit est périmé et retiré de la vente",
+      "Le produit est en rupture chez le fournisseur"
+    ],
+    a: 1,
+    exp: "Rupture partielle = produit présent en réserve mais non disponible à la vente pour les clients en rayon."
+  },
+  {
+    q: "Quelle est la règle de placement d'une étiquette de balisage en rayon ?",
+    opts: [
+      "En haut à droite du produit, bien visible",
+      "Au centre, à hauteur des yeux",
+      "En bas à gauche du produit, propre et lisible",
+      "N'importe où du moment qu'elle est lisible"
+    ],
+    a: 2,
+    exp: "Le balisage réglementaire : étiquette propre, lisible, en parfait état, posée en bas à gauche du produit, correspondant bien au produit."
+  },
+  {
+    q: "Parmi ces actions, laquelle aide à limiter la démarque sur les produits périssables ?",
+    opts: [
+      "Augmenter les stocks en réserve pour ne jamais manquer",
+      "Faire la rotation des produits (FIFO) et des commandes justes",
+      "Placer les produits les plus frais devant",
+      "Éviter l'étiquetage des dates limites"
+    ],
+    a: 1,
+    exp: "Pour les périssables : rotation des produits, limiter les stocks en réserve, commandes justes et déstockage/anti-gaspillage."
+  },
+  {
+    q: "Pour diminuer le vol client en rayon, quelle action est la plus efficace ?",
+    opts: [
+      "Fermer le magasin aux heures creuses",
+      "Réduire le nombre de produits exposés",
+      "Vigilance du personnel + antivols + caméras + surveillance",
+      "Afficher des panneaux « Sourires, vous êtes filmés »"
+    ],
+    a: 2,
+    exp: "La lutte contre le vol client combine vigilance du personnel (rayon/réserve/caisse), antivols sur produits, caméras et surveillance active."
+  },
+  {
+    q: "Comment éviter les erreurs lors de la réception des marchandises ?",
+    opts: [
+      "Signer le bon de livraison sans vérifier pour gagner du temps",
+      "Vérifier nb de palettes/colis, quantité et qualité à la réception",
+      "Confier la réception exclusivement au directeur",
+      "Attendre l'inventaire pour détecter les écarts"
+    ],
+    a: 1,
+    exp: "À la réception : vérification rigoureuse du nombre de palettes/colis, de la quantité et de la qualité des produits livrés."
+  },
+  {
+    q: "Le voleur « par appât du gain » se caractérise par :",
+    opts: [
+      "Il cède à la tentation sans préméditation",
+      "Il vole par besoin car il ne peut pas se payer les produits",
+      "Il vole pour revendre, souvent en bande, avec des commandes préalables",
+      "Il vole par défi personnel dans un contexte aisé"
+    ],
+    a: 2,
+    exp: "Le voleur par appât du gain a un but lucratif : il vole pour revendre, les articles font souvent l'objet d'une commande, il travaille en bande/réseau."
+  },
+  {
+    q: "Quel type de voleur vole par défi, par goût du risque, souvent dans un milieu aisé ?",
+    opts: ["Le voleur par nécessité", "Le voleur par impulsion", "Le voleur par jeu", "Le voleur par compensation"],
+    a: 2,
+    exp: "Le voleur par jeu : milieu aisé, vol par goût du risque ou pari, fier de raconter ses prouesses. A perdu tout sens moral."
+  },
+  {
+    q: "Pourquoi les périodes de fêtes de fin d'année sont-elles plus propices aux vols ?",
+    opts: [
+      "Les magasins sont fermés plus tôt, réduisant la surveillance",
+      "Vêtements épais facilitent la dissimulation, foule + articles de valeur exposés + fort turn-over du personnel",
+      "Les caméras sont éteintes pour économiser de l'énergie",
+      "Les antivols sont retirés pour les périodes promotionnelles"
+    ],
+    a: 1,
+    exp: "En hiver/fêtes : vêtements épais pour dissimuler, magasins bondés, articles de valeur exposés, turn-over du personnel plus élevé."
+  },
+  {
+    q: "Lors du contrôle en caisse, que doit-on vérifier dans un caddie ?",
+    opts: [
+      "Uniquement les articles en évidence sur le dessus",
+      "Seulement les articles de grande valeur",
+      "Tout le caddie jusqu'au fond : siège bébé, crochet, dessous des gros packs...",
+      "Uniquement si le client paraît suspect"
+    ],
+    a: 2,
+    exp: "Contrôler l'intégralité du caddie : jusqu'au fond, siège bébé, crochet, sous les packs d'eau ou gros objets — même si c'est le directeur !"
+  },
+  {
+    q: "En caisse, la méthode TRI pour vérifier les billets signifie :",
+    opts: [
+      "Tracer, Reconnaître, Identifier",
+      "Toucher, Regarder, Incliner",
+      "Trier, Ranger, Inventorier",
+      "Tester, Repérer, Inspecter"
+    ],
+    a: 1,
+    exp: "TRI = Toucher le billet (relief), Regarder le filigrane, Incliner pour voir l'hologramme. Méthode de détection des faux billets."
+  },
+  {
+    q: "Un client présente une carte bancaire refusée. Quelle est la bonne attitude ?",
+    opts: [
+      "Laisser le client partir avec la marchandise s'il promet de repasser",
+      "Appeler la police immédiatement",
+      "Ne jamais laisser le client partir avec la marchandise, même si quelqu'un reste",
+      "Accepter un chèque sans vérification"
+    ],
+    a: 2,
+    exp: "En cas de carte refusée : ne JAMAIS laisser le client partir avec la marchandise, même s'ils sont deux et qu'une personne reste à la caisse."
+  },
+  {
+    q: "La démarque est décrite dans le cours comme :",
+    opts: [
+      "Un avantage concurrentiel pour le magasin",
+      "Une charge financière importante et une lutte quotidienne",
+      "Un indicateur positif de la performance du magasin",
+      "Un phénomène uniquement lié aux grandes surfaces"
+    ],
+    a: 1,
+    exp: "La démarque est explicitement définie comme « une charge financière importante pour le magasin et une lutte quotidienne »."
+  }
+];
+
+let current = 0, score = 0, answered = false, userAnswers = [], initialized = false;
+
+function initQuiz() {
+  if (initialized) return;
+  initialized = true;
+  current = 0; score = 0; answered = false; userAnswers = [];
+  document.getElementById('quiz-area').style.display = 'block';
+  document.getElementById('results-screen').classList.remove('show');
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = questions[current];
+  const letters = ['A','B','C','D'];
+  answered = false;
+  document.getElementById('btn-next').disabled = true;
+  document.getElementById('q-counter').textContent = `Question ${current + 1} / ${questions.length}`;
+  document.getElementById('progress-bar').style.width = ((current) / questions.length * 100) + '%';
+  document.getElementById('score-live').textContent = `Score : ${score} / ${current}`;
+  let html = `<div class="question-card">
+    <div class="q-num">Question ${current + 1}</div>
+    <div class="q-text">${q.q}</div>
+    <div class="options">`;
+  q.opts.forEach((opt, i) => {
+    html += `<button class="opt-btn" id="opt-${i}" onclick="selectAnswer(${i})">
+      <span class="opt-letter">${letters[i]}</span>${opt}
+    </button>`;
+  });
+  html += `</div><div class="feedback-box" id="feedback"></div></div>`;
+  document.getElementById('question-container').innerHTML = html;
+}
+
+function selectAnswer(idx) {
+  if (answered) return;
+  answered = true;
+  const q = questions[current];
+  const correct = q.a === idx;
+  if (correct) score++;
+  userAnswers.push({ q: q.q, userIdx: idx, correctIdx: q.a, correct });
+  document.querySelectorAll('.opt-btn').forEach((btn, i) => {
+    btn.disabled = true;
+    if (i === q.a) btn.classList.add('correct');
+    if (i === idx && !correct) btn.classList.add('wrong');
+  });
+  const fb = document.getElementById('feedback');
+  fb.classList.add('show', correct ? 'ok' : 'ko');
+  fb.innerHTML = (correct ? '✅ <strong>Bonne réponse !</strong> ' : '❌ <strong>Pas tout à fait.</strong> ') + q.exp;
+  document.getElementById('btn-next').disabled = false;
+  if (current === questions.length - 1) document.getElementById('btn-next').textContent = 'Voir les résultats 🏆';
+}
+
+function nextQuestion() {
+  current++;
+  if (current >= questions.length) showResults();
+  else { document.getElementById('btn-next').textContent = 'Question suivante →'; renderQuestion(); }
+}
+
+function showResults() {
+  document.getElementById('quiz-area').style.display = 'none';
+  document.getElementById('results-screen').classList.add('show');
+  document.getElementById('final-score').textContent = score;
+  const pct = Math.round((score / questions.length) * 100);
+  let title, msg;
+  if (pct >= 85) { title = '🏆 Excellent !'; msg = 'Vous maîtrisez parfaitement la démarque. Compétence validée RNCP !'; }
+  else if (pct >= 65) { title = '👍 Bien joué !'; msg = 'Bon niveau ! Quelques notions à consolider.'; }
+  else if (pct >= 50) { title = '📚 En progression'; msg = 'Des bases présentes. Relisez la fiche et réessayez !'; }
+  else { title = '💪 À retravailler'; msg = 'Retournez consulter la fiche de révision — vous y arriverez !'; }
+  document.getElementById('results-title').textContent = title;
+  document.getElementById('results-msg').textContent = msg + ` (${score}/20 — ${pct} %)`;
+  const details = document.getElementById('result-details');
+  details.innerHTML = userAnswers.map((ua, i) => {
+    const opts = questions[i].opts;
+    const wrongInfo = ua.correct ? '' : ` → Bonne réponse : <strong>${opts[ua.correctIdx]}</strong>`;
+    return `<li><span style="flex-shrink:0">${ua.correct ? '✅' : '❌'}</span><span>Q${i+1}. ${questions[i].q.slice(0,60)}…${wrongInfo}</span></li>`;
+  }).join('');
+}
+
+function restartQuiz() {
+  current = 0; score = 0; answered = false; userAnswers = []; initialized = false;
+  document.getElementById('quiz-area').style.display = 'block';
+  document.getElementById('results-screen').classList.remove('show');
+  document.getElementById('btn-next').textContent = 'Question suivante →';
+  initQuiz();
+}
+</script>
+</body>
+</html>

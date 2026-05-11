@@ -1,0 +1,274 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans);color:var(--color-text-primary)}
+.tab-bar{display:flex;border-bottom:0.5px solid var(--color-border-tertiary);margin-bottom:1.5rem;gap:4px}
+.tab-btn{padding:8px 20px;font-size:14px;font-weight:500;border:none;background:transparent;cursor:pointer;border-bottom:2px solid transparent;color:var(--color-text-secondary);border-radius:0}
+.tab-btn.active{color:var(--color-text-primary);border-bottom:2px solid #D85A30}
+.tab-content{display:none}
+.tab-content.active{display:block}
+.section-title{font-size:18px;font-weight:500;margin-bottom:1rem;padding-bottom:8px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.notion-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem 1.25rem;margin-bottom:0.75rem}
+.notion-card h3{font-size:14px;font-weight:500;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.notion-card p{font-size:13px;color:var(--color-text-secondary);line-height:1.6}
+.badge{display:inline-block;font-size:11px;font-weight:500;padding:2px 8px;border-radius:var(--border-radius-md);margin-right:4px}
+.b-coral{background:#FAECE7;color:#993C1D}
+.b-teal{background:#E1F5EE;color:#0F6E56}
+.b-purple{background:#EEEDFE;color:#3C3489}
+.b-blue{background:#E6F1FB;color:#0C447C}
+.steps{counter-reset:step;display:flex;flex-direction:column;gap:8px}
+.step{display:flex;align-items:flex-start;gap:12px;padding:10px;background:var(--color-background-secondary);border-radius:var(--border-radius-md)}
+.step-num{min-width:24px;height:24px;border-radius:50%;background:#D85A30;color:white;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;flex-shrink:0}
+.step p{font-size:13px;color:var(--color-text-secondary);line-height:1.5}
+.step strong{color:var(--color-text-primary);font-weight:500}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:1rem}
+.tip-card{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:10px 12px;border-left:3px solid #D85A30}
+.tip-card p{font-size:12px;color:var(--color-text-secondary);line-height:1.5;margin-top:4px}
+.tip-card span{font-size:13px;font-weight:500}
+.quiz-q{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem 1.25rem;margin-bottom:0.75rem}
+.quiz-q .qtext{font-size:14px;font-weight:500;margin-bottom:10px}
+.quiz-opt{display:block;padding:8px 12px;margin:4px 0;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);cursor:pointer;font-size:13px;background:var(--color-background-secondary);color:var(--color-text-primary);width:100%;text-align:left;transition:background 0.1s}
+.quiz-opt:hover{background:var(--color-background-primary);border-color:var(--color-border-secondary)}
+.quiz-opt.correct{background:#EAF3DE;border-color:#639922;color:#27500A}
+.quiz-opt.wrong{background:#FCEBEB;border-color:#A32D2D;color:#501313}
+.quiz-opt.disabled{cursor:default;pointer-events:none}
+.feedback{font-size:12px;margin-top:8px;padding:6px 10px;border-radius:var(--border-radius-md)}
+.feedback.ok{background:#EAF3DE;color:#27500A}
+.feedback.ko{background:#FCEBEB;color:#501313}
+.score-bar{background:var(--color-background-secondary);border-radius:var(--border-radius-lg);padding:1rem 1.25rem;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.score-num{font-size:28px;font-weight:500}
+.score-label{font-size:13px;color:var(--color-text-secondary)}
+.progress{height:6px;background:var(--color-background-secondary);border-radius:3px;margin-bottom:1.5rem;overflow:hidden}
+.progress-fill{height:100%;background:#D85A30;border-radius:3px;transition:width 0.3s}
+.btn-reset{border:0.5px solid var(--color-border-secondary);background:transparent;color:var(--color-text-primary);padding:6px 16px;border-radius:var(--border-radius-md);cursor:pointer;font-size:13px}
+.btn-reset:hover{background:var(--color-background-secondary)}
+.memo-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1rem}
+@media(max-width:500px){.memo-grid{grid-template-columns:1fr}}
+.stat-card{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:12px;text-align:center}
+.stat-big{font-size:28px;font-weight:500;color:#D85A30}
+.stat-desc{font-size:12px;color:var(--color-text-secondary);margin-top:4px;line-height:1.4}
+.tag-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+</style>
+
+<h2 class="sr-only">Fiche de révision — Traitement des réclamations clients (Journée 18, RNCP37099)</h2>
+
+<div style="padding:1rem 0">
+<div style="display:flex;align-items:center;gap:10px;margin-bottom:1.25rem">
+  <i class="ti ti-school" style="font-size:22px;color:#D85A30" aria-hidden="true"></i>
+  <div>
+    <div style="font-size:18px;font-weight:500">Traitement des réclamations clients</div>
+    <div style="font-size:12px;color:var(--color-text-secondary)">Journée 18 · RNCP37099 — TP Employé commercial</div>
+  </div>
+</div>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab('fiche')"><i class="ti ti-file-text" aria-hidden="true"></i> Fiche</button>
+  <button class="tab-btn" onclick="showTab('astuces')"><i class="ti ti-bulb" aria-hidden="true"></i> 12 astuces</button>
+  <button class="tab-btn" onclick="showTab('quiz')"><i class="ti ti-help" aria-hidden="true"></i> Quiz</button>
+</div>
+
+<div id="tab-fiche" class="tab-content active">
+
+  <div class="section-title">Chiffres clés à mémoriser</div>
+  <div class="memo-grid">
+    <div class="stat-card"><div class="stat-big">1/10</div><div class="stat-desc">seulement 1 client sur 10 exprime son insatisfaction</div></div>
+    <div class="stat-card"><div class="stat-big">×10</div><div class="stat-desc">personnes informées par un client mécontent</div></div>
+    <div class="stat-card"><div class="stat-big">×3</div><div class="stat-desc">personnes informées seulement par un client satisfait</div></div>
+    <div class="stat-card"><div class="stat-big">×100</div><div class="stat-desc">amplification sur les réseaux sociaux</div></div>
+  </div>
+
+  <div class="section-title">Le parcours émotionnel du client mécontent</div>
+  <div style="display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-bottom:1.25rem">
+    <div class="badge b-coral" style="font-size:13px;padding:6px 12px">Déception</div>
+    <i class="ti ti-arrow-right" style="color:#D85A30" aria-hidden="true"></i>
+    <div class="badge b-coral" style="font-size:13px;padding:6px 12px">Frustration</div>
+    <i class="ti ti-arrow-right" style="color:#D85A30" aria-hidden="true"></i>
+    <div class="badge b-coral" style="font-size:13px;padding:6px 12px">Colère</div>
+    <i class="ti ti-arrow-right" style="color:#D85A30" aria-hidden="true"></i>
+    <div class="badge b-teal" style="font-size:13px;padding:6px 12px">✓ Fidélisation</div>
+    <span style="font-size:11px;color:var(--color-text-secondary)">ou</span>
+    <div class="badge" style="background:#FCEBEB;color:#A32D2D;font-size:13px;padding:6px 12px">✗ Escalade</div>
+  </div>
+
+  <div class="section-title">3 types de réclamations</div>
+  <div class="grid2">
+    <div class="notion-card" style="border-left:3px solid #1D9E75">
+      <h3><span class="badge b-teal">Bonne foi</span></h3>
+      <p>Le client utilise bien le produit mais celui-ci est défectueux. <strong>Solution :</strong> garanties légales → réparation, échange ou remboursement.</p>
+    </div>
+    <div class="notion-card" style="border-left:3px solid #E24B4A">
+      <h3><span class="badge" style="background:#FCEBEB;color:#A32D2D">Mauvaise foi</span></h3>
+      <p>Le client a mal utilisé le produit mais refuse sa responsabilité. <strong>Solution :</strong> tact et fermeté, expliquer les conditions sans accuser.</p>
+    </div>
+    <div class="notion-card" style="border-left:3px solid #D85A30">
+      <h3><span class="badge b-coral">Faute vendeur</span></h3>
+      <p>Le vendeur n'a pas fourni les infos nécessaires. <strong>Solution :</strong> assumer la responsabilité avec sincérité + compensation.</p>
+    </div>
+  </div>
+
+  <div class="section-title">4 attentes fondamentales du client</div>
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><p><strong>Être écouté</strong> — exprimer sa frustration sans être interrompu ni jugé</p></div>
+    <div class="step"><div class="step-num">2</div><p><strong>Être compris</strong> — reformulation et validation de sa problématique</p></div>
+    <div class="step"><div class="step-num">3</div><p><strong>Être respecté</strong> — traité avec dignité, sans condescendance</p></div>
+    <div class="step"><div class="step-num">4</div><p><strong>Obtenir une solution</strong> — réponse concrète, rapide et adaptée</p></div>
+  </div>
+
+  <div style="margin-top:1.25rem" class="section-title">Le pas à pas en 8 étapes</div>
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><p><strong>Conduire dans un endroit neutre</strong> — éloigner du regard des autres clients</p></div>
+    <div class="step"><div class="step-num">2</div><p><strong>Laisser s'exprimer</strong> — ne pas interrompre</p></div>
+    <div class="step"><div class="step-num">3</div><p><strong>Comprendre la démarche</strong> — identifier les raisons profondes</p></div>
+    <div class="step"><div class="step-num">4</div><p><strong>Reformuler le problème</strong> — valider avec le client</p></div>
+    <div class="step"><div class="step-num">5</div><p><strong>Apporter une solution</strong> — satisfaire les deux parties</p></div>
+    <div class="step"><div class="step-num">6</div><p><strong>Remercier pour la fidélité</strong></p></div>
+    <div class="step"><div class="step-num">7</div><p><strong>Assurer du suivi</strong> — s'engager durablement</p></div>
+    <div class="step"><div class="step-num">8</div><p><strong>Faire un geste commercial</strong> — si la situation le justifie</p></div>
+  </div>
+
+  <div style="margin-top:1.25rem" class="section-title">Méthode de reformulation — 4 questions</div>
+  <div class="grid2">
+    <div class="notion-card"><h3><span class="badge b-purple">QUOI ?</span></h3><p>Quel est l'objet précis de la réclamation ?</p></div>
+    <div class="notion-card"><h3><span class="badge b-purple">QUI ?</span></h3><p>Qui est concerné, quel service est impliqué ?</p></div>
+    <div class="notion-card"><h3><span class="badge b-purple">COMMENT ?</span></h3><p>Comment la situation s'est-elle produite ?</p></div>
+    <div class="notion-card"><h3><span class="badge b-purple">QUAND ?</span></h3><p>À quel moment le problème est-il apparu ?</p></div>
+  </div>
+
+  <div class="section-title">Canaux de réclamation</div>
+  <div class="tag-row" style="margin-bottom:1rem">
+    <span class="badge b-blue" style="font-size:12px;padding:5px 10px"><i class="ti ti-mail" aria-hidden="true"></i> Courrier</span>
+    <span class="badge b-blue" style="font-size:12px;padding:5px 10px"><i class="ti ti-phone" aria-hidden="true"></i> Téléphone</span>
+    <span class="badge b-blue" style="font-size:12px;padding:5px 10px"><i class="ti ti-mail-forward" aria-hidden="true"></i> E-mail</span>
+    <span class="badge b-coral" style="font-size:12px;padding:5px 10px"><i class="ti ti-brand-instagram" aria-hidden="true"></i> Réseaux sociaux</span>
+  </div>
+  <div class="notion-card">
+    <p><strong>3 règles d'or :</strong> Traiter rapidement · Tenir le client informé · Maintenir le contact sans promettre des délais irréalistes</p>
+  </div>
+
+</div>
+
+<div id="tab-astuces" class="tab-content">
+  <div class="section-title">12 astuces pour gérer un client difficile</div>
+  <div id="astuces-list"></div>
+</div>
+
+<div id="tab-quiz" class="tab-content">
+  <div class="score-bar">
+    <div>
+      <div class="score-label">Score</div>
+      <div><span class="score-num" id="score">0</span><span style="font-size:14px;color:var(--color-text-secondary)">/20</span></div>
+    </div>
+    <div>
+      <div class="score-label">Progression</div>
+      <div style="font-size:14px;font-weight:500"><span id="answered">0</span>/20 répondues</div>
+    </div>
+    <button class="btn-reset" onclick="resetQuiz()"><i class="ti ti-refresh" aria-hidden="true"></i> Recommencer</button>
+  </div>
+  <div class="progress"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+  <div id="quiz-container"></div>
+</div>
+
+</div>
+
+<script>
+const astuces=[
+  {n:1,title:"Savoir l'écouter",desc:"Regarder dans les yeux, ne pas interrompre, hocher la tête, laisser terminer. L'écoute active est le premier outil de désamorçage."},
+  {n:2,title:"Montrer de l'empathie",desc:"Dire 'trouvons une solution ensemble'. Empathie ≠ capitulation. Si répétition, répondre : 'À votre place je ressentirais la même chose'."},
+  {n:3,title:"Penser aux observateurs",desc:"D'autres clients observent. Votre comportement illustre la qualité du service. Chaque interaction est une opportunité ou un risque."},
+  {n:4,title:"Parler lentement, baisser la voix",desc:"Les émotions sont contagieuses. Une voix posée crée un apaisement naturel. Ne jamais hausser le ton ni couvrir la voix du client."},
+  {n:5,title:"S'excuser avec sincérité",desc:"S'excuser pour ce que vous avez fait, jamais pour ce que le client ressent. Contact visuel + ton sincère. ✓ 'Je suis désolé de ne pas pouvoir…'"},
+  {n:6,title:"Informer le superviseur",desc:"Même si le client ne le demande pas. Le responsable peut accorder plus. Rendre l'attente agréable (eau, endroit confortable)."},
+  {n:7,title:"Tenir ses promesses",desc:"Ne promettre que ce que l'on peut tenir. Si doute, consulter le superviseur avant. 'Donnez-moi une minute pour vérifier.'"},
+  {n:8,title:"Finir sur une note positive",desc:"Exprimer gratitude pour sa patience. S'engager pour la prochaine visite. L'impression finale reste longtemps en mémoire."},
+  {n:9,title:"Savoir appeler la sécurité",desc:"Violence / menaces physiques → sécurité immédiate. Insultes / scènes publiques → limite dépassée. Client sous influence → ne pas raisonner."},
+  {n:10,title:"Mettre son égo de côté",desc:"'Le client a raison' = gérer positivement > avoir raison. S'excuser ≠ faiblesse. Concentrer sur la solution, pas le débat."},
+  {n:11,title:"Voir l'opportunité",desc:"Client difficile bien géré = ambassadeur potentiel. Chaque client apaisé est un client préservé, une relation à long terme sauvegardée."},
+  {n:12,title:"Ne pas prendre personnellement",desc:"Le client réagit à une situation, pas à vous. Dissocier identité et rôle. Rester focalisé sur la clôture positive."}
+];
+
+const questions=[
+  {q:"Combien de clients mécontents expriment leur insatisfaction directement ?",opts:["1 sur 2","1 sur 5","1 sur 10","1 sur 3"],a:2,exp:"Seulement 1 client sur 10 s'exprime. Les autres partent en silence."},
+  {q:"À combien de personnes un client mécontent parle-t-il en moyenne de son expérience ?",opts:["3","5","7","10"],a:3,exp:"Un client mécontent en parle à 10 personnes contre seulement 3 pour un client satisfait."},
+  {q:"Quel est le premier type de réclamation quand le client utilise correctement le produit mais qu'il est défectueux ?",opts:["Faute du vendeur","Mauvaise foi","Bonne foi","Réclamation abusive"],a:2,exp:"La réclamation de bonne foi : le client utilise bien le produit, mais celui-ci présente un défaut."},
+  {q:"Quelle est la PREMIÈRE attente fondamentale d'un client mécontent ?",opts:["Obtenir un remboursement","Être écouté","Parler au responsable","Obtenir une solution immédiate"],a:1,exp:"Avant tout, le client veut s'exprimer sans être interrompu ni jugé. L'écoute est la première étape."},
+  {q:"Que signifie l'empathie dans la relation client ?",opts:["Accepter toutes les demandes","Donner raison au client systématiquement","Reconnaître sincèrement les émotions sans nécessairement céder","Ignorer les émotions et trouver une solution"],a:2,exp:"Empathie ≠ capitulation. On comprend la frustration sans valider forcément la demande."},
+  {q:"Quelle est la PREMIÈRE étape du pas à pas face à un client mécontent ?",opts:["Reformuler le problème","Proposer une solution","Conduire dans un endroit neutre","Laisser s'exprimer"],a:2,exp:"Il faut d'abord conduire le client dans un endroit neutre, loin du regard des autres clients."},
+  {q:"Quand doit-on informer le superviseur d'une réclamation ?",opts:["Uniquement si le client le demande","Seulement pour les remboursements","Toujours, même si le client ne le demande pas","Uniquement si la réclamation dépasse 50€"],a:2,exp:"Bonne pratique : toujours informer le superviseur. Il dispose de plus de pouvoir de résolution."},
+  {q:"Combien de personnes en moyenne un client satisfait informe-t-il de son expérience positive ?",opts:["1","3","5","10"],a:1,exp:"Un client satisfait n'en parle qu'à 3 personnes, contre 10 pour un client mécontent."},
+  {q:"Quelle est la méthode des 4 questions pour structurer une reformulation ?",opts:["Quoi, Qui, Comment, Quand","Pourquoi, Qui, Où, Comment","Quand, Quoi, Combien, Comment","Qui, Quoi, Où, Pourquoi"],a:0,exp:"QUOI / QUI / COMMENT / QUAND : les 4 repères de la reformulation active."},
+  {q:"Face à un client qui répète sa plainte, quelle phrase est recommandée ?",opts:["Calmez-vous s'il vous plaît","Je ne peux rien faire de plus","À votre place, je ressentirais exactement la même chose","Vous avez déjà compris la situation"],a:2,exp:"Cette phrase augmente l'empathie et désamorce l'escalade émotionnelle."},
+  {q:"Quelle action est recommandée si un client est sous l'influence d'une substance ?",opts:["Essayer de le raisonner calmement","Appeler directement la sécurité","Lui proposer un remboursement","Ignorer la situation"],a:1,exp:"On ne tente pas de raisonner un client sous influence. On appelle la sécurité."},
+  {q:"Que signifie 'mettre son égo de côté' dans la gestion d'une réclamation ?",opts:["Donner raison au client même si on a tort","Prioriser la satisfaction client plutôt que d'avoir raison","Toujours rembourser le client","Ne pas répondre aux insultes"],a:1,exp:"Prouver que le client a tort ne sert à rien. L'objectif est la satisfaction et la relation."},
+  {q:"Pourquoi le client râleur est-il considéré comme un cadeau pour l'entreprise ?",opts:["Il fait de la publicité gratuite","Il pointe des dysfonctionnements et donne la chance de s'améliorer","Il génère plus de revenus","Il est fidèle par nature"],a:1,exp:"En s'exprimant, il révèle des failles et offre l'opportunité de le fidéliser."},
+  {q:"Quel canal de réclamation nécessite la réactivité la plus forte en raison de son impact public ?",opts:["Courrier","Téléphone","E-mail","Réseaux sociaux"],a:3,exp:"Les réseaux sociaux ont un fort impact sur l'image de marque — réponse rapide et soignée indispensable."},
+  {q:"Laquelle de ces affirmations sur la communication non verbale est correcte ?",opts:["Le ton de la voix n'impacte pas le client","Sourire chaleureusement dès le début calme toujours le client","Une voix posée contribue à calmer l'atmosphère","Se tenir en arrière montre le respect"],a:2,exp:"Une voix posée, douce et assurée contribue à calmer, même en situation de tension."},
+  {q:"Quelle réponse est IDÉALE face à 'Pourquoi ce produit n'est plus disponible ?'",opts:["Je ne travaille pas dans ce rayon","Nous sommes en rupture, je préviens quelqu'un","Le produit sera disponible le (date), souhaitez-vous le commander ?","Ce n'est pas de ma faute"],a:2,exp:"La réponse idéale propose une solution concrète et remercie le client pour sa patience."},
+  {q:"Combien de fois l'impact d'une mauvaise expérience est-il amplifié sur les réseaux sociaux ?",opts:["×10","×50","×100","×1000"],a:2,exp:"Sur les réseaux sociaux, tous les chiffres sont multipliés par 100."},
+  {q:"Laquelle de ces formulations est orientée 'approche positive' ?",opts:["Je ne sais pas, ce n'est pas moi","Le rayon s'est trompé, pas moi","Nous allons trouver une solution ensemble","Je vais voir si on peut faire quelque chose"],a:2,exp:"'Nous allons trouver une solution ensemble' est concrète, engageante et orientée solution."},
+  {q:"Quelle est la 8e et dernière étape du pas à pas face à un client mécontent ?",opts:["Reformuler le problème","Assurer du suivi","Remercier pour la fidélité","Faire un geste commercial"],a:3,exp:"La dernière étape est de faire un geste commercial si la situation le justifie."},
+  {q:"Quel est le principe fondamental du système de réclamations d'entreprise ?",opts:["Réduire le nombre de remboursements","Transformer les insatisfactions en moteur de progrès et de fidélisation","Éviter les réclamations par courrier","Traiter uniquement les réclamations écrites"],a:1,exp:"Un bon système de réclamations transforme les plaintes en opportunités d'amélioration et de fidélisation."}
+];
+
+let state=questions.map(()=>null);
+
+function showTab(id){
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>{
+    b.classList.toggle('active',['fiche','astuces','quiz'][i]===id);
+  });
+  document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+}
+
+function buildAstuces(){
+  const c=document.getElementById('astuces-list');
+  c.innerHTML=astuces.map(a=>`
+    <div class="tip-card" style="margin-bottom:8px">
+      <span><span style="color:#D85A30;font-weight:500">${a.n}.</span> ${a.title}</span>
+      <p>${a.desc}</p>
+    </div>`).join('');
+}
+
+function buildQuiz(){
+  const c=document.getElementById('quiz-container');
+  c.innerHTML=questions.map((q,qi)=>`
+    <div class="quiz-q" id="q${qi}">
+      <div class="qtext"><span style="color:var(--color-text-secondary);font-size:12px">Question ${qi+1}/20 · </span>${q.q}</div>
+      ${q.opts.map((o,oi)=>`<button class="quiz-opt" onclick="answer(${qi},${oi})">${o}</button>`).join('')}
+      <div class="feedback" id="fb${qi}" style="display:none"></div>
+    </div>`).join('');
+}
+
+function answer(qi,oi){
+  if(state[qi]!==null)return;
+  state[qi]=oi;
+  const q=questions[qi];
+  const opts=document.querySelectorAll(`#q${qi} .quiz-opt`);
+  opts.forEach((o,i)=>{
+    o.classList.add('disabled');
+    if(i===q.a)o.classList.add('correct');
+    else if(i===oi&&oi!==q.a)o.classList.add('wrong');
+  });
+  const fb=document.getElementById('fb'+qi);
+  fb.style.display='block';
+  fb.className='feedback '+(oi===q.a?'ok':'ko');
+  fb.textContent=(oi===q.a?'✓ Bonne réponse ! ':'✗ Mauvaise réponse. ')+q.exp;
+  updateScore();
+}
+
+function updateScore(){
+  const answered=state.filter(s=>s!==null).length;
+  const correct=state.filter((s,i)=>s===questions[i].a).length;
+  document.getElementById('score').textContent=correct;
+  document.getElementById('answered').textContent=answered;
+  document.getElementById('progress-fill').style.width=(answered/20*100)+'%';
+}
+
+function resetQuiz(){
+  state=questions.map(()=>null);
+  buildQuiz();
+  updateScore();
+}
+
+buildAstuces();
+buildQuiz();
+</script>

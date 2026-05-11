@@ -1,0 +1,368 @@
+
+<h2 class="sr-only">Fiche de révision interactive — Les moyens de paiement — TP Employé commercial RNCP37099</h2>
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-sans); }
+  .tab-bar { display: flex; gap: 8px; margin-bottom: 1.5rem; flex-wrap: wrap; }
+  .tab-btn {
+    padding: 8px 18px; border-radius: var(--border-radius-md);
+    border: 0.5px solid var(--color-border-secondary);
+    background: var(--color-background-primary);
+    color: var(--color-text-secondary); font-size: 14px; cursor: pointer;
+    font-family: var(--font-sans); font-weight: 400;
+  }
+  .tab-btn.active {
+    background: #1D9E75; color: #fff; border-color: #1D9E75; font-weight: 500;
+  }
+  .section { display: none; }
+  .section.visible { display: block; }
+
+  .card {
+    background: var(--color-background-primary);
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-lg);
+    padding: 1rem 1.25rem;
+    margin-bottom: 12px;
+  }
+  .card-title {
+    font-size: 15px; font-weight: 500;
+    color: var(--color-text-primary);
+    margin-bottom: 8px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .badge {
+    display: inline-block; font-size: 11px; padding: 2px 8px;
+    border-radius: var(--border-radius-md); font-weight: 500;
+  }
+  .badge-teal { background: #E1F5EE; color: #0F6E56; }
+  .badge-blue { background: #E6F1FB; color: #185FA5; }
+  .badge-amber { background: #FAEEDA; color: #854F0B; }
+  .badge-coral { background: #FAECE7; color: #993C1D; }
+  .badge-purple { background: #EEEDFE; color: #3C3489; }
+  .row { display: flex; gap: 12px; flex-wrap: wrap; }
+  .half { flex: 1; min-width: 220px; }
+  p, li { font-size: 14px; color: var(--color-text-secondary); line-height: 1.6; }
+  ul { padding-left: 1.2rem; }
+  .important {
+    border-left: 3px solid #D85A30; padding-left: 12px;
+    border-radius: 0; margin: 8px 0;
+  }
+  .important p { color: var(--color-text-primary); font-weight: 500; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .metric-card {
+    background: var(--color-background-secondary);
+    border-radius: var(--border-radius-md);
+    padding: 10px 14px; text-align: center;
+  }
+  .metric-label { font-size: 12px; color: var(--color-text-secondary); margin-bottom: 4px; }
+  .metric-value { font-size: 20px; font-weight: 500; color: var(--color-text-primary); }
+
+  .q-container { margin-bottom: 1rem; }
+  .q-text { font-size: 15px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 10px; }
+  .q-num { color: #1D9E75; margin-right: 6px; }
+  .choices { display: flex; flex-direction: column; gap: 6px; }
+  .choice-btn {
+    text-align: left; padding: 8px 12px; font-size: 13px;
+    border: 0.5px solid var(--color-border-secondary);
+    border-radius: var(--border-radius-md);
+    background: var(--color-background-primary);
+    color: var(--color-text-secondary); cursor: pointer;
+    font-family: var(--font-sans);
+    transition: border-color 0.15s;
+  }
+  .choice-btn:hover:not(:disabled) { border-color: #1D9E75; color: var(--color-text-primary); }
+  .choice-btn.correct { background: #E1F5EE; color: #0F6E56; border-color: #1D9E75; font-weight: 500; }
+  .choice-btn.wrong { background: #FAECE7; color: #993C1D; border-color: #D85A30; }
+  .explanation {
+    margin-top: 8px; font-size: 13px; padding: 8px 12px;
+    background: var(--color-background-secondary);
+    border-radius: var(--border-radius-md);
+    color: var(--color-text-secondary); display: none;
+  }
+  .explanation.show { display: block; }
+  .next-btn {
+    margin-top: 12px; padding: 8px 20px;
+    background: #1D9E75; color: #fff; border: none;
+    border-radius: var(--border-radius-md); font-size: 14px; cursor: pointer;
+    font-family: var(--font-sans); display: none;
+  }
+  .next-btn.show { display: inline-block; }
+  .score-card {
+    text-align: center; padding: 2rem;
+    background: var(--color-background-secondary);
+    border-radius: var(--border-radius-lg); margin-top: 1rem;
+  }
+  .score-big { font-size: 48px; font-weight: 500; color: #1D9E75; }
+  .score-sub { font-size: 15px; color: var(--color-text-secondary); margin-top: 8px; }
+  .restart-btn {
+    margin-top: 1rem; padding: 10px 24px;
+    background: #1D9E75; color: #fff; border: none;
+    border-radius: var(--border-radius-md); font-size: 14px; cursor: pointer;
+    font-family: var(--font-sans);
+  }
+  .progress-bar-bg {
+    height: 4px; background: var(--color-background-secondary);
+    border-radius: 2px; margin-bottom: 1.5rem;
+  }
+  .progress-bar-fill {
+    height: 4px; background: #1D9E75; border-radius: 2px;
+    transition: width 0.3s;
+  }
+  h3 { font-size: 16px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 8px; }
+</style>
+
+<div style="padding: 1rem 0;">
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab('fiche')"><i class="ti ti-book-2" aria-hidden="true"></i> Fiche de révision</button>
+  <button class="tab-btn" onclick="showTab('quiz')"><i class="ti ti-brain" aria-hidden="true"></i> Quiz 20 questions</button>
+</div>
+
+<div id="fiche" class="section visible">
+
+  <div class="card">
+    <div class="card-title"><span class="badge badge-teal">1</span> Les deux formes de monnaie</div>
+    <div class="row">
+      <div class="half">
+        <h3>Monnaie fiduciaire</h3>
+        <ul>
+          <li>Pièces (monnaie métallique / divisionnaire)</li>
+          <li>Billets (monnaie papier / financière)</li>
+        </ul>
+      </div>
+      <div class="half">
+        <h3>Monnaie scripturale</h3>
+        <ul>
+          <li>Circule sous forme d'écritures sur des comptes</li>
+          <li>Chèques, cartes, virements, prélèvements, apps mobiles</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="badge badge-blue">2</span> Les espèces — règles clés</div>
+    <div class="grid-2">
+      <div class="metric-card">
+        <div class="metric-label">Plafond particulier → professionnel</div>
+        <div class="metric-value">1 000 €</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Plafond domicile fiscal étranger</div>
+        <div class="metric-value">15 000 €</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Pièces maximum acceptées</div>
+        <div class="metric-value">50 pièces</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Paiement sans contact max</div>
+        <div class="metric-value">50 €</div>
+      </div>
+    </div>
+    <div class="important" style="margin-top: 12px;">
+      <p>Le commerçant peut refuser : +50 pièces, billets/pièces abîmés, doute sur l'authenticité, devises étrangères</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="badge badge-amber">3</span> Le chèque bancaire</div>
+    <div class="row">
+      <div class="half">
+        <h3>Les 3 acteurs</h3>
+        <ul>
+          <li><strong style="color: var(--color-text-primary);">Tireur</strong> — personne qui établit le chèque</li>
+          <li><strong style="color: var(--color-text-primary);">Tiré</strong> — la banque</li>
+          <li><strong style="color: var(--color-text-primary);">Bénéficiaire</strong> — qui reçoit le paiement</li>
+        </ul>
+      </div>
+      <div class="half">
+        <h3>Règles importantes</h3>
+        <ul>
+          <li>Validité : <strong style="color: var(--color-text-primary);">1 an et 8 jours</strong></li>
+          <li>Date : obligatoirement le jour J</li>
+          <li>Litige montant : le montant en lettres prime</li>
+          <li>Chèque sans provision = chèque en bois</li>
+          <li>Fichage BDF si non régularisé sous 15 jours</li>
+        </ul>
+      </div>
+    </div>
+    <div class="important" style="margin-top: 10px;">
+      <p>L'entreprise peut refuser le chèque, mais doit l'afficher. Elle peut exiger une pièce d'identité.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="badge badge-coral">4</span> Les cartes bancaires</div>
+    <div class="row">
+      <div class="half">
+        <h3>Cartes à débit (bancaires)</h3>
+        <ul>
+          <li>Débit immédiat : prélèvement sous 48h</li>
+          <li>Débit différé : prélèvement 1x/mois</li>
+          <li>Liées au compte courant (compte chèque)</li>
+        </ul>
+      </div>
+      <div class="half">
+        <h3>Cartes de crédit</h3>
+        <ul>
+          <li>Liées à une réserve d'argent (crédit revolving)</li>
+          <li>Remboursement mensuel ou comptant</li>
+          <li>Conditions : être majeur + étude de dossier</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="badge badge-purple">5</span> Les autres moyens de paiement</div>
+    <div class="row">
+      <div class="half">
+        <h3>Ticket restaurant</h3>
+        <ul>
+          <li>Valeur journalière : <strong style="color: var(--color-text-primary);">25 €</strong></li>
+          <li>6 points de contrôle : millésime, zones fluorescentes, code-barres, carré CMC7, code de sécurité, coin supérieur gauche</li>
+          <li>Attention aux faux titres de paiement</li>
+        </ul>
+      </div>
+      <div class="half">
+        <h3>Monnaie scripturale — autres</h3>
+        <ul>
+          <li>Virement SEPA</li>
+          <li>Prélèvement SEPA (mandat)</li>
+          <li>Applications mobiles de paiement</li>
+          <li>Chèque de banque (émis par la banque)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="badge badge-teal">6</span> En grande distribution — 4 catégories</div>
+    <div class="row">
+      <div class="metric-card" style="flex:1; min-width: 120px;">
+        <div class="metric-label">Espèces</div>
+        <div style="font-size: 28px; color: #1D9E75;"><i class="ti ti-coin-euro" aria-hidden="true"></i></div>
+      </div>
+      <div class="metric-card" style="flex:1; min-width: 120px;">
+        <div class="metric-label">Chèques</div>
+        <div style="font-size: 28px; color: #185FA5;"><i class="ti ti-writing" aria-hidden="true"></i></div>
+      </div>
+      <div class="metric-card" style="flex:1; min-width: 120px;">
+        <div class="metric-label">Cartes</div>
+        <div style="font-size: 28px; color: #854F0B;"><i class="ti ti-credit-card" aria-hidden="true"></i></div>
+      </div>
+      <div class="metric-card" style="flex:1; min-width: 120px;">
+        <div class="metric-label">Autres</div>
+        <div style="font-size: 28px; color: #3C3489;"><i class="ti ti-dots" aria-hidden="true"></i></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align: center; margin-top: 1rem;">
+    <button class="restart-btn" onclick="showTab('quiz')"><i class="ti ti-brain" aria-hidden="true"></i> Tester mes connaissances →</button>
+  </div>
+</div>
+
+<div id="quiz" class="section">
+  <div class="progress-bar-bg">
+    <div class="progress-bar-fill" id="progress-fill" style="width: 0%;"></div>
+  </div>
+  <div id="quiz-body"></div>
+</div>
+
+</div>
+
+<script>
+const questions = [
+  { q: "Quelles sont les deux formes de monnaie ?", choices: ["Monnaie fiduciaire et monnaie scripturale", "Monnaie papier et monnaie électronique", "Monnaie légale et monnaie bancaire", "Monnaie métallique et monnaie numérique"], correct: 0, expl: "La monnaie fiduciaire regroupe les pièces et billets. La monnaie scripturale circule sous forme d'écritures sur des comptes." },
+  { q: "Quel est le plafond de paiement en espèces d'un particulier à un professionnel ?", choices: ["500 €", "1 000 €", "3 000 €", "5 000 €"], correct: 1, expl: "Le plafond est de 1 000 € pour un paiement d'un particulier ou d'un professionnel à un autre professionnel." },
+  { q: "Dans quel cas le plafond espèces peut monter à 15 000 € ?", choices: ["Achat immobilier", "Client majeur avec pièce d'identité", "Domicile fiscal à l'étranger + dépense personnelle", "Paiement entre professionnels"], correct: 2, expl: "Le plafond de 15 000 € s'applique si le domicile fiscal est à l'étranger ET que le règlement est pour une dépense personnelle." },
+  { q: "À partir de combien de pièces un commerçant peut-il refuser un paiement en espèces ?", choices: ["Plus de 20 pièces", "Plus de 30 pièces", "Plus de 50 pièces", "Plus de 100 pièces"], correct: 2, expl: "Un commerçant peut légalement refuser un paiement comportant plus de 50 pièces." },
+  { q: "Quelle est la durée de validité d'un chèque bancaire ?", choices: ["6 mois", "1 an", "1 an et 8 jours", "2 ans"], correct: 2, expl: "Un chèque est valable 1 an et 8 jours à compter de sa date d'émission. Passé ce délai, la banque doit le rejeter." },
+  { q: "Que se passe-t-il si le montant en lettres et en chiffres d'un chèque sont différents ?", choices: ["Le chèque est annulé", "Le montant en chiffres est retenu", "Le montant en lettres est retenu", "La banque choisit le montant le plus faible"], correct: 2, expl: "En cas de discordance, c'est toujours le montant écrit en lettres qui est retenu par la banque." },
+  { q: "Comment appelle-t-on la personne qui établit un chèque ?", choices: ["Le bénéficiaire", "Le tiré", "Le tireur", "L'émetteur"], correct: 2, expl: "Le tireur est celui qui rédige et signe le chèque. Le tiré est la banque. Le bénéficiaire est celui qui le reçoit." },
+  { q: "Dans quel délai doit-on régulariser un chèque rejeté pour éviter le fichage BDF ?", choices: ["8 jours", "15 jours", "30 jours", "60 jours"], correct: 1, expl: "Le fichage à la Banque de France (FCC) est effectif si le premier chèque rejeté n'est pas régularisé dans les 15 jours." },
+  { q: "Quelle est la différence entre une carte à débit immédiat et une carte à débit différé ?", choices: ["Le débit immédiat est gratuit, le différé est payant", "Le débit immédiat prélève sous 48h, le différé prélève 1x par mois", "Le différé est réservé aux professionnels", "Il n'y a pas de différence"], correct: 1, expl: "Le débit immédiat effectue le prélèvement sous 48h. Le débit différé regroupe toutes les dépenses et les prélève une fois par mois." },
+  { q: "Sur quel compte est adossée une carte bancaire classique ?", choices: ["Un compte épargne", "Un compte courant (compte chèque)", "Une réserve de crédit", "Un compte professionnel"], correct: 1, expl: "La carte bancaire (à débit) est directement liée au compte courant ou compte chèque du titulaire." },
+  { q: "Comment fonctionne une carte de crédit (type Oney, Pass) ?", choices: ["Elle fonctionne comme une carte bancaire normale", "Elle puise dans une réserve d'argent remboursable par mensualités (crédit revolving)", "Elle est liée au compte courant avec débit différé", "Elle n'est utilisable qu'en ligne"], correct: 1, expl: "La carte de crédit est liée à une réserve d'argent (crédit revolving) qui peut être remboursée au comptant ou par mensualités avec des intérêts." },
+  { q: "Quel est le montant maximum d'un paiement sans contact par carte ?", choices: ["20 €", "30 €", "50 €", "100 €"], correct: 2, expl: "Le plafond du paiement sans contact est de 50 € par transaction, avec 3 à 5 utilisations successives selon les banques avant qu'un code PIN soit demandé." },
+  { q: "Quelle est la valeur journalière maximale d'un titre restaurant papier ?", choices: ["19 €", "20 €", "25 €", "30 €"], correct: 2, expl: "Depuis 2022, la valeur faciale journalière utilisable d'un titre restaurant est plafonnée à 25 €." },
+  { q: "Combien y a-t-il de catégories de moyens de paiement en grande distribution ?", choices: ["2", "3", "4", "5"], correct: 2, expl: "En grande distribution, on distingue 4 catégories : les espèces, les chèques, les cartes bancaires et cartes de crédit, et les autres moyens de paiement." },
+  { q: "Qu'est-ce que le chèque de banque ?", choices: ["Un chèque émis par le client avec sa propre banque", "Un chèque émis directement par la banque, garantissant le paiement", "Un chèque valable uniquement en banque", "Un chèque avec provision bloquée 6 mois"], correct: 1, expl: "Le chèque de banque est émis par la banque elle-même. Il garantit le paiement car la provision est bloquée. Attention aux faux chèques de banque !" },
+  { q: "Qu'est-ce que la monnaie fiduciaire ?", choices: ["La monnaie qui circule sur les comptes bancaires", "La monnaie sous forme de pièces et de billets", "Les virements et prélèvements", "L'ensemble des moyens de paiement électroniques"], correct: 1, expl: "La monnaie fiduciaire comprend les pièces (monnaie métallique/divisionnaire) et les billets (monnaie papier/financière)." },
+  { q: "Un commerçant peut-il refuser un billet qu'il soupçonne être faux ?", choices: ["Non, il est obligé de l'accepter", "Oui, il a l'autorisation de refuser", "Seulement avec l'accord du client", "Seulement si le montant dépasse 100 €"], correct: 1, expl: "Un commerçant est autorisé à refuser un billet ou une pièce dont il doute de l'authenticité. C'est l'un des 4 cas de refus légaux." },
+  { q: "Combien y a-t-il de points de contrôle sur un titre restaurant pour détecter les faux ?", choices: ["3", "4", "6", "8"], correct: 2, expl: "Il y a 6 points de contrôle : le millésime, les zones fluorescentes, le code-barres, le carré CMC7, le code de sécurité et le coin supérieur gauche." },
+  { q: "Quelle condition est requise pour obtenir une carte de crédit ?", choices: ["Avoir un compte épargne", "Être salarié à temps plein", "Être majeur et passer une étude de dossier", "Être client de la banque depuis 2 ans"], correct: 2, expl: "Pour obtenir une carte de crédit, le demandeur doit être majeur capable et son dossier doit être étudié par l'organisme de crédit." },
+  { q: "La date inscrite sur un chèque doit être :", choices: ["La date de la prochaine échéance de paiement", "La date du jour où le chèque est rédigé", "N'importe quelle date future choisie par le tireur", "La date de livraison de la marchandise"], correct: 1, expl: "La date inscrite sur un chèque est obligatoirement celle du jour où il est rédigé. Antidater ou postdater un chèque est interdit." }
+];
+
+let current = 0, score = 0, answered = false;
+
+function showTab(tab) {
+  document.getElementById('fiche').classList.remove('visible');
+  document.getElementById('quiz').classList.remove('visible');
+  document.getElementById(tab).classList.add('visible');
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  const idx = tab === 'fiche' ? 0 : 1;
+  document.querySelectorAll('.tab-btn')[idx].classList.add('active');
+  if (tab === 'quiz') renderQuestion();
+}
+
+function renderQuestion() {
+  const qb = document.getElementById('quiz-body');
+  if (current >= questions.length) {
+    const pct = Math.round((score / questions.length) * 100);
+    let msg = pct >= 80 ? "Excellent ! Tu maîtrises bien les moyens de paiement." :
+              pct >= 60 ? "Bien joué ! Révise les points en rouge." :
+              "Continue à réviser la fiche, tu y es presque !";
+    qb.innerHTML = `<div class="score-card">
+      <div class="metric-label">Score final</div>
+      <div class="score-big">${score}/${questions.length}</div>
+      <div style="font-size: 32px; margin: 8px 0;">${pct}%</div>
+      <div class="score-sub">${msg}</div>
+      <button class="restart-btn" onclick="restartQuiz()">Recommencer le quiz</button>
+    </div>`;
+    document.getElementById('progress-fill').style.width = '100%';
+    return;
+  }
+  const q = questions[current];
+  document.getElementById('progress-fill').style.width = ((current / questions.length) * 100) + '%';
+  let choicesHtml = q.choices.map((c, i) =>
+    `<button class="choice-btn" id="c${i}" onclick="answer(${i})">${String.fromCharCode(65+i)}. ${c}</button>`
+  ).join('');
+  qb.innerHTML = `<div class="q-container">
+    <div class="q-text"><span class="q-num">Q${current+1}/20</span> ${q.q}</div>
+    <div class="choices">${choicesHtml}</div>
+    <div class="explanation" id="expl">${q.expl}</div>
+    <button class="next-btn" id="nextBtn" onclick="nextQ()">Question suivante →</button>
+  </div>`;
+  answered = false;
+}
+
+function answer(idx) {
+  if (answered) return;
+  answered = true;
+  const q = questions[current];
+  if (idx === q.correct) score++;
+  q.choices.forEach((_, i) => {
+    const btn = document.getElementById('c' + i);
+    btn.disabled = true;
+    if (i === q.correct) btn.classList.add('correct');
+    else if (i === idx) btn.classList.add('wrong');
+  });
+  document.getElementById('expl').classList.add('show');
+  document.getElementById('nextBtn').classList.add('show');
+}
+
+function nextQ() {
+  current++;
+  renderQuestion();
+}
+
+function restartQuiz() {
+  current = 0; score = 0; answered = false;
+  renderQuestion();
+}
+</script>

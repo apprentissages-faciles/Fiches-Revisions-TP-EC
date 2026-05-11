@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Les Pourcentages – Journée 4 | RNCP37099</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e0e14;
+    --surface: #16161f;
+    --card: #1c1c28;
+    --border: #2a2a3d;
+    --accent: #f7c948;
+    --accent2: #5b7bfa;
+    --accent3: #3ecf8e;
+    --accent4: #f76b6b;
+    --text: #e8e8f0;
+    --muted: #8888a8;
+    --radius: 14px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    border-bottom: 2px solid var(--accent);
+    padding: 48px 24px 36px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '%';
+    position: absolute;
+    font-family: 'Syne', sans-serif;
+    font-size: 240px;
+    font-weight: 800;
+    color: rgba(247,201,72,0.06);
+    top: -40px; right: -20px;
+    pointer-events: none;
+  }
+  .badge {
+    display: inline-block;
+    background: rgba(247,201,72,0.15);
+    color: var(--accent);
+    border: 1px solid rgba(247,201,72,0.4);
+    border-radius: 99px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 4px 14px;
+    margin-bottom: 14px;
+  }
+  header h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(28px, 6vw, 52px);
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -1px;
+  }
+  header h1 span { color: var(--accent); }
+  header p {
+    color: var(--muted);
+    margin-top: 10px;
+    font-size: 15px;
+  }
+
+  /* ── NAV TABS ── */
+  .tabs {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    padding: 24px 16px 0;
+    flex-wrap: wrap;
+  }
+  .tab-btn {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    color: var(--muted);
+    border-radius: 99px;
+    padding: 10px 22px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .tab-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .tab-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #0e0e14;
+  }
+
+  /* ── MAIN ── */
+  main { max-width: 920px; margin: 0 auto; padding: 32px 16px 80px; }
+
+  .section { display: none; animation: fadeIn 0.35s ease; }
+  .section.active { display: block; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+
+  /* ── FICHE CARDS ── */
+  .notion-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 36px 0 18px;
+  }
+  .notion-icon {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; flex-shrink: 0;
+  }
+  .notion-header h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .card {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px 24px;
+    margin-bottom: 14px;
+    transition: border-color 0.2s;
+  }
+  .card:hover { border-color: #3a3a55; }
+
+  .card-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--accent);
+    margin-bottom: 10px;
+    letter-spacing: 0.3px;
+  }
+  .card p, .card li { font-size: 14.5px; color: #cccce0; }
+  .card ul { padding-left: 18px; }
+  .card li { margin-bottom: 6px; }
+
+  .formula-box {
+    background: rgba(91,123,250,0.1);
+    border: 1.5px solid rgba(91,123,250,0.35);
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-family: 'DM Mono', monospace;
+    font-size: 15px;
+    color: #a0b8ff;
+    margin: 12px 0;
+    text-align: center;
+    line-height: 2;
+  }
+
+  .formula-box.green {
+    background: rgba(62,207,142,0.08);
+    border-color: rgba(62,207,142,0.3);
+    color: #6ee7b7;
+  }
+  .formula-box.red {
+    background: rgba(247,107,107,0.08);
+    border-color: rgba(247,107,107,0.3);
+    color: #fca5a5;
+  }
+
+  .highlight { color: var(--accent); font-weight: 600; }
+  .chip {
+    display: inline-block;
+    background: rgba(247,201,72,0.12);
+    color: var(--accent);
+    border-radius: 6px;
+    padding: 2px 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .chip.blue {
+    background: rgba(91,123,250,0.15);
+    color: #8babff;
+  }
+
+  .steps { counter-reset: step; list-style: none; padding: 0; }
+  .steps li {
+    counter-increment: step;
+    display: flex;
+    gap: 12px;
+    margin-bottom: 12px;
+    font-size: 14.5px;
+    color: #cccce0;
+  }
+  .steps li::before {
+    content: counter(step);
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #0e0e14;
+    font-weight: 700;
+    font-size: 13px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 580px) { .two-col { grid-template-columns: 1fr; } }
+
+  .recap-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    margin-top: 12px;
+  }
+  .recap-table th {
+    background: rgba(247,201,72,0.12);
+    color: var(--accent);
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 600;
+    border-bottom: 1px solid var(--border);
+  }
+  .recap-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    color: #cccce0;
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+  }
+  .recap-table tr:last-child td { border-bottom: none; }
+
+  .tip-box {
+    background: rgba(62,207,142,0.08);
+    border-left: 3px solid var(--accent3);
+    border-radius: 0 10px 10px 0;
+    padding: 12px 16px;
+    margin-top: 14px;
+    font-size: 14px;
+    color: #a7f3d0;
+  }
+  .tip-box strong { color: var(--accent3); }
+
+  /* ── QUIZ ── */
+  .quiz-header {
+    text-align: center;
+    padding: 24px 0 32px;
+  }
+  .quiz-header h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 26px;
+    font-weight: 800;
+    margin-bottom: 8px;
+  }
+  .quiz-header p { color: var(--muted); font-size: 14px; }
+
+  .progress-bar-wrap {
+    background: var(--border);
+    border-radius: 99px;
+    height: 6px;
+    margin: 0 0 32px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent2), var(--accent));
+    border-radius: 99px;
+    transition: width 0.4s ease;
+  }
+  .q-counter {
+    text-align: right;
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  .question-card {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px 26px;
+    margin-bottom: 20px;
+  }
+  .question-card .q-num {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--accent2);
+    margin-bottom: 10px;
+  }
+  .question-card .q-text {
+    font-family: 'Syne', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 1.4;
+    margin-bottom: 20px;
+    color: #f0f0ff;
+  }
+
+  .options { display: flex; flex-direction: column; gap: 10px; }
+  .opt-btn {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 13px 18px;
+    text-align: left;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14.5px;
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.18s;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .opt-btn:hover:not(:disabled) {
+    border-color: var(--accent2);
+    background: rgba(91,123,250,0.08);
+    color: #fff;
+  }
+  .opt-btn .opt-letter {
+    width: 28px; height: 28px;
+    border-radius: 8px;
+    background: var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'DM Mono', monospace;
+    font-weight: 500;
+    font-size: 13px;
+    flex-shrink: 0;
+    transition: background 0.18s;
+  }
+  .opt-btn.correct {
+    border-color: var(--accent3);
+    background: rgba(62,207,142,0.1);
+    color: #6ee7b7;
+  }
+  .opt-btn.correct .opt-letter { background: var(--accent3); color: #0e0e14; }
+  .opt-btn.wrong {
+    border-color: var(--accent4);
+    background: rgba(247,107,107,0.1);
+    color: #fca5a5;
+  }
+  .opt-btn.wrong .opt-letter { background: var(--accent4); color: #fff; }
+
+  .feedback-box {
+    margin-top: 16px;
+    padding: 14px 18px;
+    border-radius: 10px;
+    font-size: 14px;
+    display: none;
+  }
+  .feedback-box.show { display: block; }
+  .feedback-box.ok { background: rgba(62,207,142,0.1); color: #6ee7b7; border: 1px solid rgba(62,207,142,0.3); }
+  .feedback-box.ko { background: rgba(247,107,107,0.08); color: #fca5a5; border: 1px solid rgba(247,107,107,0.25); }
+
+  .quiz-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: #0e0e14;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 28px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.1s;
+  }
+  .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+  .btn-primary:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
+  .btn-secondary {
+    background: transparent;
+    color: var(--muted);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 11px 22px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.18s;
+  }
+  .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── RESULTS ── */
+  .results-screen {
+    text-align: center;
+    padding: 40px 0;
+    display: none;
+  }
+  .results-screen.show { display: block; }
+  .score-ring {
+    width: 150px; height: 150px;
+    border-radius: 50%;
+    margin: 0 auto 24px;
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column;
+    border: 4px solid var(--accent);
+    background: rgba(247,201,72,0.06);
+  }
+  .score-ring .score-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 40px;
+    font-weight: 800;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .score-ring .score-label {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+  .results-screen h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 24px;
+    font-weight: 800;
+    margin-bottom: 10px;
+  }
+  .results-screen p { color: var(--muted); font-size: 15px; margin-bottom: 28px; }
+  .result-details { list-style: none; text-align: left; max-width: 500px; margin: 0 auto 32px; }
+  .result-details li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+    color: #cccce0;
+  }
+  .result-details li:last-child { border-bottom: none; }
+  .result-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="badge">RNCP 37099 · Journée 4</div>
+  <h1>Les <span>Pourcentages</span></h1>
+  <p>Fiche de révision + Quiz interactif · Commerce &amp; Vente</p>
+</header>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="showTab('fiche')">📋 Fiche de révision</button>
+  <button class="tab-btn" onclick="showTab('quiz')">🎯 Quiz (20 questions)</button>
+</div>
+
+<main>
+
+<!-- ══════════════════════════ FICHE ══════════════════════════ -->
+<div class="section active" id="fiche">
+
+  <!-- N1 : Définition -->
+  <div class="notion-header">
+    <div class="notion-icon" style="background:rgba(247,201,72,0.15);">💡</div>
+    <h2>Notion 1 — Qu'est-ce qu'un pourcentage ?</h2>
+  </div>
+  <div class="card">
+    <div class="card-title">Définition essentielle</div>
+    <p>Le symbole <span class="chip">%</span> signifie <strong>« divisé par 100 »</strong> et se lit « pour cent ».<br>
+    Un pourcentage est une façon d'exprimer une <strong>proportion</strong> ou une <strong>fraction</strong> dans un ensemble.</p>
+    <p style="margin-top:10px;">C'est une comparaison entre deux grandeurs de même nature, toujours <strong>ramenée à 100</strong>.</p>
+  </div>
+  <div class="two-col">
+    <div class="card">
+      <div class="card-title">% → Fraction</div>
+      <div class="formula-box">20 % = 20/100 = 1/5</div>
+    </div>
+    <div class="card">
+      <div class="card-title">% → Nombre décimal</div>
+      <div class="formula-box">20 % = 0,20</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">Tableau de conversion rapide</div>
+    <table class="recap-table">
+      <tr><th>Pourcentage</th><th>Fraction</th><th>Décimal</th></tr>
+      <tr><td>5 %</td><td>5/100</td><td>0,05</td></tr>
+      <tr><td>8 %</td><td>8/100</td><td>0,08</td></tr>
+      <tr><td>21 %</td><td>21/100</td><td>0,21</td></tr>
+      <tr><td>0,4 %</td><td>0,4/100</td><td>0,004</td></tr>
+      <tr><td>125 %</td><td>125/100</td><td>1,25</td></tr>
+    </table>
+    <div class="tip-box"><strong>💡 Règle d'or :</strong> Pour passer de % à décimal, on divise par 100 (= on déplace la virgule de 2 rangs vers la gauche).</div>
+  </div>
+
+  <!-- N2 : Calculer la valeur d'un % -->
+  <div class="notion-header">
+    <div class="notion-icon" style="background:rgba(91,123,250,0.15);">🔢</div>
+    <h2>Notion 2 — Calculer la valeur représentée par un %</h2>
+  </div>
+  <div class="card">
+    <div class="card-title">Formule</div>
+    <div class="formula-box">Valeur = Ensemble × Nombre décimal du %</div>
+    <p style="margin-top:10px;font-size:14px;color:var(--muted);">Exemple : 40 % de 20 000 électeurs ?</p>
+    <div class="formula-box green">20 000 × 0,40 = 8 000</div>
+  </div>
+  <div class="two-col">
+    <div class="card">
+      <div class="card-title">Exemple : Charges sociales</div>
+      <p style="font-size:13.5px;">Salaire brut : 1 569 €<br>Charges : 23 %</p>
+      <div class="formula-box">1 569 × 0,23 = <strong>360,87 €</strong></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Exemple : Vis à tête ronde</div>
+      <p style="font-size:13.5px;">980 vis, 25 % à tête ronde</p>
+      <div class="formula-box">980 × 0,25 = <strong>245 vis</strong></div>
+    </div>
+  </div>
+
+  <!-- N3 : Déterminer le % d'un ensemble -->
+  <div class="notion-header">
+    <div class="notion-icon" style="background:rgba(62,207,142,0.15);">📊</div>
+    <h2>Notion 3 — Déterminer le pourcentage d'un ensemble</h2>
+  </div>
+  <div class="card">
+    <div class="card-title">Formule</div>
+    <div class="formula-box green">% = (Partie ÷ Ensemble) × 100</div>
+    <p style="margin-top:10px;font-size:14px;color:var(--muted);">Exemple : 485 billes bleues sur 1 684 billes au total</p>
+    <div class="formula-box green">(485 ÷ 1 684) × 100 = <strong>28,8 %</strong></div>
+  </div>
+  <div class="card">
+    <div class="card-title">⚡ Méthode du Produit en Croix</div>
+    <p style="font-size:14px;color:var(--muted);margin-bottom:14px;">Utile quand on cherche un % inconnu. On construit un tableau à deux colonnes :</p>
+    <table class="recap-table">
+      <tr><th>Colonne quantité</th><th>Colonne %</th></tr>
+      <tr><td>Total (ensemble)</td><td>100 %</td></tr>
+      <tr><td>Partie (ce qu'on cherche)</td><td>?</td></tr>
+    </table>
+    <ul class="steps" style="margin-top:16px;">
+      <li>On prend le chiffre seul sur sa ligne (la partie) et on le multiplie par son opposé (100).</li>
+      <li>On divise par le chiffre restant (le total).</li>
+    </ul>
+    <div class="formula-box">? = (Partie × 100) ÷ Total</div>
+    <div class="tip-box"><strong>Exemple :</strong> 488 filles sur 1 256 élèves → (488 × 100) ÷ 1 256 = <strong>38,85 %</strong></div>
+  </div>
+
+  <!-- N4 : Baisse / Remise -->
+  <div class="notion-header">
+    <div class="notion-icon" style="background:rgba(247,107,107,0.15);">📉</div>
+    <h2>Notion 4 — Calculer directement une baisse (remise, solde)</h2>
+  </div>
+  <div class="card">
+    <ul class="steps">
+      <li>Identifier le prix de départ et le % de remise.</li>
+      <li>Calculer le <strong>complément à 100 %</strong> : 100 % − remise.</li>
+      <li>Transformer ce résultat en nombre décimal.</li>
+      <li>Multiplier le prix initial par ce décimal → prix à payer.</li>
+    </ul>
+    <div class="formula-box red">Prix final = Prix initial × (1 − taux de remise)</div>
+  </div>
+  <div class="two-col">
+    <div class="card">
+      <div class="card-title">Exemple : Console − 30 %</div>
+      <p style="font-size:13.5px;">Prix : 399 € / Remise : 30 %</p>
+      <div class="formula-box red">100% − 30% = 70% = 0,70<br>399 × 0,70 = <strong>279,30 €</strong></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Exemple : Chemise − 15 %</div>
+      <p style="font-size:13.5px;">Prix : 45 € / Remise : 15 %</p>
+      <div class="formula-box red">100% − 15% = 85% = 0,85<br>45 × 0,85 = <strong>38,25 €</strong></div>
+    </div>
+  </div>
+
+  <!-- N5 : Hausse -->
+  <div class="notion-header">
+    <div class="notion-icon" style="background:rgba(62,207,142,0.15);">📈</div>
+    <h2>Notion 5 — Calculer directement une augmentation</h2>
+  </div>
+  <div class="card">
+    <ul class="steps">
+      <li>Identifier le prix de départ et le % d'augmentation.</li>
+      <li>Calculer le <strong>complément à 100 %</strong> : 100 % + augmentation.</li>
+      <li>Transformer en nombre décimal.</li>
+      <li>Multiplier le prix initial par ce décimal → nouveau prix.</li>
+    </ul>
+    <div class="formula-box green">Prix final = Prix initial × (1 + taux d'augmentation)</div>
+  </div>
+  <div class="two-col">
+    <div class="card">
+      <div class="card-title">Exemple : Loyer + 2,15 %</div>
+      <p style="font-size:13.5px;">Loyer : 600 € / Hausse : 2,15 %</p>
+      <div class="formula-box green">100% + 2,15% = 102,15% = 1,0215<br>600 × 1,0215 = <strong>612,90 €</strong></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Exemple : Gazole + 3,4 %</div>
+      <p style="font-size:13.5px;">Prix : 1,98 €/L / Hausse : 3,4 %</p>
+      <div class="formula-box green">100% + 3,4% = 103,4% = 1,034<br>1,98 × 1,034 = <strong>2,05 €</strong></div>
+    </div>
+  </div>
+
+  <!-- N6 : TVA -->
+  <div class="notion-header">
+    <div class="notion-icon" style="background:rgba(247,201,72,0.15);">🧾</div>
+    <h2>Notion 6 — Application à la TVA (contexte professionnel)</h2>
+  </div>
+  <div class="card">
+    <div class="card-title">Formule TVA</div>
+    <div class="formula-box">Montant TVA = Prix HT × Taux TVA<br>Prix TTC = Prix HT × (1 + Taux TVA)</div>
+    <p style="margin-top:12px;font-size:14px;color:var(--muted);">Exemple avec TVA à 10 % sur un article à 42 € HT :</p>
+    <div class="formula-box">TVA = 42 × 0,10 = <strong>4,20 €</strong><br>Prix TTC = 42 × 1,10 = <strong>46,20 €</strong></div>
+  </div>
+
+  <!-- Mémo récap -->
+  <div class="card" style="border-color:rgba(247,201,72,0.35);margin-top:28px;">
+    <div class="card-title">⭐ MÉMO RÉCAPITULATIF — Les 4 situations clés</div>
+    <table class="recap-table">
+      <tr><th>Situation</th><th>Formule</th></tr>
+      <tr><td>Convertir % → décimal</td><td>% ÷ 100</td></tr>
+      <tr><td>Calculer x% d'une valeur</td><td>Valeur × décimal</td></tr>
+      <tr><td>Trouver quel % représente une partie</td><td>(Partie ÷ Total) × 100</td></tr>
+      <tr><td>Appliquer une remise de x%</td><td>Prix × (1 − 0,0x)</td></tr>
+      <tr><td>Appliquer une hausse de x%</td><td>Prix × (1 + 0,0x)</td></tr>
+    </table>
+  </div>
+
+</div><!-- /fiche -->
+
+
+<!-- ══════════════════════════ QUIZ ══════════════════════════ -->
+<div class="section" id="quiz">
+  <div class="quiz-header">
+    <h2>🎯 Quiz — Les Pourcentages</h2>
+    <p>20 questions pour valider vos acquis · RNCP 37099</p>
+  </div>
+
+  <div id="quiz-area">
+    <div class="q-counter" id="q-counter">Question 1 / 20</div>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-fill" id="progress-bar" style="width:5%"></div>
+    </div>
+    <div id="question-container"></div>
+    <div class="quiz-nav">
+      <span id="score-live" style="font-size:14px;color:var(--muted);">Score : 0 / 0</span>
+      <button class="btn-primary" id="btn-next" onclick="nextQuestion()" disabled>Question suivante →</button>
+    </div>
+  </div>
+
+  <div class="results-screen" id="results-screen">
+    <div class="score-ring">
+      <div class="score-num" id="final-score">0</div>
+      <div class="score-label">/ 20</div>
+    </div>
+    <h2 id="results-title">Résultats</h2>
+    <p id="results-msg"></p>
+    <ul class="result-details" id="result-details"></ul>
+    <button class="btn-primary" onclick="restartQuiz()">🔄 Recommencer le quiz</button>
+    &nbsp;
+    <button class="btn-secondary" onclick="showTab('fiche')">📋 Revoir la fiche</button>
+  </div>
+</div>
+
+</main>
+
+<script>
+// ── TAB NAVIGATION ──
+function showTab(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const idx = id === 'fiche' ? 0 : 1;
+  document.querySelectorAll('.tab-btn')[idx].classList.add('active');
+  if (id === 'quiz') initQuiz();
+}
+
+// ── QUIZ DATA ──
+const questions = [
+  {
+    q: "Que signifie le symbole « % » ?",
+    opts: ["Multiplié par 100", "Divisé par 100", "Ajouté à 100", "Racine de 100"],
+    a: 1,
+    exp: "Le symbole % signifie « divisé par 100 » et se lit « pour cent »."
+  },
+  {
+    q: "Quel est le nombre décimal correspondant à 21 % ?",
+    opts: ["2,1", "21", "0,021", "0,21"],
+    a: 3,
+    exp: "21 % = 21 ÷ 100 = 0,21. On déplace la virgule de 2 rangs vers la gauche."
+  },
+  {
+    q: "Quel est le nombre décimal de 0,4 % ?",
+    opts: ["0,4", "0,04", "0,004", "4"],
+    a: 2,
+    exp: "0,4 % = 0,4 ÷ 100 = 0,004."
+  },
+  {
+    q: "Quel est le nombre décimal de 125 % ?",
+    opts: ["0,125", "1,25", "12,5", "125"],
+    a: 1,
+    exp: "125 % = 125 ÷ 100 = 1,25. Un pourcentage supérieur à 100 % donne un décimal > 1."
+  },
+  {
+    q: "Comment calcule-t-on « 20 % de 199 € » ?",
+    opts: ["199 ÷ 20", "20 + 199", "0,20 × 199", "199 × 20"],
+    a: 2,
+    exp: "On convertit 20 % en décimal (0,20) puis on multiplie par la valeur : 0,20 × 199 = 39,80 €."
+  },
+  {
+    q: "M. LECANDIDE obtient 40 % des voix sur 20 000 électeurs. Combien de voix a-t-il ?",
+    opts: ["4 000", "8 000", "800", "40 000"],
+    a: 1,
+    exp: "20 000 × 0,40 = 8 000 voix."
+  },
+  {
+    q: "Dans la méthode du produit en croix, que pose-t-on toujours à 100 % ?",
+    opts: ["La partie cherchée", "La remise", "Le total (ensemble de référence)", "Le nombre décimal"],
+    a: 2,
+    exp: "Le total (ensemble) représente toujours 100 %. C'est la base de notre calcul."
+  },
+  {
+    q: "Un lycée a 1 256 élèves dont 488 filles. Quel pourcentage de filles y a-t-il (produit en croix) ?",
+    opts: ["38,85 %", "61,15 %", "48,8 %", "25 %"],
+    a: 0,
+    exp: "(488 × 100) ÷ 1 256 = 38,85 %."
+  },
+  {
+    q: "Une boîte contient 980 vis. 25 % sont à tête ronde. Combien de vis à tête ronde ?",
+    opts: ["245", "250", "24,5", "2 450"],
+    a: 0,
+    exp: "980 × 0,25 = 245 vis à tête ronde."
+  },
+  {
+    q: "Les charges sociales représentent 23 % du salaire brut de 1 569 €. Quel est leur montant ?",
+    opts: ["36,09 €", "360,87 €", "3 608,70 €", "23 €"],
+    a: 1,
+    exp: "1 569 × 0,23 = 360,87 €."
+  },
+  {
+    q: "Pour calculer directement un prix APRÈS une remise de 30 %, on multiplie le prix initial par :",
+    opts: ["0,30", "1,30", "0,70", "0,03"],
+    a: 2,
+    exp: "On cherche le complément à 100 % : 100 % − 30 % = 70 % = 0,70."
+  },
+  {
+    q: "Une console coûte 399 €. Elle est soldée à −30 %. Quel prix paye-t-on ?",
+    opts: ["119,70 €", "279,30 €", "369 €", "299,70 €"],
+    a: 1,
+    exp: "399 × 0,70 = 279,30 €."
+  },
+  {
+    q: "La même console est ensuite à −60 %. Quel est son nouveau prix ?",
+    opts: ["239,40 €", "159,60 €", "199 €", "179,55 €"],
+    a: 1,
+    exp: "399 × 0,40 = 159,60 €. (100 % − 60 % = 40 % = 0,40)"
+  },
+  {
+    q: "Une chemise à 45 € bénéficie d'une réduction de 15 %. Quel est le prix à payer ?",
+    opts: ["43,25 €", "6,75 €", "38,25 €", "30 €"],
+    a: 2,
+    exp: "100 % − 15 % = 85 % = 0,85. 45 × 0,85 = 38,25 €."
+  },
+  {
+    q: "Un loyer de 600 € augmente de 2,15 %. Quel est le nouveau loyer ?",
+    opts: ["602,15 €", "612,90 €", "613,15 €", "600,02 €"],
+    a: 1,
+    exp: "100 % + 2,15 % = 102,15 % = 1,0215. 600 × 1,0215 = 612,90 €."
+  },
+  {
+    q: "Le gazole est à 1,98 €/L et augmente de 3,4 %. Quel est le nouveau prix au litre ?",
+    opts: ["2,05 €", "2,04 €", "2,65 €", "1,99 €"],
+    a: 0,
+    exp: "1,98 × 1,034 = 2,047 ≈ 2,05 €."
+  },
+  {
+    q: "Comment calcule-t-on la TVA à 10 % sur un article à 42 € HT ?",
+    opts: ["42 + 10", "42 × 10", "42 × 0,10", "42 ÷ 10"],
+    a: 2,
+    exp: "TVA = Prix HT × Taux : 42 × 0,10 = 4,20 €."
+  },
+  {
+    q: "Dans un village de 852 habitants, 357 sont des femmes. Quel % représentent-elles ?",
+    opts: ["35,7 %", "41,9 %", "42,9 %", "38,5 %"],
+    a: 1,
+    exp: "(357 × 100) ÷ 852 = 41,9 %."
+  },
+  {
+    q: "Les retenues salariales représentent 22 % d'un salaire brut de 1 350 €. Quel est leur montant ?",
+    opts: ["279 €", "270 €", "297 €", "313,50 €"],
+    a: 2,
+    exp: "1 350 × 0,22 = 297 €."
+  },
+  {
+    q: "Quelle est la bonne formule pour calculer le pourcentage qu'une partie représente dans un tout ?",
+    opts: [
+      "(Partie + Total) × 100",
+      "(Partie ÷ Total) × 100",
+      "Partie × Total ÷ 100",
+      "Total ÷ Partie × 100"
+    ],
+    a: 1,
+    exp: "% = (Partie ÷ Total) × 100. C'est la formule fondamentale pour déterminer un pourcentage."
+  }
+];
+
+let current = 0;
+let score = 0;
+let answered = false;
+let userAnswers = [];
+let initialized = false;
+
+function initQuiz() {
+  if (initialized) return;
+  initialized = true;
+  current = 0; score = 0; answered = false; userAnswers = [];
+  document.getElementById('quiz-area').style.display = 'block';
+  document.getElementById('results-screen').classList.remove('show');
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = questions[current];
+  const letters = ['A', 'B', 'C', 'D'];
+  answered = false;
+  document.getElementById('btn-next').disabled = true;
+  document.getElementById('q-counter').textContent = `Question ${current + 1} / ${questions.length}`;
+  document.getElementById('progress-bar').style.width = ((current) / questions.length * 100) + '%';
+  document.getElementById('score-live').textContent = `Score : ${score} / ${current}`;
+
+  let html = `<div class="question-card">
+    <div class="q-num">Question ${current + 1}</div>
+    <div class="q-text">${q.q}</div>
+    <div class="options">`;
+  q.opts.forEach((opt, i) => {
+    html += `<button class="opt-btn" id="opt-${i}" onclick="selectAnswer(${i})">
+      <span class="opt-letter">${letters[i]}</span>${opt}
+    </button>`;
+  });
+  html += `</div>
+    <div class="feedback-box" id="feedback"></div>
+  </div>`;
+  document.getElementById('question-container').innerHTML = html;
+}
+
+function selectAnswer(idx) {
+  if (answered) return;
+  answered = true;
+  const q = questions[current];
+  const correct = q.a === idx;
+  if (correct) score++;
+  userAnswers.push({ q: q.q, userIdx: idx, correctIdx: q.a, correct });
+
+  document.querySelectorAll('.opt-btn').forEach((btn, i) => {
+    btn.disabled = true;
+    if (i === q.a) btn.classList.add('correct');
+    if (i === idx && !correct) btn.classList.add('wrong');
+  });
+
+  const fb = document.getElementById('feedback');
+  fb.classList.add('show', correct ? 'ok' : 'ko');
+  fb.innerHTML = (correct ? '✅ <strong>Bonne réponse !</strong> ' : '❌ <strong>Pas tout à fait.</strong> ') + q.exp;
+
+  document.getElementById('btn-next').disabled = false;
+  if (current === questions.length - 1) {
+    document.getElementById('btn-next').textContent = 'Voir les résultats 🏆';
+  }
+}
+
+function nextQuestion() {
+  current++;
+  if (current >= questions.length) {
+    showResults();
+  } else {
+    document.getElementById('btn-next').textContent = 'Question suivante →';
+    renderQuestion();
+  }
+}
+
+function showResults() {
+  document.getElementById('quiz-area').style.display = 'none';
+  const rs = document.getElementById('results-screen');
+  rs.classList.add('show');
+  document.getElementById('final-score').textContent = score;
+  
+  const pct = Math.round((score / questions.length) * 100);
+  let title, msg;
+  if (pct >= 85) { title = '🏆 Excellent !'; msg = 'Vous maîtrisez parfaitement les pourcentages. Compétence validée !'; }
+  else if (pct >= 65) { title = '👍 Bien joué !'; msg = 'Bon niveau ! Quelques notions à revoir pour être au top.'; }
+  else if (pct >= 50) { title = '📚 En progression'; msg = 'Des bases présentes, mais certaines notions nécessitent de la révision.'; }
+  else { title = '💪 À retravailler'; msg = 'Retournez consulter la fiche de révision et réessayez !'; }
+
+  document.getElementById('results-title').textContent = title;
+  document.getElementById('results-msg').textContent = msg + ` (${score}/20 — ${pct} %)`;
+
+  const details = document.getElementById('result-details');
+  details.innerHTML = userAnswers.map((ua, i) => {
+    const icon = ua.correct ? '✅' : '❌';
+    const opts = questions[i].opts;
+    const wrongInfo = ua.correct ? '' : ` → Bonne réponse : <strong>${opts[ua.correctIdx]}</strong>`;
+    return `<li><span class="result-icon">${icon}</span><span>Q${i+1}. ${questions[i].q.slice(0,55)}…${wrongInfo}</span></li>`;
+  }).join('');
+}
+
+function restartQuiz() {
+  current = 0; score = 0; answered = false; userAnswers = []; initialized = false;
+  document.getElementById('quiz-area').style.display = 'block';
+  document.getElementById('results-screen').classList.remove('show');
+  document.getElementById('btn-next').textContent = 'Question suivante →';
+  initQuiz();
+}
+</script>
+</body>
+</html>

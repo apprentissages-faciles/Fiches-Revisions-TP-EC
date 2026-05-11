@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valorisation des stocks — Fiche de révision & Quiz</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap');
+
+  :root {
+    --coral: #D85A30;
+    --coral-dark: #993C1D;
+    --coral-light: #FAECE7;
+    --coral-border: #F0997B;
+    --green: #3B6D11;
+    --green-light: #EAF3DE;
+    --green-mid: #639922;
+    --blue: #185FA5;
+    --blue-light: #E6F1FB;
+    --blue-mid: #378ADD;
+    --teal: #0F6E56;
+    --teal-light: #E1F5EE;
+    --amber: #633806;
+    --amber-light: #FAEEDA;
+    --amber-mid: #BA7517;
+    --red-light: #FCEBEB;
+    --red: #791F1F;
+    --red-mid: #E24B4A;
+    --text: #1a1a1a;
+    --text-muted: #6b6b6b;
+    --border: rgba(0,0,0,0.1);
+    --border-strong: rgba(0,0,0,0.18);
+    --bg: #f7f5f2;
+    --card-bg: #ffffff;
+    --surface: #f0ede8;
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  header {
+    background: var(--card-bg);
+    border-bottom: 1px solid var(--border);
+    padding: 1.25rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .logo-icon {
+    width: 36px; height: 36px;
+    background: var(--coral);
+    border-radius: var(--radius-sm);
+    display: flex; align-items: center; justify-content: center;
+    color: white;
+    font-size: 18px;
+  }
+
+  .logo-text {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .logo-sub {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 400;
+  }
+
+  .tab-nav {
+    display: flex;
+    gap: 4px;
+    background: var(--surface);
+    border-radius: var(--radius-sm);
+    padding: 4px;
+  }
+
+  .tab-btn {
+    padding: 7px 20px;
+    border: none;
+    border-radius: 6px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    background: transparent;
+    color: var(--text-muted);
+    transition: all .2s;
+  }
+
+  .tab-btn.active {
+    background: var(--card-bg);
+    color: var(--coral);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+
+  .tab-btn:hover:not(.active) { color: var(--text); }
+
+  main { max-width: 760px; margin: 0 auto; padding: 2rem 1.5rem; }
+
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* CARDS */
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.1rem;
+  }
+
+  .card-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--coral-dark);
+    margin-bottom: .75rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .card-title .icon {
+    width: 28px; height: 28px;
+    background: var(--coral-light);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+
+  .def-box {
+    background: var(--coral-light);
+    border-left: 3px solid var(--coral);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    padding: .8rem 1rem;
+    margin: .65rem 0;
+    font-size: 14px;
+    color: #5a2010;
+    line-height: 1.7;
+  }
+
+  .rule-box {
+    background: var(--surface);
+    border-radius: var(--radius-sm);
+    padding: .7rem .95rem;
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.65;
+    margin: .6rem 0;
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+  }
+
+  .rule-box .ri { color: var(--coral); flex-shrink: 0; font-size: 16px; margin-top: 1px; }
+
+  .grid2 { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; margin: .75rem 0; }
+  .grid3 { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 10px; margin: .75rem 0; }
+
+  .mini-card {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: .8rem;
+  }
+
+  .mc-title { font-size: 13px; font-weight: 600; margin-bottom: .35rem; }
+  .mc-body { font-size: 12px; color: var(--text-muted); line-height: 1.6; }
+
+  .coral-mc { background: var(--coral-light); } .coral-mc .mc-title { color: var(--coral-dark); }
+  .green-mc { background: var(--green-light); } .green-mc .mc-title { color: var(--green); }
+  .blue-mc { background: var(--blue-light); } .blue-mc .mc-title { color: var(--blue); }
+  .teal-mc { background: var(--teal-light); } .teal-mc .mc-title { color: var(--teal); }
+  .amber-mc { background: var(--amber-light); } .amber-mc .mc-title { color: var(--amber); }
+
+  .tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 2px 9px;
+    border-radius: 20px;
+    margin: 2px 2px;
+  }
+
+  .tag-dlc { background: var(--red-light); color: var(--red); }
+  .tag-ddm { background: var(--amber-light); color: var(--amber); }
+  .tag-nonali { background: var(--blue-light); color: var(--blue); }
+
+  .pill-row { display: flex; flex-wrap: wrap; gap: 4px; margin-top: .5rem; }
+
+  .row-check {
+    display: flex; align-items: flex-start; gap: 8px;
+    font-size: 13px; color: var(--text);
+    margin-bottom: .45rem; line-height: 1.6;
+  }
+
+  .row-check .ic { font-size: 15px; flex-shrink: 0; margin-top: 2px; }
+  .ic-ok { color: var(--green-mid); }
+  .ic-warn { color: var(--amber-mid); }
+  .ic-no { color: var(--red-mid); }
+
+  .sep { border: none; border-top: 1px solid var(--border); margin: .75rem 0; }
+
+  .section-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .08em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: .4rem;
+    margin-top: .2rem;
+  }
+
+  .vs-bar { display: flex; align-items: center; gap: 10px; margin: .75rem 0; }
+  .vs-side { flex: 1; background: var(--surface); border-radius: var(--radius-sm); padding: .8rem; }
+  .vs-label { font-size: 13px; font-weight: 600; margin-bottom: .3rem; }
+  .vs-coral .vs-label { color: var(--coral-dark); }
+  .vs-teal .vs-label { color: var(--teal); }
+  .vs-detail { font-size: 12px; color: var(--text-muted); line-height: 1.55; }
+  .vs-divider { font-size: 13px; font-weight: 600; color: var(--text-muted); flex-shrink: 0; }
+
+  .acro-row { display: flex; align-items: baseline; gap: 8px; margin-bottom: .5rem; font-size: 13px; }
+  .acro-badge { font-weight: 600; font-size: 12px; padding: 2px 9px; border-radius: var(--radius-sm); white-space: nowrap; flex-shrink: 0; }
+  .acro-def { color: var(--text); line-height: 1.6; }
+
+  .method-badge { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; }
+  .peps-badge { background: var(--red-light); color: var(--red); }
+  .cmup-badge { background: var(--teal-light); color: var(--teal); }
+
+  /* QUIZ */
+  .prog-wrap { display: flex; align-items: center; gap: 12px; margin-bottom: 1.25rem; }
+  .prog-bg { flex: 1; height: 6px; background: var(--surface); border-radius: 3px; overflow: hidden; }
+  .prog-fill { height: 100%; background: var(--coral); border-radius: 3px; transition: width .35s; }
+  .q-counter { font-size: 13px; color: var(--text-muted); white-space: nowrap; }
+
+  .q-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+  }
+
+  .q-text { font-size: 16px; font-weight: 500; color: var(--text); margin-bottom: 1.1rem; line-height: 1.65; }
+
+  .q-opts { display: flex; flex-direction: column; gap: 8px; }
+
+  .opt {
+    padding: .75rem 1.1rem;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    background: var(--card-bg);
+    color: var(--text);
+    text-align: left;
+    line-height: 1.5;
+    transition: background .15s, border-color .15s;
+  }
+
+  .opt:hover:not(:disabled) { background: var(--surface); border-color: var(--coral); }
+  .opt:disabled { cursor: default; }
+  .opt.correct { background: var(--green-light); border-color: var(--green-mid); color: var(--green); font-weight: 500; }
+  .opt.wrong { background: var(--red-light); border-color: var(--red-mid); color: var(--red); }
+  .opt.reveal { background: var(--blue-light); border-color: var(--blue-mid); color: var(--blue); font-weight: 500; }
+
+  .expl {
+    margin-top: .85rem;
+    font-size: 13px;
+    color: var(--text-muted);
+    background: var(--surface);
+    border-radius: var(--radius-sm);
+    padding: .7rem .95rem;
+    line-height: 1.65;
+    display: none;
+  }
+  .expl.show { display: block; }
+
+  .nav { display: flex; justify-content: space-between; align-items: center; margin-top: 1.1rem; }
+  .score-live { font-size: 13px; color: var(--text-muted); }
+
+  .btn-next {
+    padding: .6rem 1.3rem;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+    background: var(--card-bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    gap: 6px;
+    transition: background .15s;
+  }
+  .btn-next.show { display: flex; }
+  .btn-next:hover { background: var(--surface); }
+
+  /* Score */
+  .score-box {
+    text-align: center;
+    padding: 2.5rem 1.5rem;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+  }
+
+  .score-big { font-size: 64px; font-weight: 600; color: var(--coral); line-height: 1; }
+  .score-denom { font-size: 18px; color: var(--text-muted); margin-top: .25rem; }
+
+  .recap-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin: 1.5rem auto; max-width: 300px; }
+  .recap-dot { height: 10px; border-radius: 5px; }
+  .dot-ok { background: var(--green-mid); }
+  .dot-no { background: var(--red-mid); }
+
+  .score-msg {
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.75;
+    max-width: 480px;
+    margin: 0 auto;
+    background: var(--surface);
+    border-radius: var(--radius-sm);
+    padding: .85rem 1.1rem;
+  }
+
+  .btn-restart {
+    margin-top: 1.5rem;
+    padding: .7rem 1.75rem;
+    border: 1.5px solid var(--coral);
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--coral);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: background .15s;
+  }
+  .btn-restart:hover { background: var(--coral-light); }
+
+  /* Badges RNCP */
+  .rncp-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--coral-light);
+    color: var(--coral-dark);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: .75rem;
+  }
+
+  @media (max-width: 600px) {
+    header { flex-direction: column; gap: 10px; padding: 1rem; }
+    main { padding: 1.25rem 1rem; }
+    .grid2, .grid3 { grid-template-columns: 1fr; }
+    .vs-bar { flex-direction: column; }
+    .vs-divider { transform: rotate(90deg); }
+    .tab-btn { padding: 7px 12px; font-size: 13px; }
+    .score-big { font-size: 48px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-icon">📦</div>
+    <div>
+      <div class="logo-text">Valorisation des stocks</div>
+      <div class="logo-sub">Journée 9 — RNCP37099 TP Employé Commercial</div>
+    </div>
+  </div>
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="showTab('fiche')">📋 Fiche de révision</button>
+    <button class="tab-btn" onclick="showTab('quiz')">🧠 Quiz 20 questions</button>
+  </div>
+</header>
+
+<main>
+
+<!-- ===== FICHE ===== -->
+<div id="fiche" class="section active">
+
+  <div class="card">
+    <div class="card-title"><span class="icon">📖</span>1. Définitions essentielles</div>
+    <div class="acro-row">
+      <span class="acro-badge" style="background:var(--coral-light);color:var(--coral-dark)">PCG</span>
+      <span class="acro-def"><strong>Plan Comptable Général</strong> — référentiel comptable français obligatoire. Il impose la valorisation des stocks au coût réel au moins une fois par an, à la clôture du bilan.</span>
+    </div>
+    <div class="acro-row">
+      <span class="acro-badge" style="background:var(--red-light);color:var(--red)">DLC</span>
+      <span class="acro-def"><strong>Date Limite de Consommation</strong> — date au-delà de laquelle le produit ne peut plus être vendu ni consommé (viandes, laitages frais, charcuterie…). Dépassement interdit.</span>
+    </div>
+    <div class="acro-row">
+      <span class="acro-badge" style="background:var(--amber-light);color:var(--amber)">DDM</span>
+      <span class="acro-def"><strong>Date de Durabilité Minimale</strong> — remplace la DLUO depuis le règlement européen INCO (2014). Indique la date jusqu'à laquelle le produit conserve ses qualités optimales. Le produit reste consommable après cette date.</span>
+    </div>
+    <div class="rule-box"><span class="ri">⚠️</span><span><strong>Point clé :</strong> DLC et DDM ne déclenchent pas la même méthode de valorisation — c'est ce qui structure tout le cours.</span></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="icon">🏪</span>2. Quelle méthode pour quel rayon ?</div>
+    <div style="font-size:14px;color:var(--text-muted);margin-bottom:.75rem">Le choix de la méthode dépend directement du type de produit et de sa contrainte de date :</div>
+    <div class="grid3">
+      <div class="mini-card coral-mc">
+        <div style="margin-bottom:.4rem"><span class="method-badge peps-badge">PEPS</span></div>
+        <div class="mc-title">Produits avec DLC</div>
+        <div class="mc-body">Produits très périssables dont le dépassement est <strong>interdit</strong>. La rotation est impérative.</div>
+        <div class="pill-row">
+          <span class="tag tag-dlc">Viandes</span>
+          <span class="tag tag-dlc">Laitages frais</span>
+          <span class="tag tag-dlc">Charcuterie</span>
+          <span class="tag tag-dlc">Poissonnerie</span>
+        </div>
+      </div>
+      <div class="mini-card amber-mc">
+        <div style="margin-bottom:.4rem"><span class="method-badge cmup-badge">CMUP</span></div>
+        <div class="mc-title">Produits avec DDM</div>
+        <div class="mc-body">Produits stables dont la date est indicative. Pas d'urgence sur la rotation.</div>
+        <div class="pill-row">
+          <span class="tag tag-ddm">Épicerie sèche</span>
+          <span class="tag tag-ddm">Conserves</span>
+          <span class="tag tag-ddm">Biscuits</span>
+          <span class="tag tag-ddm">Surgelés</span>
+        </div>
+      </div>
+      <div class="mini-card blue-mc">
+        <div style="margin-bottom:.4rem"><span class="method-badge cmup-badge">CMUP</span></div>
+        <div class="mc-title">Non alimentaire</div>
+        <div class="mc-body">Pas de DLC ni de DDM. Lisser les variations de prix et simplifier la comptabilité.</div>
+        <div class="pill-row">
+          <span class="tag tag-nonali">Textile</span>
+          <span class="tag tag-nonali">Hygiène / DPH</span>
+          <span class="tag tag-nonali">Bazar</span>
+          <span class="tag tag-nonali">Électroménager</span>
+        </div>
+      </div>
+    </div>
+    <div class="rule-box"><span class="ri">💡</span><span><strong>À retenir :</strong> PEPS est réservé aux produits avec DLC — les seuls pour lesquels l'ordre de sortie est une obligation sanitaire stricte. Le CMUP s'applique à tous les autres cas (DDM + non alimentaire).</span></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="icon">↕️</span>3. La méthode PEPS — pour les produits avec DLC uniquement</div>
+    <div class="def-box"><strong>Premier Entré, Premier Sorti</strong> (FIFO en anglais). Le lot reçu en premier est sorti en premier. Un lot doit être entièrement épuisé avant de puiser dans le suivant. Le prix d'achat de chaque lot est conservé jusqu'à sa sortie totale.</div>
+    <div class="section-label" style="margin-top:.75rem">La règle fondamentale</div>
+    <div class="rule-box"><span class="ri">→</span><span>Les marchandises les plus <strong>anciennes</strong> quittent le stock en priorité — comme on réapprovisionne un rayon en plaçant les nouveaux produits derrière les anciens.</span></div>
+    <div class="section-label" style="margin-top:.75rem">Pourquoi PEPS est indispensable pour les produits avec DLC</div>
+    <div class="row-check"><span class="ic ic-ok">✓</span><span>Garantit que les produits approchant leur DLC sont vendus avant les lots plus frais</span></div>
+    <div class="row-check"><span class="ic ic-ok">✓</span><span>Évite toute commercialisation de produits dont la DLC est dépassée — obligation légale et sanitaire</span></div>
+    <div class="row-check"><span class="ic ic-ok">✓</span><span>Assure la traçabilité des lots pour les contrôles d'hygiène (inspections, rappels produits)</span></div>
+    <div class="row-check"><span class="ic ic-ok">✓</span><span>Reflète le coût réel d'achat de chaque lot — précision maximale par article</span></div>
+    <div class="sep"></div>
+    <div class="section-label">Ce qui caractérise PEPS dans la pratique</div>
+    <div class="row-check"><span class="ic ic-warn">ℹ</span><span>Le stock est organisé <strong>lot par lot</strong> — chaque lot conserve son prix d'achat d'origine</span></div>
+    <div class="row-check"><span class="ic ic-warn">ℹ</span><span>La valeur du stock final reflète les <strong>prix des derniers achats</strong> (les plus récents)</span></div>
+    <div class="row-check"><span class="ic ic-warn">ℹ</span><span>Gestion plus détaillée : nécessite un suivi rigoureux par date de réception</span></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="icon">⚖️</span>4. La méthode CMUP — pour les produits avec DDM et le non alimentaire</div>
+    <div class="def-box"><strong>Coût Moyen Unitaire Pondéré</strong>. On calcule un prix moyen en tenant compte des quantités et des prix de tous les achats (stock initial inclus). Ce prix moyen sert ensuite à valoriser chaque unité en stock.</div>
+    <div class="section-label" style="margin-top:.75rem">Deux variantes à connaître</div>
+    <div class="grid2">
+      <div class="mini-card teal-mc">
+        <div class="mc-title">CMUP à chaque entrée</div>
+        <div class="mc-body">Le coût moyen est <strong>recalculé à chaque nouvelle réception</strong>. Suivi précis et en temps réel — adapté aux rayons à forte rotation avec prix variables.</div>
+      </div>
+      <div class="mini-card blue-mc">
+        <div class="mc-title">CMUP fin de période</div>
+        <div class="mc-body">Le coût moyen est calculé <strong>une seule fois à la fin de la période</strong> (mois ou trimestre). Plus simple — adapté aux articles dont le prix varie peu.</div>
+      </div>
+    </div>
+    <div class="section-label" style="margin-top:.25rem">Pourquoi CMUP convient aux produits avec DDM et au non alimentaire</div>
+    <div class="row-check"><span class="ic ic-ok">✓</span><span>Pas d'obligation sanitaire stricte sur l'ordre de sortie — la DDM est indicative, le non alimentaire n'a pas de date</span></div>
+    <div class="row-check"><span class="ic ic-ok">✓</span><span>Lisse les écarts de prix entre livraisons — simplifie la comptabilité du rayon</span></div>
+    <div class="row-check"><span class="ic ic-ok">✓</span><span>Un seul coût unitaire pour l'ensemble du stock d'un même article — plus rapide à gérer</span></div>
+    <div class="sep"></div>
+    <div class="section-label">Ce qui caractérise CMUP dans la pratique</div>
+    <div class="row-check"><span class="ic ic-warn">ℹ</span><span>Tous les articles d'une même référence ont le <strong>même coût unitaire</strong> — pas de distinction par lot</span></div>
+    <div class="row-check"><span class="ic ic-warn">ℹ</span><span>Le coût moyen évolue à chaque nouvelle livraison (variante entrée) ou en fin de mois (variante période)</span></div>
+    <div class="row-check"><span class="ic ic-no">✗</span><span>Ne convient pas aux produits avec DLC — l'ordre de sortie doit être impérativement respecté</span></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="icon">⚡</span>5. PEPS vs CMUP — synthèse</div>
+    <div class="vs-bar">
+      <div class="vs-side vs-coral">
+        <div class="vs-label">PEPS — produits avec DLC</div>
+        <div class="vs-detail">Chaque lot garde son prix d'origine. Les plus anciens sortent obligatoirement en premier. Stock final = lots les plus récents à leur coût réel.</div>
+      </div>
+      <div class="vs-divider">vs</div>
+      <div class="vs-side vs-teal">
+        <div class="vs-label">CMUP — DDM + non alimentaire</div>
+        <div class="vs-detail">Tous les articles ont le même coût moyen. Pas de notion de lot dans la valorisation. Calcul unique ou par période.</div>
+      </div>
+    </div>
+    <div class="grid2">
+      <div>
+        <div class="row-check"><span class="ic ic-ok">✓</span><span><strong>PEPS :</strong> obligation sanitaire — DLC pilote l'ordre des sorties</span></div>
+        <div class="row-check"><span class="ic ic-ok">✓</span><span><strong>PEPS :</strong> traçabilité et précision maximale par lot</span></div>
+        <div class="row-check"><span class="ic ic-no">✗</span><span><strong>PEPS :</strong> suivi plus complexe lot par lot</span></div>
+      </div>
+      <div>
+        <div class="row-check"><span class="ic ic-ok">✓</span><span><strong>CMUP :</strong> gestion simplifiée, un seul coût par référence</span></div>
+        <div class="row-check"><span class="ic ic-ok">✓</span><span><strong>CMUP :</strong> lisse les variations de prix fournisseur</span></div>
+        <div class="row-check"><span class="ic ic-no">✗</span><span><strong>CMUP :</strong> interdit pour les produits à DLC</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="icon">🔄</span>6. Les mouvements de stock à connaître</div>
+    <div class="grid2">
+      <div class="mini-card green-mc">
+        <div class="mc-title">↓ Entrées en stock</div>
+        <div class="mc-body">Réception d'une livraison fournisseur (bon d'entrée). Augmente la quantité et la valeur du stock. On enregistre la quantité reçue et le prix unitaire d'achat.</div>
+      </div>
+      <div class="mini-card coral-mc">
+        <div class="mc-title">↑ Sorties de stock</div>
+        <div class="mc-body">Vente, casse, perte, démarque (bon de sortie). Diminue la quantité et la valeur du stock. C'est ici que la méthode (PEPS ou CMUP) détermine le prix à appliquer.</div>
+      </div>
+    </div>
+    <div class="rule-box"><span class="ri">💡</span><span>La <strong>fiche de stock</strong> recense toutes ces opérations chronologiquement : date, libellé (bon d'entrée / bon de sortie), quantité, prix unitaire, montant — lot par lot en PEPS, globalement en CMUP.</span></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="icon">🎓</span>7. Obligations légales et compétences visées</div>
+    <div class="grid3">
+      <div class="mini-card coral-mc">
+        <div class="mc-title">Obligation annuelle (PCG)</div>
+        <div class="mc-body">Le <strong>Plan Comptable Général</strong> oblige toutes les entreprises à valoriser leurs stocks au coût réel <strong>au moins une fois par an</strong> à la clôture du bilan.</div>
+      </div>
+      <div class="mini-card blue-mc">
+        <div class="mc-title">Suivi permanent en hyper</div>
+        <div class="mc-body">En grande distribution, la valorisation est <strong>continue</strong>. Elle optimise les approvisionnements, réduit les ruptures et les sur-stocks coûteux.</div>
+      </div>
+      <div class="mini-card green-mc">
+        <div class="mc-title">Outil de pilotage</div>
+        <div class="mc-body">Un stock bien valorisé permet de détecter vols, casses, erreurs de livraison et d'améliorer la <strong>rentabilité par rayon</strong>.</div>
+      </div>
+    </div>
+    <div class="sep"></div>
+    <div class="rncp-badge">🏅 RNCP37099 — TP Employé commercial</div>
+    <div class="row-check"><span class="ic ic-ok">✓</span><span>Identifier la méthode adaptée selon le type de produit : PEPS pour les DLC, CMUP pour les DDM et le non alimentaire</span></div>
+    <div class="row-check"><span class="ic ic-ok">✓</span><span>Tenir et renseigner une fiche de stock (entrées, sorties, quantités, prix unitaires)</span></div>
+    <div class="row-check"><span class="ic ic-ok">✓</span><span>Contribuer à la fiabilité des stocks pour garantir des états financiers exacts</span></div>
+    <div class="row-check"><span class="ic ic-ok">✓</span><span>Respecter les obligations légales du PCG et les règles d'hygiène liées aux DLC</span></div>
+  </div>
+
+</div>
+
+<!-- ===== QUIZ ===== -->
+<div id="quiz" class="section">
+  <div id="quiz-main">
+    <div class="prog-wrap">
+      <div class="prog-bg"><div class="prog-fill" id="prog" style="width:5%"></div></div>
+      <span class="q-counter" id="counter">1 / 20</span>
+    </div>
+    <div class="q-card">
+      <div class="q-text" id="q-text"></div>
+      <div class="q-opts" id="q-opts"></div>
+      <div class="expl" id="q-expl"></div>
+      <div class="nav">
+        <span class="score-live" id="score-live">Score : 0 / 0</span>
+        <button class="btn-next" id="btn-next" onclick="nextQ()">Question suivante →</button>
+      </div>
+    </div>
+  </div>
+  <div id="quiz-score" style="display:none">
+    <div class="score-box">
+      <div class="score-big" id="final-num"></div>
+      <div class="score-denom">/ 20 bonnes réponses</div>
+      <div class="recap-grid" id="recap-grid"></div>
+      <div class="score-msg" id="score-msg"></div>
+      <button class="btn-restart" onclick="restart()">↺ Recommencer le quiz</button>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<script>
+function showTab(t) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById(t).classList.add('active');
+  document.querySelectorAll('.tab-btn')[t === 'fiche' ? 0 : 1].classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+const Q = [
+  { q: "Que signifie l'acronyme DLC ?", o: ["Date Limite de Commercialisation", "Date Limite de Consommation", "Date Légale de Contrôle", "Date de Livraison Contractuelle"], a: 1, e: "La DLC (Date Limite de Consommation) indique la date au-delà de laquelle un produit ne peut plus être vendu ni consommé. Son dépassement est strictement interdit." },
+  { q: "Que signifie l'acronyme DDM ?", o: ["Date de Déstockage Maximale", "Date De Mise en rayon", "Date de Durabilité Minimale", "Date Dépréciée en Magasin"], a: 2, e: "DDM = Date de Durabilité Minimale. Elle remplace officiellement la DLUO depuis le règlement européen INCO (2014). Le produit reste consommable après cette date." },
+  { q: "Quelle est la différence fondamentale entre la DLC et la DDM ?", o: ["La DLC concerne l'alimentaire, la DDM le non alimentaire", "La DLC est indicative, la DDM est obligatoire", "La DLC interdit toute consommation après la date, la DDM est indicative sur la qualité", "La DDM est plus courte que la DLC"], a: 2, e: "La DLC est une limite stricte : dépassement interdit à la vente et à la consommation. La DDM indique que le produit conserve ses qualités optimales jusqu'à cette date, mais reste consommable après." },
+  { q: "Quelle méthode de valorisation est utilisée pour les produits avec DLC ?", o: ["CMUP fin de période", "CMUP à chaque entrée", "PEPS", "Les deux méthodes sont possibles"], a: 2, e: "PEPS (Premier Entré, Premier Sorti) est la seule méthode adaptée aux produits avec DLC. L'ordre de sortie est une obligation sanitaire stricte : les produits les plus anciens doivent impérativement être vendus en premiers." },
+  { q: "Quelle méthode de valorisation est utilisée pour les produits avec DDM ?", o: ["PEPS uniquement", "CMUP", "Les deux sont équivalentes", "Aucune méthode n'est requise"], a: 1, e: "Le CMUP s'applique aux produits avec DDM. La DDM étant indicative, il n'y a pas d'obligation sanitaire stricte sur l'ordre de sortie — le lissage des prix d'achat prime." },
+  { q: "Quelle méthode applique-t-on pour les produits non alimentaires (textile, hygiène, bazar) ?", o: ["PEPS", "CMUP", "PEPS ou CMUP au choix du responsable", "Aucune méthode spécifique"], a: 1, e: "Le CMUP s'applique au non alimentaire. Sans DLC ni DDM, l'enjeu est de lisser les variations de prix entre livraisons et de simplifier la comptabilité du rayon." },
+  { q: "Que signifie PEPS ?", o: ["Prix En Points de Sortie", "Premier Entré, Premier Sorti", "Produit Épuisé, Prix Suivant", "Priorité En Période de Stock"], a: 1, e: "PEPS = Premier Entré, Premier Sorti. C'est l'équivalent du FIFO en anglais (First In, First Out)." },
+  { q: "Que signifie CMUP ?", o: ["Coût Mensuel Unitaire Par article", "Coût Moyen Unitaire Pondéré", "Calcul Mensuel d'Unités en Promotion", "Comptage Mensuel des Unités Payées"], a: 1, e: "CMUP = Coût Moyen Unitaire Pondéré. Il s'agit d'un prix moyen calculé en pondérant les quantités et les prix de tous les achats." },
+  { q: "Dans la méthode PEPS, comment les articles sont-ils sortis du stock ?", o: ["Les moins chers en premier", "Les plus récents en premier", "Les plus anciens en premier", "Par ordre alphabétique"], a: 2, e: "En PEPS, les articles les plus anciens (premier entrés) sortent en premier. Un lot doit être totalement épuisé avant de puiser dans le lot suivant." },
+  { q: "Pourquoi la méthode PEPS est-elle indispensable pour les produits avec DLC ?", o: ["Elle simplifie les calculs comptables", "Elle garantit que les produits les plus anciens sont vendus avant leur DLC, évitant tout risque sanitaire", "Elle permet de lisser les prix d'achat", "Elle est imposée par le Plan Comptable Général"], a: 1, e: "La DLC est une obligation sanitaire stricte. PEPS garantit que les produits approchant leur DLC sont vendus en priorité, évitant invendus dangereux et infractions légales." },
+  { q: "Un hypermarché reçoit des yaourts frais. Quelle méthode de valorisation doit-il appliquer ?", o: ["CMUP, car les yaourts sont un produit alimentaire courant", "PEPS, car les yaourts ont une DLC et leur rotation est une obligation sanitaire", "CMUP fin de période, car les prix varient peu", "PEPS ou CMUP selon le responsable de rayon"], a: 1, e: "Les yaourts frais ont une DLC. L'ordre de sortie est impératif pour éviter la commercialisation de produits périmés. La méthode PEPS est donc obligatoire." },
+  { q: "Un hypermarché gère son stock de boîtes de conserve (haricots verts). Quelle méthode applique-t-il ?", o: ["PEPS, car ce sont des produits alimentaires", "CMUP, car les conserves ont une DDM et non une DLC", "PEPS, car la rotation est toujours prioritaire en alimentaire", "Aucune méthode : les conserves n'ont pas de contrainte de date"], a: 1, e: "Les conserves ont une DDM (date indicative, non obligatoire). La méthode CMUP s'applique : pas d'obligation sanitaire stricte sur l'ordre de sortie." },
+  { q: "Quelle est la principale raison pour laquelle le CMUP ne convient pas aux produits avec DLC ?", o: ["Il est trop complexe à calculer", "Il ne prend pas en compte les quantités", "Il ne garantit pas que les produits les plus anciens sortent en premier, ce qui crée un risque sanitaire", "Il est interdit par le Plan Comptable Général pour l'alimentaire"], a: 2, e: "Le CMUP ne distingue pas les lots par date d'entrée. Il ne garantit donc pas la sortie prioritaire des produits les plus anciens — inacceptable pour les produits dont la DLC peut être dépassée." },
+  { q: "Que signifie PCG ?", o: ["Plan Commercial Global", "Prix Comptable Garanti", "Plan Comptable Général", "Protocole de Contrôle de Gestion"], a: 2, e: "PCG = Plan Comptable Général. C'est le référentiel comptable français obligatoire qui fixe les règles d'enregistrement et de valorisation des stocks pour toutes les entreprises." },
+  { q: "Quelle obligation le PCG impose-t-il concernant les stocks ?", o: ["Valoriser les stocks chaque semaine", "Valoriser les stocks au coût réel au moins une fois par an, à la clôture du bilan", "Utiliser uniquement la méthode PEPS", "Faire un inventaire quotidien"], a: 1, e: "Le PCG oblige toutes les entreprises à valoriser leurs stocks au coût réel au moins une fois par an, lors de la clôture du bilan comptable." },
+  { q: "En hypermarché, à quelle fréquence la valorisation des stocks est-elle réalisée ?", o: ["Une fois par an, conformément au PCG", "En permanence, au coût réel", "Une fois par mois", "Une fois par trimestre"], a: 1, e: "Au-delà de l'obligation légale annuelle du PCG, la grande distribution suit la valeur de ses stocks en permanence pour optimiser les approvisionnements et réduire ruptures et sur-stocks." },
+  { q: "Quelles sont les deux variantes de la méthode CMUP ?", o: ["CMUP journalier et CMUP mensuel", "CMUP à chaque entrée et CMUP fin de période", "CMUP alimentaire et CMUP non alimentaire", "CMUP fournisseur et CMUP client"], a: 1, e: "Le CMUP existe en deux variantes : à chaque entrée (recalculé à chaque nouvelle réception) et fin de période (calculé une seule fois à la fin du mois ou du trimestre)." },
+  { q: "Un rayon textile reçoit plusieurs livraisons à des prix différents. Quelle méthode est adaptée ?", o: ["PEPS, pour vendre les plus anciens en premier", "CMUP, pour lisser les variations de prix entre livraisons", "PEPS ou CMUP selon la saison", "Aucune méthode : le textile n'est pas soumis à la valorisation"], a: 1, e: "Le textile est un produit non alimentaire sans DLC ni DDM. Le CMUP est adapté : il lisse les écarts de prix entre livraisons et simplifie la comptabilité du rayon." },
+  { q: "Qu'est-ce qu'un bon de sortie dans une fiche de stock ?", o: ["Un document constatant une réception de marchandises", "Un document enregistrant une sortie de stock (vente, casse, perte, démarque)", "Une autorisation d'achat fournisseur", "Un bon de réduction accordé au client"], a: 1, e: "Un bon de sortie documente toute diminution du stock : vente au client, casse, perte ou démarque. Il permet d'enregistrer la quantité, le prix unitaire et le montant sorti." },
+  { q: "Laquelle de ces affirmations résume correctement la règle d'attribution des méthodes en hypermarché ?", o: ["PEPS pour l'alimentaire, CMUP pour le non alimentaire", "PEPS pour les DLC, CMUP pour les DDM et le non alimentaire", "CMUP pour l'alimentaire, PEPS pour le non alimentaire", "PEPS et CMUP sont interchangeables selon le responsable"], a: 1, e: "La règle exacte : PEPS est réservé aux produits avec DLC (obligation sanitaire stricte). Le CMUP s'applique à tous les autres cas — produits avec DDM et produits non alimentaires." }
+];
+
+let cur = 0, score = 0, answered = false, results = [];
+
+function render() {
+  const q = Q[cur];
+  document.getElementById('q-text').textContent = q.q;
+  document.getElementById('counter').textContent = (cur + 1) + ' / 20';
+  document.getElementById('prog').style.width = ((cur + 1) / 20 * 100) + '%';
+  document.getElementById('score-live').textContent = 'Score : ' + score + ' / ' + cur;
+  const opts = document.getElementById('q-opts');
+  opts.innerHTML = '';
+  q.o.forEach((o, i) => {
+    const b = document.createElement('button');
+    b.className = 'opt'; b.textContent = o;
+    b.onclick = () => pick(i);
+    opts.appendChild(b);
+  });
+  document.getElementById('q-expl').className = 'expl';
+  document.getElementById('q-expl').textContent = '';
+  document.getElementById('btn-next').className = 'btn-next';
+  answered = false;
+}
+
+function pick(i) {
+  if (answered) return;
+  answered = true;
+  const q = Q[cur];
+  const btns = document.querySelectorAll('.opt');
+  btns.forEach(b => b.disabled = true);
+  const ok = (i === q.a);
+  if (ok) { score++; btns[i].classList.add('correct'); }
+  else { btns[i].classList.add('wrong'); btns[q.a].classList.add('reveal'); }
+  results.push(ok);
+  document.getElementById('score-live').textContent = 'Score : ' + score + ' / ' + (cur + 1);
+  const expl = document.getElementById('q-expl');
+  expl.textContent = q.e; expl.className = 'expl show';
+  const btn = document.getElementById('btn-next');
+  btn.className = 'btn-next show';
+  btn.textContent = cur < 19 ? 'Question suivante →' : 'Voir mon score →';
+}
+
+function nextQ() {
+  cur++;
+  if (cur >= 20) { showScore(); return; }
+  render();
+}
+
+function showScore() {
+  document.getElementById('quiz-main').style.display = 'none';
+  document.getElementById('quiz-score').style.display = 'block';
+  document.getElementById('final-num').textContent = score;
+  const grid = document.getElementById('recap-grid');
+  grid.innerHTML = '';
+  results.forEach(r => {
+    const d = document.createElement('div');
+    d.className = 'recap-dot ' + (r ? 'dot-ok' : 'dot-no');
+    grid.appendChild(d);
+  });
+  let msg = '';
+  if (score >= 18) msg = '🌟 Excellent ! Tu maîtrises parfaitement les méthodes de valorisation des stocks. Tu es prêt(e) pour l\'examen TP Employé Commercial (RNCP37099) !';
+  else if (score >= 14) msg = '👍 Très bien ! Quelques points à consolider. Relis les sections sur la distinction DLC / DDM et l\'attribution des méthodes PEPS / CMUP.';
+  else if (score >= 10) msg = '📚 Passable. Revois attentivement la règle fondamentale : PEPS pour les DLC uniquement, CMUP pour les DDM et le non alimentaire.';
+  else msg = '💪 Continue tes révisions ! La règle clé à mémoriser : la DLC est la seule contrainte qui impose PEPS. Pour tout le reste, c\'est le CMUP.';
+  document.getElementById('score-msg').textContent = msg;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function restart() {
+  cur = 0; score = 0; answered = false; results = [];
+  document.getElementById('quiz-main').style.display = 'block';
+  document.getElementById('quiz-score').style.display = 'none';
+  render();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+render();
+</script>
+</body>
+</html>

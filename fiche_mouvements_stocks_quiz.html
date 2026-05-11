@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Les Mouvements de Stocks – Journée 7 | RNCP37099</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080c10;
+    --surface: #0e1420;
+    --card: #131c2a;
+    --border: #1e2d42;
+    --accent: #00b4d8;
+    --accent2: #f77f00;
+    --accent3: #06d6a0;
+    --accent4: #ef233c;
+    --accentv: #7209b7;
+    --text: #dde8f0;
+    --muted: #5a7080;
+    --radius: 14px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 16px; line-height: 1.65; min-height: 100vh; }
+
+  header {
+    background: linear-gradient(135deg, #020810 0%, #061420 60%, #031020 100%);
+    border-bottom: 2px solid var(--accent);
+    padding: 48px 24px 36px;
+    text-align: center;
+    position: relative; overflow: hidden;
+  }
+  header::before { content: '📦'; position: absolute; font-size: 220px; opacity: 0.04; top: -20px; right: 0; pointer-events: none; }
+  .badge { display: inline-block; background: rgba(0,180,216,0.12); color: var(--accent); border: 1px solid rgba(0,180,216,0.35); border-radius: 99px; font-size: 12px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 4px 14px; margin-bottom: 14px; }
+  header h1 { font-family: 'Syne', sans-serif; font-size: clamp(28px, 6vw, 52px); font-weight: 800; color: #fff; letter-spacing: -1px; }
+  header h1 span { color: var(--accent); }
+  header p { color: var(--muted); margin-top: 10px; font-size: 15px; }
+
+  .tabs { display: flex; justify-content: center; gap: 8px; padding: 24px 16px 0; flex-wrap: wrap; }
+  .tab-btn { background: var(--surface); border: 1.5px solid var(--border); color: var(--muted); border-radius: 99px; padding: 10px 22px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+  .tab-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .tab-btn.active { background: var(--accent); border-color: var(--accent); color: #080c10; }
+
+  main { max-width: 940px; margin: 0 auto; padding: 32px 16px 80px; }
+  .section { display: none; animation: fadeIn 0.35s ease; }
+  .section.active { display: block; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+
+  .notion-header { display: flex; align-items: center; gap: 14px; margin: 38px 0 18px; }
+  .notion-icon { width: 46px; height: 46px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+  .notion-header h2 { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 700; }
+
+  .card { background: var(--card); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 22px 24px; margin-bottom: 14px; }
+  .card-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14.5px; color: var(--accent); margin-bottom: 10px; }
+  .card p, .card li { font-size: 14.5px; color: #a8c0cc; }
+  .card ul { padding-left: 18px; }
+  .card li { margin-bottom: 6px; }
+  .card.c-blue  { border-left: 3px solid var(--accent); }
+  .card.c-orange{ border-left: 3px solid var(--accent2); }
+  .card.c-green { border-left: 3px solid var(--accent3); }
+  .card.c-red   { border-left: 3px solid var(--accent4); }
+  .card.c-purple{ border-left: 3px solid var(--accentv); }
+  .card-title.orange { color: var(--accent2); }
+  .card-title.green  { color: var(--accent3); }
+  .card-title.red    { color: var(--accent4); }
+  .card-title.purple { color: var(--accentv); }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 580px) { .two-col { grid-template-columns: 1fr; } }
+
+  .formula-box { background: rgba(0,180,216,0.08); border: 1.5px solid rgba(0,180,216,0.25); border-radius: 10px; padding: 14px 18px; font-family: 'DM Mono', monospace; font-size: 14px; color: #67e8f9; margin: 12px 0; text-align: center; line-height: 2; }
+  .formula-box.orange { background: rgba(247,127,0,0.08); border-color: rgba(247,127,0,0.25); color: #fdb97d; }
+  .formula-box.green  { background: rgba(6,214,160,0.08); border-color: rgba(6,214,160,0.25); color: #6efcd9; }
+  .formula-box.red    { background: rgba(239,35,60,0.08); border-color: rgba(239,35,60,0.25); color: #ff8096; }
+
+  .chip { display: inline-block; border-radius: 6px; padding: 2px 9px; font-family: 'DM Mono', monospace; font-size: 12.5px; font-weight: 600; }
+  .chip.blue  { background: rgba(0,180,216,0.14); color: #67e8f9; }
+  .chip.orange{ background: rgba(247,127,0,0.14); color: #fdb97d; }
+  .chip.green { background: rgba(6,214,160,0.14); color: #6efcd9; }
+  .chip.red   { background: rgba(239,35,60,0.14); color: #ff8096; }
+  .chip.purple{ background: rgba(114,9,183,0.2); color: #c084fc; }
+
+  .icon-list { list-style: none; padding: 0; }
+  .icon-list li { display: flex; gap: 10px; align-items: flex-start; padding: 7px 0; border-bottom: 1px solid var(--border); font-size: 14px; color: #a8c0cc; }
+  .icon-list li:last-child { border-bottom: none; }
+  .icon-list .ico { flex-shrink: 0; font-size: 15px; margin-top: 2px; }
+
+  /* Stock types grid */
+  .stocks-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 600px) { .stocks-grid { grid-template-columns: 1fr; } }
+  .stock-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: 12px; padding: 16px 18px; }
+  .stock-card .s-label { display: inline-block; font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; border-radius: 5px; padding: 3px 8px; margin-bottom: 8px; }
+  .stock-card h4 { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+  .stock-card p { font-size: 13px; color: #8aa5b5; line-height: 1.55; }
+
+  /* Rotation visual */
+  .rotation-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 6px; }
+  @media (max-width: 580px) { .rotation-row { grid-template-columns: 1fr; } }
+  .rot-card { border-radius: 12px; padding: 18px; }
+  .rot-card.rapide { background: rgba(6,214,160,0.07); border: 1.5px solid rgba(6,214,160,0.25); }
+  .rot-card.lente  { background: rgba(239,35,60,0.07); border: 1.5px solid rgba(239,35,60,0.25); }
+  .rot-card h4 { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; margin-bottom: 10px; }
+  .rot-card.rapide h4 { color: var(--accent3); }
+  .rot-card.lente  h4 { color: var(--accent4); }
+  .rot-card li { font-size: 13px; color: #a8c0cc; margin-bottom: 5px; }
+
+  /* Consequence cards */
+  .consq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 6px; }
+  @media (max-width: 580px) { .consq-grid { grid-template-columns: 1fr; } }
+
+  .recap-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 12px; }
+  .recap-table th { background: rgba(0,180,216,0.1); color: var(--accent); padding: 9px 12px; text-align: left; font-weight: 600; border-bottom: 1px solid var(--border); }
+  .recap-table td { padding: 9px 12px; border-bottom: 1px solid var(--border); color: #a8c0cc; vertical-align: top; }
+  .recap-table tr:last-child td { border-bottom: none; }
+
+  .tip-box { background: rgba(6,214,160,0.07); border-left: 3px solid var(--accent3); border-radius: 0 10px 10px 0; padding: 12px 16px; margin-top: 14px; font-size: 14px; color: #6efcd9; }
+  .tip-box strong { color: var(--accent3); }
+  .warn-box { background: rgba(239,35,60,0.07); border-left: 3px solid var(--accent4); border-radius: 0 10px 10px 0; padding: 12px 16px; margin-top: 14px; font-size: 14px; color: #ff8096; }
+
+  .memo-card { background: rgba(0,180,216,0.05); border: 1.5px solid rgba(0,180,216,0.2); border-radius: var(--radius); padding: 22px 24px; margin-top: 32px; }
+
+  /* QUIZ */
+  .quiz-header { text-align: center; padding: 24px 0 32px; }
+  .quiz-header h2 { font-family: 'Syne', sans-serif; font-size: 26px; font-weight: 800; margin-bottom: 8px; }
+  .quiz-header p { color: var(--muted); font-size: 14px; }
+  .progress-bar-wrap { background: var(--border); border-radius: 99px; height: 6px; margin: 0 0 32px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 99px; transition: width 0.4s ease; }
+  .q-counter { text-align: right; font-size: 13px; color: var(--muted); margin-bottom: 6px; }
+  .question-card { background: var(--card); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 28px 26px; margin-bottom: 20px; }
+  .question-card .q-num { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+  .question-card .q-text { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 700; line-height: 1.4; margin-bottom: 20px; color: #e8f4ff; }
+  .options { display: flex; flex-direction: column; gap: 10px; }
+  .opt-btn { background: var(--surface); border: 1.5px solid var(--border); border-radius: 10px; padding: 13px 18px; text-align: left; font-family: 'DM Sans', sans-serif; font-size: 14.5px; color: var(--text); cursor: pointer; transition: all 0.18s; display: flex; align-items: center; gap: 12px; }
+  .opt-btn:hover:not(:disabled) { border-color: var(--accent); background: rgba(0,180,216,0.06); color: #fff; }
+  .opt-btn .opt-letter { width: 28px; height: 28px; border-radius: 8px; background: var(--border); display: flex; align-items: center; justify-content: center; font-family: 'DM Mono', monospace; font-weight: 500; font-size: 13px; flex-shrink: 0; }
+  .opt-btn.correct { border-color: var(--accent3); background: rgba(6,214,160,0.08); color: #6efcd9; }
+  .opt-btn.correct .opt-letter { background: var(--accent3); color: #080c10; }
+  .opt-btn.wrong { border-color: var(--accent4); background: rgba(239,35,60,0.08); color: #ff8096; }
+  .opt-btn.wrong .opt-letter { background: var(--accent4); color: #fff; }
+  .feedback-box { margin-top: 16px; padding: 14px 18px; border-radius: 10px; font-size: 14px; display: none; }
+  .feedback-box.show { display: block; }
+  .feedback-box.ok { background: rgba(6,214,160,0.08); color: #6efcd9; border: 1px solid rgba(6,214,160,0.25); }
+  .feedback-box.ko { background: rgba(239,35,60,0.07); color: #ff8096; border: 1px solid rgba(239,35,60,0.22); }
+  .quiz-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; gap: 12px; flex-wrap: wrap; }
+  .btn-primary { background: var(--accent); color: #080c10; border: none; border-radius: 10px; padding: 12px 28px; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 15px; cursor: pointer; transition: opacity 0.2s, transform 0.1s; }
+  .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+  .btn-primary:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
+  .btn-secondary { background: transparent; color: var(--muted); border: 1.5px solid var(--border); border-radius: 10px; padding: 11px 22px; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.18s; }
+  .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+  .results-screen { text-align: center; padding: 40px 0; display: none; }
+  .results-screen.show { display: block; }
+  .score-ring { width: 150px; height: 150px; border-radius: 50%; margin: 0 auto 24px; display: flex; align-items: center; justify-content: center; flex-direction: column; border: 4px solid var(--accent); background: rgba(0,180,216,0.06); }
+  .score-ring .score-num { font-family: 'Syne', sans-serif; font-size: 40px; font-weight: 800; color: var(--accent); line-height: 1; }
+  .score-ring .score-label { font-size: 13px; color: var(--muted); margin-top: 4px; }
+  .results-screen h2 { font-family: 'Syne', sans-serif; font-size: 24px; font-weight: 800; margin-bottom: 10px; }
+  .results-screen p { color: var(--muted); font-size: 15px; margin-bottom: 28px; }
+  .result-details { list-style: none; text-align: left; max-width: 520px; margin: 0 auto 32px; }
+  .result-details li { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13.5px; color: #a8c0cc; }
+  .result-details li:last-child { border-bottom: none; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="badge">RNCP 37099 · Journée 7</div>
+  <h1>Les Mouvements <span>de Stocks</span></h1>
+  <p>Fiche de révision + Quiz interactif · Commerce &amp; Vente</p>
+</header>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="showTab('fiche')">📋 Fiche de révision</button>
+  <button class="tab-btn" onclick="showTab('quiz')">🎯 Quiz (20 questions)</button>
+</div>
+
+<main>
+
+<!-- ══════════ FICHE ══════════ -->
+<div class="section active" id="fiche">
+
+  <!-- N1 : Gestion des stocks -->
+  <div class="notion-header">
+    <div class="notion-icon" style="background:rgba(0,180,216,0.14);">📖</div>
+    <h2>Notion 1 — Définition de la Gestion des Stocks</h2>
+  </div>
+  <div class="card c-blue">
+    <div class="card-title">Définition complète</div>
+    <p>La gestion des stocks consiste à <strong>surveiller</strong> et <strong>contrôler</strong> les marchandises disponibles pour s'assurer qu'il y a toujours suffisamment de produits pour répondre à la <strong>demande</strong> des clients tout en <strong>minimisant</strong> les coûts de stockage.</p>
+    <div class="formula-box" style="margin-top:14px;">Stock Magasin = Stock en Réserve + Stock en Rayon</div>
+  </div>
+  <div class="card">
+    <div class="card-title">Pourquoi bien observer les stocks ?</div>
+    <ul class="icon-list">
+      <li><span class="ico">🚫</span>Éviter les <strong>ruptures de stocks</strong> en rayon</li>
+      <li><span class="ico">🛒</span>Proposer des rayons <strong>bien agencés et bien remplis</strong></li>
+      <li><span class="ico">😊</span><strong>Satisfaire et fidéliser</strong> la clientèle</li>
+    </ul>
+  </div>
+  <div class="two-col">
+    <div class="card">
+      <div class="card-title">📝 Fiche de stock (suivi manuel)</div>
+      <p>Document qui retrace les <strong>entrées et les sorties</strong> de produits. Elle contient : Article, Fournisseur, Stock min/max, Dates, Libellés, Quantité, Prix Unitaire, Montant.</p>
+    </div>
+    <div class="card">
+      <div class="card-title blue">💻 Suivi informatisé</div>
+      <p>L'utilisation d'un <strong>matériel informatique</strong> permet d'être plus performant en améliorant la qualité du travail par rapport au suivi manuel.</p>
+    </div>
+  </div>
+
+  <!-- N2 : Les différents stocks -->
+  <div class="notion-header">
+    <div class="notion-icon" style="background:rgba(247,127,0,0.14);">📊</div>
+    <h2>Notion 2 — Les 7 Indicateurs de Stock</h2>
+  </div>
+  <div class="stocks-grid">
+    <div class="stock-card">
+      <span class="s-label" style="background:rgba(0,180,216,0.15);color:#67e8f9;">SI</span>
+      <h4 style="color:var(--accent);">Stock Initial</h4>
+      <p>Stock <strong>au début d'une période</strong>. Point de départ du suivi.</p>
+    </div>
+    <div class="stock-card">
+      <span class="s-label" style="background:rgba(6,214,160,0.15);color:#6efcd9;">SF</span>
+      <h4 style="color:var(--accent3);">Stock Final</h4>
+      <p>Stock <strong>à la fin d'une période</strong>. Devient le SI de la période suivante.</p>
+    </div>
+    <div class="stock-card">
+      <span class="s-label" style="background:rgba(247,127,0,0.15);color:#fdb97d;">MIN</span>
+      <h4 style="color:var(--accent2);">Stock Minimum</h4>
+      <p>Stock correspondant aux <strong>ventes pendant les délais de livraison</strong>. Seuil à ne pas franchir.</p>
+    </div>
+    <div class="stock-card">
+      <span class="s-label" style="background:rgba(239,35,60,0.15);color:#ff8096;">MAX</span>
+      <h4 style="color:var(--accent4);">Stock Maximum</h4>
+      <p>Quantité à <strong>ne pas dépasser sous peine de surstockage</strong>. Limite haute du stock.</p>
+    </div>
+    <div class="stock-card">
+      <span class="s-label" style="background:rgba(114,9,183,0.2);color:#c084fc;">SS</span>
+      <h4 style="color:var(--accentv);">Stock de Sécurité</h4>
+      <p>Quantité <strong>en plus du stock minimum</strong> pour faire face à un retard de livraison ou des ventes supplémentaires.</p>
+    </div>
+    <div class="stock-card">
+      <span class="s-label" style="background:rgba(239,35,60,0.2);color:#ff8096;">🔔</span>
+      <h4 style="color:var(--accent4);">Stock d'Alerte</h4>
+      <p>Stock qui <strong>déclenche automatiquement la commande</strong>.<br>= Stock Minimum + Stock de Sécurité</p>
+    </div>
+  </div>
+  <div class="card" style="margin-top:14px;">
+    <div class="formula-box orange">Stock d'Alerte = Stock Minimum + Stock de Sécurité</div>
+    <div class="two-col" style="margin-top:14px;">
+      <div class="card c-purple" style="margin:0;">
+        <div class="card-title purple">💀 Stock Dormant (ou mort)</div>
+        <p style="font-size:13.5px;">Biens dont la rotation est <strong>faible ou nulle</strong>. Représente un coût. Nécessite une liquidation (bien saisonnier) ou un déréférencement.</p>
+      </div>
+      <div class="card c-orange" style="margin:0;">
+        <div class="card-title orange">📈 Stock Spéculatif</div>
+        <p style="font-size:13.5px;">Achats en quantités <strong>supérieures au besoin réel</strong> pour profiter de remises ou anticiper une hausse des prix fournisseurs.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- N3 : La rotation des stocks -->
+  <div class="notion-header">
+    <div class="notion-icon" style="background:rgba(6,214,160,0.14);">🔄</div>
+    <h2>Notion 3 — La Rotation des Stocks</h2>
+  </div>
+  <div class="card c-green">
+    <div class="card-title green">Définition</div>
+    <p>La rotation des stocks est la <strong>fréquence à laquelle les stocks sont renouvelés</strong>. Elle mesure la vitesse à laquelle les produits entrent et sortent du stock.</p>
+  </div>
+  <div class="rotation-row">
+    <div class="rot-card rapide">
+      <h4>⚡ Rotation RAPIDE</h4>
+      <ul class="icon-list" style="padding:0;">
+        <li style="border-color:rgba(6,214,160,0.15);"><span class="ico">✅</span>L'article se vend <strong>très bien</strong></li>
+        <li style="border-color:rgba(6,214,160,0.15);"><span class="ico">📦</span>Toujours l'avoir en stock (rayon + réserve)</li>
+        <li style="border-color:rgba(6,214,160,0.15);border-bottom:none;"><span class="ico">🎯</span>Plus <strong>facile à gérer</strong> : commander suffisamment pour éviter la rupture</li>
+      </ul>
+    </div>
+    <div class="rot-card lente">
+      <h4>🐢 Rotation LENTE</h4>
+      <ul class="icon-list" style="padding:0;">
+        <li style="border-color:rgba(239,35,60,0.15);"><span class="ico">⚠️</span>L'article se vend <strong>peu</strong></li>
+        <li style="border-color:rgba(239,35,60,0.15);"><span class="ico">📉</span>Réduire les commandes</li>
+        <li style="border-color:rgba(239,35,60,0.15);border-bottom:none;"><span class="ico">⚖️</span>Plus <strong>difficile à gérer</strong> : équilibre entre rupture et surstockage</li>
+      </ul>
+    </div>
+  </div>
+  <div class="card" style="margin-top:14px;">
+    <div class="card-title">Exemple concret de rotation</div>
+    <div class="two-col">
+      <div style="background:var(--surface);border-radius:10px;padding:14px;border:1px solid var(--border);">
+        <p style="font-size:13px;color:#67e8f9;font-weight:700;margin-bottom:6px;">🍝 1 jour de rotation sur des pâtes :</p>
+        <p style="font-size:13px;color:#a8c0cc;">On vend 5 paquets par jour. Si commande 1x/semaine → <strong>7 × 5 = 35 paquets</strong> à commander.</p>
+      </div>
+      <div style="background:var(--surface);border-radius:10px;padding:14px;border:1px solid var(--border);">
+        <p style="font-size:13px;color:#fdb97d;font-weight:700;margin-bottom:6px;">🍺 1 mois de rotation sur de la bière :</p>
+        <p style="font-size:13px;color:#a8c0cc;">On vend 1 pack tous les 6 jours en moyenne. S'il fait chaud : 2/jour. S'il fait froid : 0 pendant 1 mois !</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- N4 : Les 2 risques majeurs -->
+  <div class="notion-header">
+    <div class="notion-icon" style="background:rgba(239,35,60,0.14);">⚠️</div>
+    <h2>Notion 4 — Les 2 Risques Majeurs à Éviter</h2>
+  </div>
+  <div class="consq-grid">
+    <div class="card c-red">
+      <div class="card-title red">❌ La Rupture de Stock</div>
+      <p style="font-size:13px;color:#8aa5b5;margin-bottom:10px;">Risque d'une <strong>rotation rapide mal gérée</strong> (commande insuffisante)</p>
+      <ul class="icon-list">
+        <li><span class="ico">👋</span>Accroît le risque de <strong>perdre des clients</strong></li>
+        <li><span class="ico">💸</span>Accroît la <strong>perte de chiffre d'affaires</strong></li>
+        <li><span class="ico">🖼️</span>Donne une <strong>mauvaise image</strong> du magasin</li>
+      </ul>
+    </div>
+    <div class="card c-orange">
+      <div class="card-title orange">📦 Le Sur-Stockage</div>
+      <p style="font-size:13px;color:#8aa5b5;margin-bottom:10px;">Risque d'une <strong>rotation lente mal gérée</strong> (commande excessive)</p>
+      <ul class="icon-list">
+        <li><span class="ico">🚧</span>Accroît les <strong>risques de sécurité</strong> (espace encombré)</li>
+        <li><span class="ico">🗓️</span>Risques de <strong>détérioration</strong> (DLC dépassée, emballages abîmés)</li>
+        <li><span class="ico">💰</span>Génère des <strong>coûts supplémentaires</strong> (assurance, capitaux immobilisés)</li>
+      </ul>
+    </div>
+  </div>
+  <div class="tip-box">
+    <strong>💡 Règle d'or :</strong> L'objectif est d'être dans la <strong>zone verte</strong> : ni en rupture, ni en surstockage. Maîtriser la rotation = trouver l'équilibre parfait entre commandes et ventes.
+  </div>
+
+  <!-- MÉMO -->
+  <div class="memo-card">
+    <div class="card-title" style="font-size:16px;margin-bottom:14px;">⭐ MÉMO RÉCAPITULATIF — Mouvements de Stocks</div>
+    <table class="recap-table">
+      <tr><th>Notion</th><th>Définition clé</th></tr>
+      <tr><td>Gestion des stocks</td><td>Surveiller + contrôler les marchandises pour répondre à la demande en minimisant les coûts</td></tr>
+      <tr><td>Stock Magasin</td><td>Stock réserve + Stock rayon</td></tr>
+      <tr><td>Fiche de stock</td><td>Document retraçant toutes les entrées et sorties de produits</td></tr>
+      <tr><td>Stock Initial (SI)</td><td>Stock en début de période</td></tr>
+      <tr><td>Stock Final (SF)</td><td>Stock en fin de période</td></tr>
+      <tr><td>Stock Minimum</td><td>Ventes pendant le délai de livraison — seuil bas</td></tr>
+      <tr><td>Stock Maximum</td><td>Quantité à ne pas dépasser (surstockage)</td></tr>
+      <tr><td>Stock de Sécurité (SS)</td><td>Tampon au-dessus du minimum contre les retards ou pics de ventes</td></tr>
+      <tr><td>Stock d'Alerte</td><td>= Stock Minimum + Stock Sécurité → déclenche la commande</td></tr>
+      <tr><td>Stock Dormant</td><td>Rotation faible ou nulle → liquidation ou déréférencement</td></tr>
+      <tr><td>Stock Spéculatif</td><td>Achat en excès pour profiter de remises ou anticiper une hausse</td></tr>
+      <tr><td>Rotation rapide</td><td>Article qui se vend bien → toujours en stock, facile à gérer</td></tr>
+      <tr><td>Rotation lente</td><td>Article peu vendu → réduire commandes, difficile à équilibrer</td></tr>
+      <tr><td>Rupture de stock</td><td>Perte clients + CA + mauvaise image</td></tr>
+      <tr><td>Sur-stockage</td><td>Sécurité + détérioration + coûts supplémentaires</td></tr>
+    </table>
+  </div>
+
+</div><!-- /fiche -->
+
+<!-- ══════════ QUIZ ══════════ -->
+<div class="section" id="quiz">
+  <div class="quiz-header">
+    <h2>🎯 Quiz — Les Mouvements de Stocks</h2>
+    <p>20 questions pour valider vos acquis · RNCP 37099 Journée 7</p>
+  </div>
+  <div id="quiz-area">
+    <div class="q-counter" id="q-counter">Question 1 / 20</div>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progress-bar" style="width:5%"></div></div>
+    <div id="question-container"></div>
+    <div class="quiz-nav">
+      <span id="score-live" style="font-size:14px;color:var(--muted);">Score : 0 / 0</span>
+      <button class="btn-primary" id="btn-next" onclick="nextQuestion()" disabled>Question suivante →</button>
+    </div>
+  </div>
+  <div class="results-screen" id="results-screen">
+    <div class="score-ring"><div class="score-num" id="final-score">0</div><div class="score-label">/ 20</div></div>
+    <h2 id="results-title"></h2>
+    <p id="results-msg"></p>
+    <ul class="result-details" id="result-details"></ul>
+    <button class="btn-primary" onclick="restartQuiz()">🔄 Recommencer le quiz</button>
+    &nbsp;
+    <button class="btn-secondary" onclick="showTab('fiche')">📋 Revoir la fiche</button>
+  </div>
+</div>
+
+</main>
+
+<script>
+function showTab(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.tab-btn')[id === 'fiche' ? 0 : 1].classList.add('active');
+  if (id === 'quiz') initQuiz();
+}
+
+const questions = [
+  {
+    q: "Quelle est la définition de la gestion des stocks ?",
+    opts: [
+      "Calculer les bénéfices générés par les ventes de produits",
+      "Surveiller et contrôler les marchandises pour répondre à la demande tout en minimisant les coûts",
+      "Organiser les rayons en fonction des préférences des clients",
+      "Comptabiliser uniquement les produits en rupture de stock"
+    ],
+    a: 1,
+    exp: "La gestion des stocks consiste à surveiller et contrôler les marchandises disponibles pour répondre à la demande des clients tout en minimisant les coûts de stockage."
+  },
+  {
+    q: "Quelle est la formule du stock magasin ?",
+    opts: [
+      "Stock Magasin = Stock Initial − Stock Final",
+      "Stock Magasin = Stock Maximum − Stock Minimum",
+      "Stock Magasin = Stock en Réserve + Stock en Rayon",
+      "Stock Magasin = Stock d'Alerte + Stock de Sécurité"
+    ],
+    a: 2,
+    exp: "Stock Magasin = Stock en Réserve + Stock en Rayon. Le stock magasin est la totalité des produits disponibles, que ce soit en réserve ou en rayon."
+  },
+  {
+    q: "Qu'est-ce qu'une fiche de stock ?",
+    opts: [
+      "Un bon de commande envoyé au fournisseur",
+      "Un document qui retrace les entrées et sorties de produits",
+      "Un tableau des prix de vente de chaque article",
+      "Une liste des produits en rupture de stock"
+    ],
+    a: 1,
+    exp: "Une fiche de stock est un document qui retrace toutes les entrées et les sorties de produits. Elle indique notamment : article, fournisseur, stock min/max, dates, quantités, prix unitaires et montants."
+  },
+  {
+    q: "Le Stock Initial (SI) correspond à :",
+    opts: [
+      "Le stock à la fin d'une période comptable",
+      "Le stock minimum à ne jamais dépasser",
+      "Le stock au début d'une période",
+      "Le stock qui déclenche la commande"
+    ],
+    a: 2,
+    exp: "Le Stock Initial (SI) est le stock au début d'une période. Il correspond au Stock Final de la période précédente."
+  },
+  {
+    q: "Le Stock Minimum correspond à :",
+    opts: [
+      "Le stock qui ne doit jamais être dépassé sous peine de surstockage",
+      "Le stock qui correspond aux ventes pendant les délais de livraison",
+      "Le stock permettant de faire face aux retards de livraison",
+      "Le stock total présent en magasin et en réserve"
+    ],
+    a: 1,
+    exp: "Le Stock Minimum correspond aux ventes réalisées pendant le délai de livraison. C'est le seuil bas à ne pas franchir pour éviter la rupture."
+  },
+  {
+    q: "Le Stock Maximum est défini comme :",
+    opts: [
+      "La quantité de produits à commander à chaque livraison",
+      "La quantité à ne pas dépasser sous peine de surstockage",
+      "Le stock qui déclenche automatiquement la commande",
+      "Le stock de la dernière période enregistrée"
+    ],
+    a: 1,
+    exp: "Le Stock Maximum est la quantité de produits en stock à ne pas augmenter sous peine de surstockage. C'est la limite haute du stock."
+  },
+  {
+    q: "Le Stock de Sécurité (SS) sert à :",
+    opts: [
+      "Éviter que les clients ne volent les produits en rayon",
+      "Compenser les erreurs de comptage lors de l'inventaire",
+      "Faire face à un retard de livraison ou des ventes supplémentaires imprévues",
+      "Stocker les produits défectueux en attente de retour fournisseur"
+    ],
+    a: 2,
+    exp: "Le Stock de Sécurité est une quantité supplémentaire au-dessus du stock minimum, prévue pour faire face à un retard de livraison éventuel ou à des ventes supplémentaires durant ce délai."
+  },
+  {
+    q: "Quelle est la formule du Stock d'Alerte ?",
+    opts: [
+      "Stock d'Alerte = Stock Maximum − Stock Minimum",
+      "Stock d'Alerte = Stock Initial + Stock Final",
+      "Stock d'Alerte = Stock Minimum + Stock de Sécurité",
+      "Stock d'Alerte = Stock Magasin − Stock de Sécurité"
+    ],
+    a: 2,
+    exp: "Stock d'Alerte = Stock Minimum + Stock de Sécurité. C'est le seuil qui déclenche automatiquement la commande auprès du fournisseur."
+  },
+  {
+    q: "Que se passe-t-il quand le stock atteint le stock d'alerte ?",
+    opts: [
+      "On réalise un inventaire immédiat",
+      "La commande est automatiquement déclenchée",
+      "On ferme la réserve jusqu'à la prochaine livraison",
+      "On affiche un panneau de rupture de stock"
+    ],
+    a: 1,
+    exp: "Le stock d'alerte déclenche la commande. C'est le signal qui indique qu'il faut passer une nouvelle commande auprès du fournisseur pour ne pas tomber en rupture."
+  },
+  {
+    q: "Qu'est-ce qu'un stock dormant (ou mort) ?",
+    opts: [
+      "Un stock en attente de livraison depuis plusieurs semaines",
+      "Un stock de produits dont la rotation est faible ou nulle",
+      "Un stock conservé en chambre froide pour les produits frais",
+      "Un stock réservé aux promotions saisonnières"
+    ],
+    a: 1,
+    exp: "Le stock dormant (ou mort) désigne un ensemble de biens dont la rotation est faible ou nulle. Il représente un coût et nécessite généralement une liquidation (bien saisonnier) ou un déréférencement."
+  },
+  {
+    q: "Dans quelle situation constitue-t-on un stock spéculatif ?",
+    opts: [
+      "Quand le stock minimum est atteint et qu'une commande doit être passée",
+      "Quand on achète en quantités supérieures au besoin réel pour profiter de remises ou anticiper une hausse des prix",
+      "Quand les ventes dépassent les prévisions pendant les soldes",
+      "Quand un produit est retiré de la vente et stocké en réserve"
+    ],
+    a: 1,
+    exp: "On constitue un stock spéculatif en achetant plus que nécessaire pour profiter de remises fournisseurs ou anticiper une hausse des prix. Cela peut aussi concerner des produits pour lesquels les fournisseurs envisagent une augmentation."
+  },
+  {
+    q: "Que signifie qu'un article a une rotation rapide ?",
+    opts: [
+      "Il est difficile à stocker car il se périme vite",
+      "Il se vend très bien et doit toujours être disponible en stock",
+      "Il génère peu de marges pour le magasin",
+      "Il est commandé une seule fois par an"
+    ],
+    a: 1,
+    exp: "Une rotation rapide signifie que l'article se vend très bien. Il faut donc toujours l'avoir en stock (rayon ET réserve) et ce type de stock est plus facile à gérer."
+  },
+  {
+    q: "Qu'implique une rotation lente pour la gestion des commandes ?",
+    opts: [
+      "Il faut augmenter les commandes pour avoir toujours du stock",
+      "Il faut réduire les commandes pour éviter le surstockage",
+      "Il faut commander tous les jours pour renouveler le stock",
+      "Il faut arrêter de commander ce produit définitivement"
+    ],
+    a: 1,
+    exp: "Un article à rotation lente se vend peu. Il faut donc réduire les commandes pour éviter le surstockage, tout en commandant suffisamment pour éviter la rupture — c'est l'équilibre le plus difficile à trouver."
+  },
+  {
+    q: "Pourquoi un stock à rotation élevée est-il plus facile à gérer qu'un stock à rotation lente ?",
+    opts: [
+      "Car il y a moins de références à gérer",
+      "Car il suffit de commander suffisamment pour éviter la rupture, sans risque de surstockage",
+      "Car les produits coûtent moins cher à stocker",
+      "Car les fournisseurs livrent plus vite les produits très demandés"
+    ],
+    a: 1,
+    exp: "Un stock à rotation élevée est plus facile à gérer : il faut juste commander suffisamment pour éviter la rupture. Le risque de surstockage est faible car les produits s'écoulent rapidement."
+  },
+  {
+    q: "La rupture de stock provoque :",
+    opts: [
+      "Une réduction des coûts de stockage et une amélioration de la rentabilité",
+      "Un risque de perdre des clients, une perte de CA et une mauvaise image",
+      "Une augmentation des commandes fournisseurs et une baisse des délais",
+      "Un surplus de produits en réserve favorable à l'inventaire"
+    ],
+    a: 1,
+    exp: "La rupture de stock a 3 conséquences négatives : elle accroît le risque de perdre des clients, entraîne une perte de chiffre d'affaires, et donne une mauvaise image du magasin."
+  },
+  {
+    q: "Si un article à rotation rapide n'est pas bien géré, quel est le risque majeur ?",
+    opts: ["Le surstockage", "La rupture de stock", "Le déréférencement", "L'augmentation des coûts d'assurance"],
+    a: 1,
+    exp: "Si on ne prend pas en compte la rotation rapide d'un article (commandes insuffisantes), le risque majeur est la rupture de stock."
+  },
+  {
+    q: "Si un article à rotation lente n'est pas bien géré, quel est le risque majeur ?",
+    opts: ["La rupture de stock", "Le surstockage", "Le déréférencement", "La perte de clientèle"],
+    a: 1,
+    exp: "Si on ne prend pas en compte la rotation lente d'un article (commandes trop importantes), le risque majeur est le surstockage."
+  },
+  {
+    q: "Parmi ces conséquences, laquelle est liée au sur-stockage ?",
+    opts: [
+      "Perte de clients mécontents de ne pas trouver le produit",
+      "Mauvaise image du magasin à cause des rayons vides",
+      "Risques de sécurité (espace encombré) et DLC dépassées",
+      "Baisse du chiffre d'affaires par manque de produits disponibles"
+    ],
+    a: 2,
+    exp: "Le sur-stockage génère des risques de sécurité (espace trop encombré), des risques de détérioration (DLC dépassée, emballages abîmés), et des coûts supplémentaires (assurance, capitaux immobilisés)."
+  },
+  {
+    q: "Pourquoi est-il important d'observer régulièrement les stocks en rayon ?",
+    opts: [
+      "Pour calculer la démarque connue et l'enregistrer",
+      "Pour éviter les ruptures, proposer des rayons bien remplis et fidéliser la clientèle",
+      "Pour réduire le nombre de références dans les rayons",
+      "Pour faciliter le travail des contrôleurs financiers lors des audits"
+    ],
+    a: 1,
+    exp: "Observer les stocks régulièrement permet d'éviter les ruptures de stock en rayon, de proposer des rayons bien agencés et bien remplis, et ainsi de satisfaire et fidéliser la clientèle."
+  },
+  {
+    q: "Un magasin vend 5 paquets de pâtes par jour. Il commande une fois par semaine. Combien doit-il commander ?",
+    opts: ["5 paquets", "25 paquets", "35 paquets", "50 paquets"],
+    a: 2,
+    exp: "1 jour de rotation = 5 paquets vendus/jour. Pour une commande hebdomadaire (7 jours) : 7 × 5 = 35 paquets. C'est l'application directe du calcul de rotation présenté dans le cours."
+  }
+];
+
+let current = 0, score = 0, answered = false, userAnswers = [], initialized = false;
+
+function initQuiz() {
+  if (initialized) return;
+  initialized = true;
+  current = 0; score = 0; answered = false; userAnswers = [];
+  document.getElementById('quiz-area').style.display = 'block';
+  document.getElementById('results-screen').classList.remove('show');
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = questions[current];
+  const letters = ['A','B','C','D'];
+  answered = false;
+  document.getElementById('btn-next').disabled = true;
+  document.getElementById('q-counter').textContent = `Question ${current + 1} / ${questions.length}`;
+  document.getElementById('progress-bar').style.width = ((current) / questions.length * 100) + '%';
+  document.getElementById('score-live').textContent = `Score : ${score} / ${current}`;
+  let html = `<div class="question-card"><div class="q-num">Question ${current + 1}</div><div class="q-text">${q.q}</div><div class="options">`;
+  q.opts.forEach((opt, i) => {
+    html += `<button class="opt-btn" id="opt-${i}" onclick="selectAnswer(${i})"><span class="opt-letter">${letters[i]}</span>${opt}</button>`;
+  });
+  html += `</div><div class="feedback-box" id="feedback"></div></div>`;
+  document.getElementById('question-container').innerHTML = html;
+}
+
+function selectAnswer(idx) {
+  if (answered) return;
+  answered = true;
+  const q = questions[current];
+  const correct = q.a === idx;
+  if (correct) score++;
+  userAnswers.push({ q: q.q, userIdx: idx, correctIdx: q.a, correct });
+  document.querySelectorAll('.opt-btn').forEach((btn, i) => {
+    btn.disabled = true;
+    if (i === q.a) btn.classList.add('correct');
+    if (i === idx && !correct) btn.classList.add('wrong');
+  });
+  const fb = document.getElementById('feedback');
+  fb.classList.add('show', correct ? 'ok' : 'ko');
+  fb.innerHTML = (correct ? '✅ <strong>Bonne réponse !</strong> ' : '❌ <strong>Pas tout à fait.</strong> ') + q.exp;
+  document.getElementById('btn-next').disabled = false;
+  if (current === questions.length - 1) document.getElementById('btn-next').textContent = 'Voir les résultats 🏆';
+}
+
+function nextQuestion() {
+  current++;
+  if (current >= questions.length) showResults();
+  else { document.getElementById('btn-next').textContent = 'Question suivante →'; renderQuestion(); }
+}
+
+function showResults() {
+  document.getElementById('quiz-area').style.display = 'none';
+  document.getElementById('results-screen').classList.add('show');
+  document.getElementById('final-score').textContent = score;
+  const pct = Math.round((score / questions.length) * 100);
+  let title, msg;
+  if (pct >= 85) { title = '🏆 Excellent !'; msg = 'Maîtrise parfaite des mouvements de stocks ! Compétence RNCP validée !'; }
+  else if (pct >= 65) { title = '👍 Bien joué !'; msg = 'Bon niveau ! Quelques notions à consolider.'; }
+  else if (pct >= 50) { title = '📚 En progression'; msg = 'Des bases présentes. Relisez la fiche et réessayez !'; }
+  else { title = '💪 À retravailler'; msg = 'Retournez consulter la fiche — les stocks n\'auront plus de secrets !'; }
+  document.getElementById('results-title').textContent = title;
+  document.getElementById('results-msg').textContent = msg + ` (${score}/20 — ${pct} %)`;
+  const details = document.getElementById('result-details');
+  details.innerHTML = userAnswers.map((ua, i) => {
+    const opts = questions[i].opts;
+    const wrongInfo = ua.correct ? '' : ` → Bonne réponse : <strong>${opts[ua.correctIdx]}</strong>`;
+    return `<li><span style="flex-shrink:0">${ua.correct ? '✅' : '❌'}</span><span>Q${i+1}. ${questions[i].q.slice(0,60)}…${wrongInfo}</span></li>`;
+  }).join('');
+}
+
+function restartQuiz() {
+  current = 0; score = 0; answered = false; userAnswers = []; initialized = false;
+  document.getElementById('quiz-area').style.display = 'block';
+  document.getElementById('results-screen').classList.remove('show');
+  document.getElementById('btn-next').textContent = 'Question suivante →';
+  initQuiz();
+}
+</script>
+</body>
+</html>

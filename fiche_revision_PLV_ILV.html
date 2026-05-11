@@ -1,0 +1,305 @@
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-sans); }
+.container { padding: 1.5rem 1rem; max-width: 680px; }
+h1 { font-size: 22px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 0.25rem; }
+h2 { font-size: 16px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 0.75rem; }
+.badge { display: inline-block; font-size: 12px; font-weight: 500; padding: 3px 10px; border-radius: 20px; margin-bottom: 1rem; }
+.badge-plv { background: #E6F1FB; color: #0C447C; }
+.badge-ilv { background: #EAF3DE; color: #27500A; }
+.badge-diff { background: #EEEDFE; color: #3C3489; }
+.section { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1rem 1.25rem; margin-bottom: 1rem; }
+.section-title { font-size: 15px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 0.6rem; display: flex; align-items: center; gap: 8px; }
+.def-box { background: var(--color-background-secondary); border-left: 3px solid #378ADD; border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0; padding: 0.6rem 0.8rem; margin-bottom: 0.75rem; font-size: 14px; color: var(--color-text-primary); line-height: 1.5; }
+.def-box.green { border-left-color: #639922; }
+.tag-grid { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 0.5rem; }
+.tag { font-size: 12px; padding: 4px 10px; border-radius: 20px; border: 0.5px solid var(--color-border-secondary); color: var(--color-text-secondary); background: var(--color-background-secondary); }
+.compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.compare-card { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 0.75rem; }
+.compare-card h3 { font-size: 13px; font-weight: 500; margin-bottom: 0.5rem; }
+.compare-card .plv-h { color: #185FA5; }
+.compare-card .ilv-h { color: #3B6D11; }
+.compare-card ul { list-style: none; padding: 0; }
+.compare-card ul li { font-size: 13px; color: var(--color-text-secondary); padding: 2px 0; line-height: 1.5; }
+.compare-card ul li::before { content: "→ "; color: var(--color-text-tertiary); }
+.divider { border: none; border-top: 0.5px solid var(--color-border-tertiary); margin: 1.5rem 0; }
+
+.quiz-section { margin-top: 1rem; }
+.quiz-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+.progress-bar { width: 100%; height: 5px; background: var(--color-background-secondary); border-radius: 4px; margin-bottom: 1.5rem; overflow: hidden; }
+.progress-fill { height: 100%; background: #378ADD; border-radius: 4px; transition: width 0.3s; }
+.question-card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1.25rem; margin-bottom: 1rem; }
+.question-num { font-size: 12px; color: var(--color-text-tertiary); margin-bottom: 0.4rem; }
+.question-text { font-size: 15px; color: var(--color-text-primary); margin-bottom: 1rem; line-height: 1.6; }
+.options { display: flex; flex-direction: column; gap: 8px; }
+.opt-btn { text-align: left; padding: 0.6rem 1rem; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: var(--color-background-secondary); font-size: 14px; color: var(--color-text-primary); cursor: pointer; transition: all 0.15s; line-height: 1.4; }
+.opt-btn:hover:not(:disabled) { background: var(--color-background-tertiary); border-color: var(--color-border-primary); }
+.opt-btn.correct { background: #EAF3DE; border-color: #639922; color: #27500A; }
+.opt-btn.wrong { background: #FCEBEB; border-color: #A32D2D; color: #501313; }
+.opt-btn:disabled { cursor: default; }
+.feedback { font-size: 13px; margin-top: 0.75rem; padding: 0.5rem 0.75rem; border-radius: var(--border-radius-md); line-height: 1.5; }
+.feedback.ok { background: #EAF3DE; color: #27500A; }
+.feedback.ko { background: #FCEBEB; color: #501313; }
+.nav-row { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; }
+.score-card { background: var(--color-background-secondary); border-radius: var(--border-radius-lg); padding: 1.5rem; text-align: center; }
+.score-num { font-size: 36px; font-weight: 500; color: var(--color-text-primary); }
+.score-label { font-size: 14px; color: var(--color-text-secondary); margin-bottom: 1rem; }
+.medals { font-size: 22px; letter-spacing: 4px; margin-bottom: 0.75rem; }
+.tab-row { display: flex; gap: 6px; margin-bottom: 1.25rem; }
+.tab-btn { flex: 1; padding: 0.5rem; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: var(--color-background-secondary); font-size: 14px; color: var(--color-text-secondary); cursor: pointer; font-weight: 400; }
+.tab-btn.active { background: #185FA5; border-color: #185FA5; color: white; font-weight: 500; }
+</style>
+
+<div class="container">
+  <h2 style="font-size:11px;color:var(--color-text-tertiary);margin-bottom:0.25rem;text-transform:uppercase;letter-spacing:.05em;">TP Employé Commercial · RNCP37099</h2>
+  <h1>PLV & ILV — Fiche de révisions</h1>
+  <p style="font-size:14px;color:var(--color-text-secondary);margin:0.4rem 0 1.25rem;">Cours complet + quiz de 20 questions pour valider tes acquis</p>
+
+  <div class="tab-row">
+    <button class="tab-btn active" onclick="showTab('fiche')">📋 Fiche de cours</button>
+    <button class="tab-btn" onclick="showTab('quiz')">🎯 Quiz (20 Q)</button>
+  </div>
+
+  <div id="tab-fiche">
+    <div class="section">
+      <div class="section-title"><i class="ti ti-speakerphone" aria-hidden="true"></i> PLV — Publicité sur le Lieu de Vente</div>
+      <div class="def-box">Terme global désignant tout support destiné à <strong>promouvoir</strong> un produit ou un service directement en magasin : du mobilier au support visuel.</div>
+      <p style="font-size:13px;color:var(--color-text-secondary);margin-bottom:0.5rem;font-weight:500;">Objectif principal</p>
+      <p style="font-size:13px;color:var(--color-text-secondary);margin-bottom:0.75rem;line-height:1.5;">Attirer l'attention du client et déclencher l'acte d'achat en valorisant le produit ou la marque.</p>
+      <p style="font-size:13px;color:var(--color-text-secondary);margin-bottom:0.5rem;font-weight:500;">Principaux types de PLV</p>
+      <div class="tag-grid">
+        <span class="tag">Vitrophanie (vitrine)</span>
+        <span class="tag">Stop-rayon (drapeau)</span>
+        <span class="tag">Display hors du commun</span>
+        <span class="tag">Stand promotionnel</span>
+        <span class="tag">Rayon TV / écrans</span>
+        <span class="tag">Séparateur de rayon</span>
+        <span class="tag">Surmontoir</span>
+        <span class="tag">Adhésif au sol</span>
+        <span class="tag">Affiche publicitaire</span>
+        <span class="tag">Kakémono</span>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><i class="ti ti-info-circle" aria-hidden="true"></i> ILV — Information sur le Lieu de Vente</div>
+      <div class="def-box green">Terme global qui comprend la signalétique permettant de <strong>guider le consommateur</strong> vers les produits et de lui fournir des informations pratiques sur un univers produit donné.</div>
+      <p style="font-size:13px;color:var(--color-text-secondary);margin-bottom:0.5rem;font-weight:500;">Ce que renseigne l'ILV</p>
+      <div class="tag-grid" style="margin-bottom:0.75rem;">
+        <span class="tag">Guider vers le produit</span>
+        <span class="tag">Nom & origine</span>
+        <span class="tag">Caractéristiques techniques</span>
+        <span class="tag">Modes d'utilisation / entretien</span>
+        <span class="tag">Prix</span>
+      </div>
+      <p style="font-size:13px;color:var(--color-text-secondary);margin-bottom:0.5rem;font-weight:500;">Principaux types d'ILV</p>
+      <div class="tag-grid">
+        <span class="tag">Fronton de rayon</span>
+        <span class="tag">Bandeau de gondole</span>
+        <span class="tag">Séparateur de rayon</span>
+        <span class="tag">Kakémono</span>
+        <span class="tag">Écrans</span>
+        <span class="tag">Bornes interactives</span>
+        <span class="tag">Présentoirs</span>
+        <span class="tag">Distributeurs de brochures</span>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><i class="ti ti-arrows-diff" aria-hidden="true"></i> PLV vs ILV — Les différences clés</div>
+      <div class="compare-grid">
+        <div class="compare-card">
+          <h3 class="plv-h">PLV</h3>
+          <ul>
+            <li>Finalité <strong>publicitaire</strong></li>
+            <li>Met en valeur la <strong>marque</strong></li>
+            <li>Déclenche l'<strong>achat impulsif</strong></li>
+            <li>Visuels attractifs, impactants</li>
+            <li>Souvent temporaire</li>
+          </ul>
+        </div>
+        <div class="compare-card">
+          <h3 class="ilv-h">ILV</h3>
+          <ul>
+            <li>Finalité <strong>informative</strong></li>
+            <li>Guide le <strong>consommateur</strong></li>
+            <li>Facilite la <strong>décision d'achat</strong></li>
+            <li>Texte précis, technique</li>
+            <li>Souvent permanente</li>
+          </ul>
+        </div>
+      </div>
+      <p style="font-size:12px;color:var(--color-text-tertiary);margin-top:0.75rem;line-height:1.5;"><i class="ti ti-alert-circle" aria-hidden="true"></i> Certains supports comme le <strong>kakémono</strong> peuvent être utilisés aussi bien en PLV qu'en ILV selon leur contenu.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><i class="ti ti-star" aria-hidden="true"></i> Points clés à retenir</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--color-text-secondary);line-height:1.5;">
+          <span style="color:#378ADD;font-weight:500;min-width:18px;">1.</span> PLV = <em>Publicité</em> sur le Lieu de Vente → promouvoir / séduire
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--color-text-secondary);line-height:1.5;">
+          <span style="color:#378ADD;font-weight:500;min-width:18px;">2.</span> ILV = <em>Information</em> sur le Lieu de Vente → informer / guider
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--color-text-secondary);line-height:1.5;">
+          <span style="color:#378ADD;font-weight:500;min-width:18px;">3.</span> Le «stop-rayon» est une PLV en forme de drapeau fixé en bout de rayon
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--color-text-secondary);line-height:1.5;">
+          <span style="color:#378ADD;font-weight:500;min-width:18px;">4.</span> Le «fronton» est une ILV placée en haut du rayon identifiant la gamme
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--color-text-secondary);line-height:1.5;">
+          <span style="color:#378ADD;font-weight:500;min-width:18px;">5.</span> La PLV peut être physique (display, stand) ou numérique (écran, borne)
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab-quiz" style="display:none;">
+    <div id="quiz-start">
+      <div class="score-card">
+        <div style="font-size:32px;margin-bottom:0.5rem;">🎯</div>
+        <div style="font-size:18px;font-weight:500;color:var(--color-text-primary);margin-bottom:0.5rem;">Quiz PLV & ILV</div>
+        <div style="font-size:14px;color:var(--color-text-secondary);margin-bottom:1.25rem;line-height:1.6;">20 questions pour valider tes connaissances sur la signalétique commerciale, conforme aux compétences du RNCP37099.</div>
+        <button onclick="startQuiz()" style="padding:0.6rem 1.5rem;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-secondary);background:var(--color-background-primary);font-size:14px;color:var(--color-text-primary);cursor:pointer;">Commencer le quiz →</button>
+      </div>
+    </div>
+
+    <div id="quiz-run" style="display:none;">
+      <div class="progress-bar"><div class="progress-fill" id="prog"></div></div>
+      <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--color-text-secondary);margin-bottom:1rem;">
+        <span id="q-counter">Question 1/20</span>
+        <span id="score-live">Score : 0</span>
+      </div>
+      <div class="question-card">
+        <div class="question-num" id="q-num"></div>
+        <div class="question-text" id="q-text"></div>
+        <div class="options" id="q-opts"></div>
+        <div id="q-feedback" style="display:none;" class="feedback"></div>
+      </div>
+      <div class="nav-row">
+        <span style="font-size:13px;color:var(--color-text-tertiary);" id="q-hint"></span>
+        <button id="next-btn" onclick="nextQ()" style="display:none;padding:0.5rem 1.2rem;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-secondary);background:var(--color-background-secondary);font-size:14px;color:var(--color-text-primary);cursor:pointer;">Suivant →</button>
+      </div>
+    </div>
+
+    <div id="quiz-end" style="display:none;">
+      <div class="score-card">
+        <div class="medals" id="end-medals"></div>
+        <div class="score-num" id="end-score"></div>
+        <div class="score-label" id="end-label"></div>
+        <div style="font-size:13px;color:var(--color-text-secondary);margin-bottom:1rem;" id="end-msg"></div>
+        <button onclick="restartQuiz()" style="padding:0.6rem 1.5rem;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-secondary);background:var(--color-background-primary);font-size:14px;color:var(--color-text-primary);cursor:pointer;">Recommencer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function showTab(t) {
+  document.getElementById('tab-fiche').style.display = t==='fiche'?'block':'none';
+  document.getElementById('tab-quiz').style.display = t==='quiz'?'block':'none';
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',(i===0&&t==='fiche')||(i===1&&t==='quiz')));
+}
+
+const questions = [
+  {q:"Que signifie l'acronyme PLV ?", opts:["Produit Local en Vente","Publicité sur le Lieu de Vente","Présentation du Lieu de Vente","Plan de Livraison en Vente"], a:1, expl:"PLV = Publicité sur le Lieu de Vente. C'est un terme global pour tous les supports publicitaires en magasin."},
+  {q:"Que signifie l'acronyme ILV ?", opts:["Indication de Lieu de Vente","Information Locale de Vente","Information sur le Lieu de Vente","Inventaire du Lieu de Vente"], a:2, expl:"ILV = Information sur le Lieu de Vente. Elle guide le consommateur et l'informe sur les produits."},
+  {q:"Quel est l'objectif principal de la PLV ?", opts:["Informer sur le prix","Promouvoir un produit ou service","Indiquer l'origine du produit","Signaler les sorties de secours"], a:1, expl:"La PLV vise à promouvoir un produit ou service sous différentes formes pour déclencher l'achat."},
+  {q:"Quel est l'objectif principal de l'ILV ?", opts:["Attirer l'œil avec de la couleur","Vendre en urgence","Guider le client et l'informer sur le produit","Faire de la publicité de marque"], a:2, expl:"L'ILV guide le consommateur vers les produits et lui fournit des informations pratiques (prix, caractéristiques…)."},
+  {q:"Qu'est-ce qu'un «stop-rayon» ?", opts:["Un signal de fin de rayon","Un drapeau promotionnel fixé en rayon","Un écran en bout de caisse","Un kakémono suspendu"], a:1, expl:"Le stop-rayon est une PLV en forme de drapeau promotionnel qui attire l'œil en dépassant du rayon."},
+  {q:"La vitrophanie est une PLV apposée sur :", opts:["Le sol du magasin","La vitrine","Un kakémono","Un présentoir"], a:1, expl:"La vitrophanie est un adhésif transparent collé sur la vitrine extérieure du magasin."},
+  {q:"Quel support est utilisé à la fois en PLV et en ILV ?", opts:["L'affiche publicitaire","La vitrophanie","Le kakémono","L'adhésif au sol"], a:2, expl:"Le kakémono peut servir de PLV (promotion de marque) ou d'ILV (information produit) selon son contenu."},
+  {q:"Le fronton de rayon est un type de :", opts:["PLV","ILV","PLV et ILV","Aucun des deux"], a:1, expl:"Le fronton est un ILV placé en haut du rayon pour identifier la gamme de produits présente."},
+  {q:"Quelle information N'EST PAS fournie par l'ILV ?", opts:["Le prix du produit","Le nom et l'origine du produit","Le logo du concurrent","Les modes d'utilisation"], a:2, expl:"L'ILV renseigne le prix, le nom, l'origine, les caractéristiques techniques et les modes d'utilisation. Elle ne fait pas référence à la concurrence."},
+  {q:"Le bandeau de gondole est utilisé pour :", opts:["Afficher une publicité télévisée","Informer sur la gamme de produits d'un rayon","Séparer deux univers produits","Distribuer des brochures"], a:1, expl:"Le bandeau de gondole est une ILV qui informe sur la gamme de produits présente dans le rayon."},
+  {q:"L'adhésif au sol est un type de :", opts:["ILV","PLV","Signal de sécurité","Support de caisse"], a:1, expl:"L'adhésif au sol est une PLV collée sur le sol du magasin pour attirer l'attention du client."},
+  {q:"Où est généralement installé le kakémono en ILV ?", opts:["Au plafond","En début de rayon ou près d'un îlot","En caisse","Sur la vitrine"], a:1, expl:"En ILV, le kakémono est généralement placé en début de rayon ou près d'un îlot de produits."},
+  {q:"Un display hors du commun est un type de :", opts:["ILV","PLV","Signalétique de sécurité","Mobilier permanent"], a:1, expl:"Le display est une PLV destinée à exposer des produits de façon originale et impactante pour attirer le client."},
+  {q:"Les bornes interactives sont classées comme :", opts:["PLV uniquement","ILV uniquement","PLV ou ILV selon le contexte","Ni PLV ni ILV"], a:1, expl:"Les bornes interactives sont des ILV qui permettent d'orienter le consommateur ou de lui proposer des informations produit."},
+  {q:"Quelle est la différence fondamentale entre PLV et ILV ?", opts:["La PLV est permanente, l'ILV est temporaire","La PLV informe, l'ILV fait de la publicité","La PLV fait de la publicité, l'ILV informe","La PLV est numérique, l'ILV est papier"], a:2, expl:"Fondamentalement : la PLV vise à promouvoir/séduire (publicitaire), l'ILV vise à informer/guider (informatif)."},
+  {q:"Un surmontoir est une PLV placée :", opts:["Sur le sol","Au-dessus d'un rayon","Sur une vitrine","Suspendue au plafond"], a:1, expl:"Le surmontoir est placé au-dessus d'un rayon pour le signaler visuellement et le valoriser."},
+  {q:"Le séparateur de rayon en ILV sert à :", opts:["Séparer physiquement deux rayons","Informer sur une promotion ou une sélection spéciale au cœur du rayon","Afficher le prix de vente","Guider vers les toilettes"], a:1, expl:"Le séparateur de rayon en ILV est installé au cœur du rayon pour informer sur une promotion ou sélection spéciale."},
+  {q:"Quel support ILV distribue des documents imprimés aux clients ?", opts:["Borne interactive","Écran","Distributeur de brochures","Fronton"], a:2, expl:"Le distributeur de brochures est un support ILV qui met à disposition des consommateurs des documents imprimés d'information."},
+  {q:"Le PLV «rayon télévisions» consiste à :", opts:["Vendre des télévisions à prix réduit","Utiliser les écrans allumés comme support de publicité","Installer des kakémonos près des TV","Distribuer des prospectus TV"], a:1, expl:"En rayon électronique, les télévisions allumées sont utilisées comme écrans publicitaires : c'est une PLV sur écrans."},
+  {q:"Pour un employé commercial (RNCP37099), maîtriser la PLV/ILV est utile pour :", opts:["Gérer les stocks de réserve","Mettre en valeur les produits et améliorer l'expérience client en rayon","Négocier avec les fournisseurs","Encaisser les achats"], a:1, expl:"L'employé commercial doit savoir identifier, installer et optimiser la PLV et l'ILV pour valoriser les produits et faciliter l'acte d'achat."}
+];
+
+let cur=0, score=0, answered=false;
+
+function startQuiz(){
+  cur=0; score=0; answered=false;
+  document.getElementById('quiz-start').style.display='none';
+  document.getElementById('quiz-end').style.display='none';
+  document.getElementById('quiz-run').style.display='block';
+  renderQ();
+}
+
+function renderQ(){
+  const q=questions[cur];
+  document.getElementById('prog').style.width=((cur/20)*100)+'%';
+  document.getElementById('q-counter').textContent='Question '+(cur+1)+'/20';
+  document.getElementById('score-live').textContent='Score : '+score;
+  document.getElementById('q-num').textContent='Question '+(cur+1);
+  document.getElementById('q-text').textContent=q.q;
+  document.getElementById('q-feedback').style.display='none';
+  document.getElementById('next-btn').style.display='none';
+  document.getElementById('q-hint').textContent='';
+  answered=false;
+  const opts=document.getElementById('q-opts');
+  opts.innerHTML='';
+  q.opts.forEach((o,i)=>{
+    const b=document.createElement('button');
+    b.className='opt-btn'; b.textContent=o;
+    b.onclick=()=>answer(i);
+    opts.appendChild(b);
+  });
+}
+
+function answer(i){
+  if(answered) return;
+  answered=true;
+  const q=questions[cur];
+  const btns=document.querySelectorAll('.opt-btn');
+  btns.forEach(b=>b.disabled=true);
+  const fb=document.getElementById('q-feedback');
+  if(i===q.a){
+    score++;
+    btns[i].classList.add('correct');
+    fb.className='feedback ok';
+    fb.textContent='✓ Bonne réponse ! '+q.expl;
+  } else {
+    btns[i].classList.add('wrong');
+    btns[q.a].classList.add('correct');
+    fb.className='feedback ko';
+    fb.textContent='✗ Mauvaise réponse. '+q.expl;
+  }
+  fb.style.display='block';
+  document.getElementById('score-live').textContent='Score : '+score;
+  document.getElementById('next-btn').style.display='block';
+}
+
+function nextQ(){
+  cur++;
+  if(cur>=20){ showResult(); return; }
+  renderQ();
+}
+
+function showResult(){
+  document.getElementById('quiz-run').style.display='none';
+  document.getElementById('quiz-end').style.display='block';
+  document.getElementById('prog').style.width='100%';
+  const pct=Math.round((score/20)*100);
+  document.getElementById('end-score').textContent=score+'/20';
+  document.getElementById('end-label').textContent='Soit '+pct+'% de bonnes réponses';
+  let medals='',msg='';
+  if(score>=18){medals='🥇🌟';msg='Excellent ! Tu maîtrises parfaitement la PLV et l\'ILV. Tu es prêt(e) pour l\'examen !';}
+  else if(score>=14){medals='🥈';msg='Très bien ! Quelques notions à revoir, tu y es presque !';}
+  else if(score>=10){medals='🥉';msg='Pas mal ! Relis la fiche de cours sur les types de PLV et d\'ILV et retente le quiz.';}
+  else{medals='📚';msg='Continue tes révisions ! Commence par bien distinguer PLV (publicité) et ILV (information).';}
+  document.getElementById('end-medals').textContent=medals;
+  document.getElementById('end-msg').textContent=msg;
+}
+
+function restartQuiz(){ startQuiz(); }
+</script>

@@ -1,0 +1,483 @@
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+.wrap { padding: 1rem 0; font-family: var(--font-sans); }
+.tabs { display: flex; gap: 8px; margin-bottom: 1.5rem; flex-wrap: wrap; }
+.tab-btn {
+  padding: 8px 18px;
+  border: 0.5px solid var(--color-border-secondary);
+  border-radius: var(--border-radius-md);
+  background: var(--color-background-primary);
+  color: var(--color-text-secondary);
+  font-size: 14px; cursor: pointer; transition: all 0.15s;
+}
+.tab-btn.active { background: #D85A30; color: #fff; border-color: #D85A30; }
+.panel { display: none; }
+.panel.active { display: block; }
+.sec-title {
+  font-size: 18px; font-weight: 500; color: #D85A30;
+  margin-bottom: 1rem; padding-bottom: 8px;
+  border-bottom: 2px solid #FAECE7;
+}
+.card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; margin-bottom: 1.5rem; }
+.card {
+  background: var(--color-background-primary);
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-lg);
+  padding: 1rem 1.25rem;
+}
+.card-icon { font-size: 20px; color: #D85A30; margin-bottom: 8px; }
+.card-title { font-size: 14px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 4px; }
+.card-body { font-size: 13px; color: var(--color-text-secondary); line-height: 1.5; }
+.def-block {
+  border-left: 3px solid #D85A30;
+  padding: 10px 16px;
+  margin-bottom: 12px;
+  background: var(--color-background-secondary);
+}
+.def-term { font-size: 14px; font-weight: 500; color: var(--color-text-primary); }
+.def-desc { font-size: 13px; color: var(--color-text-secondary); margin-top: 2px; line-height: 1.5; }
+.badge { display: inline-block; font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: var(--border-radius-md); margin-bottom: 6px; }
+.badge-red { background: #FAECE7; color: #993C1D; }
+.badge-teal { background: #E1F5EE; color: #0F6E56; }
+.badge-blue { background: #E6F1FB; color: #185FA5; }
+.badge-amber { background: #FAEEDA; color: #854F0B; }
+.badge-green { background: #EAF3DE; color: #3B6D11; }
+.compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 1.5rem; }
+.compare-card {
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-lg);
+  padding: 1rem 1.25rem;
+  background: var(--color-background-primary);
+}
+.compare-card.left { border-top: 3px solid #888780; }
+.compare-card.right { border-top: 3px solid #D85A30; }
+.compare-title { font-size: 14px; font-weight: 500; margin-bottom: 8px; color: var(--color-text-primary); }
+.kp { display: flex; gap: 8px; align-items: flex-start; padding: 6px 0; border-bottom: 0.5px solid var(--color-border-tertiary); font-size: 13px; color: var(--color-text-secondary); line-height: 1.4; }
+.kp:last-child { border-bottom: none; }
+.kp i { color: #D85A30; font-size: 14px; margin-top: 1px; flex-shrink: 0; }
+.alert { background: #FAEEDA; border-radius: var(--border-radius-lg); padding: 12px 16px; font-size: 13px; color: #633806; display: flex; gap: 10px; align-items: flex-start; margin-bottom: 1rem; }
+.alert i { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+.success { background: #E1F5EE; border-radius: var(--border-radius-lg); padding: 12px 16px; font-size: 13px; color: #085041; display: flex; gap: 10px; align-items: flex-start; margin-bottom: 1.5rem; }
+.steps { display: flex; flex-direction: column; gap: 10px; margin-bottom: 1.5rem; }
+.step { display: flex; gap: 12px; align-items: flex-start; background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 12px 16px; }
+.step-num { min-width: 28px; height: 28px; border-radius: 50%; background: #D85A30; color: #fff; font-size: 13px; font-weight: 500; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.step-title { font-size: 14px; font-weight: 500; color: var(--color-text-primary); }
+.step-body { font-size: 13px; color: var(--color-text-secondary); margin-top: 2px; line-height: 1.5; }
+.q-num { font-size: 12px; color: var(--color-text-secondary); margin-bottom: 6px; }
+.q-text { font-size: 15px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 14px; line-height: 1.5; }
+.options { display: flex; flex-direction: column; gap: 8px; margin-bottom: 1rem; }
+.opt-btn { text-align: left; background: var(--color-background-primary); border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); padding: 10px 14px; font-size: 14px; color: var(--color-text-primary); cursor: pointer; transition: all 0.15s; line-height: 1.4; }
+.opt-btn:hover:not(:disabled) { background: var(--color-background-secondary); }
+.opt-btn.correct { background: #E1F5EE; border-color: #1D9E75; color: #085041; }
+.opt-btn.wrong { background: #FCEBEB; border-color: #E24B4A; color: #501313; }
+.feedback { font-size: 13px; padding: 10px 14px; border-radius: var(--border-radius-md); margin-bottom: 1rem; line-height: 1.5; display: none; }
+.feedback.show { display: block; }
+.feedback.ok { background: #E1F5EE; color: #085041; }
+.feedback.ko { background: #FCEBEB; color: #501313; }
+.quiz-progress { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1.5rem; }
+.prog-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--color-background-secondary); border: 0.5px solid var(--color-border-secondary); }
+.prog-dot.ok { background: #1D9E75; border-color: #1D9E75; }
+.prog-dot.ko { background: #E24B4A; border-color: #E24B4A; }
+.quiz-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; }
+.nav-btn { padding: 8px 18px; border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); background: var(--color-background-primary); color: var(--color-text-primary); font-size: 14px; cursor: pointer; }
+.nav-btn.primary { background: #D85A30; color: #fff; border-color: #D85A30; }
+.nav-btn:disabled { opacity: 0.4; cursor: default; }
+.score-box { text-align: center; padding: 2rem 1rem; }
+.score-num { font-size: 48px; font-weight: 500; color: #D85A30; }
+.score-label { font-size: 16px; color: var(--color-text-secondary); margin-bottom: 1.5rem; }
+.hidden { display: none; }
+</style>
+
+<div class="wrap">
+  <h2 class="sr-only">Fiche de révision et quiz – Les transformations du commerce – RNCP37099 TP Employé Commercial</h2>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showTab('fiche', this)"><i class="ti ti-notes" aria-hidden="true"></i> Fiche de révision</button>
+    <button class="tab-btn" onclick="showTab('quiz', this)"><i class="ti ti-list-check" aria-hidden="true"></i> Quiz (20 questions)</button>
+  </div>
+
+  <!-- FICHE -->
+  <div id="tab-fiche" class="panel active">
+
+    <div class="sec-title">Les 4 fondamentaux du commerce (intemporels)</div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon"><i class="ti ti-heart-handshake" aria-hidden="true"></i></div>
+        <div class="card-title">Relation client</div>
+        <div class="card-body">Accueil chaleureux, écoute active, disponibilité et empathie. Un client qui se sent considéré revient et recommande.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon"><i class="ti ti-bulb" aria-hidden="true"></i></div>
+        <div class="card-title">Connaissance produit</div>
+        <div class="card-body">Maîtriser caractéristiques, usages, avantages et comparaisons pour inspirer confiance et guider le client.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon"><i class="ti ti-messages" aria-hidden="true"></i></div>
+        <div class="card-title">Communication & argumentation</div>
+        <div class="card-body">Présenter, convaincre et traiter les objections avec pédagogie. Argumentation structurée centrée sur les besoins.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon"><i class="ti ti-shield-check" aria-hidden="true"></i></div>
+        <div class="card-title">Éthique & confiance</div>
+        <div class="card-body">Honnêteté, transparence, respect du client. Dans un marché concurrentiel, les valeurs sont un avantage commercial.</div>
+      </div>
+    </div>
+
+    <div class="sec-title">Vendeur vs Conseiller : deux approches à connaître</div>
+    <div class="compare-grid">
+      <div class="compare-card left">
+        <div class="compare-title"><span class="badge badge-teal" style="background:#D3D1C7;color:#444441;">Approche transactionnelle — Vendeur</span></div>
+        <div class="kp"><i class="ti ti-target" aria-hidden="true"></i><span>Objectif : conclure la vente rapidement</span></div>
+        <div class="kp"><i class="ti ti-tag" aria-hidden="true"></i><span>Focus sur le prix et les promotions</span></div>
+        <div class="kp"><i class="ti ti-clock" aria-hidden="true"></i><span>Relation ponctuelle — une vente = un acte isolé</span></div>
+        <div class="kp"><i class="ti ti-chart-bar" aria-hidden="true"></i><span>Succès mesuré par le chiffre de vente immédiat</span></div>
+        <div class="kp"><i class="ti ti-tool" aria-hidden="true"></i><span>Techniques SONCAS, CAP (persuasion directe)</span></div>
+      </div>
+      <div class="compare-card right">
+        <div class="compare-title"><span class="badge badge-red">Approche conseil — Conseiller</span></div>
+        <div class="kp"><i class="ti ti-ear" aria-hidden="true"></i><span>Écoute active et questionnement QQOQCP</span></div>
+        <div class="kp"><i class="ti ti-user-check" aria-hidden="true"></i><span>Argumentation personnalisée selon le profil client</span></div>
+        <div class="kp"><i class="ti ti-repeat" aria-hidden="true"></i><span>Relation durable : fidélisation et suivi post-achat</span></div>
+        <div class="kp"><i class="ti ti-star" aria-hidden="true"></i><span>Succès = satisfaction et retour client</span></div>
+        <div class="kp"><i class="ti ti-puzzle" aria-hidden="true"></i><span>Co-construction de la solution avec le client</span></div>
+      </div>
+    </div>
+
+    <div class="sec-title">La RFID : technologie clé à maîtriser</div>
+    <div class="def-block">
+      <div class="def-term"><span class="badge badge-blue">RFID = Radio Frequency Identification</span></div>
+      <div class="def-desc">Technologie sans contact qui identifie, localise et suit automatiquement des objets grâce à des ondes radio, sans ligne de vue directe.</div>
+    </div>
+    <div class="card-grid" style="margin-bottom:1rem;">
+      <div class="card">
+        <div class="card-icon"><i class="ti ti-tag" aria-hidden="true"></i></div>
+        <div class="card-title">Tag RFID</div>
+        <div class="card-body">Puce + antenne intégrées dans une étiquette sur le produit. Stocke un identifiant unique et émet un signal radio.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon"><i class="ti ti-broadcast" aria-hidden="true"></i></div>
+        <div class="card-title">Lecteur RFID</div>
+        <div class="card-body">Appareil fixe (portique) ou portable qui capte les signaux des tags à distance, jusqu'à plusieurs mètres.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon"><i class="ti ti-server" aria-hidden="true"></i></div>
+        <div class="card-title">Système central</div>
+        <div class="card-body">Logiciel de gestion qui met à jour en temps réel les stocks, la localisation et les mouvements de chaque article.</div>
+      </div>
+    </div>
+    <div class="success">
+      <i class="ti ti-check" aria-hidden="true"></i>
+      <span><strong>3 avantages clés RFID :</strong> réduction des pertes/vols, inventaires en temps réel (Decathlon : quelques heures vs plusieurs jours), disponibilité produit maximisée (réassort automatique). Résultat caisses RFID : files d'attente réduites de 30 à 50%.</span>
+    </div>
+
+    <div class="sec-title">Les outils numériques du conseiller</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div>
+          <div class="step-title">CRM — vision 360° du client</div>
+          <div class="step-body">Centralise historique d'achats, préférences, réclamations, fréquence de visite. Permet un accueil personnalisé et un suivi post-achat automatisé (relances, alertes de réassort).</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div>
+          <div class="step-title">IA & analyse de données</div>
+          <div class="step-body">Combinée aux données RFID : prédiction des tendances, optimisation des assortiments, recommandations personnalisées. Anticipe les besoins avant même que le client les exprime.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div>
+          <div class="step-title">Réalité Augmentée (RA) & Virtuelle (RV)</div>
+          <div class="step-body">RA : visualiser un produit dans son environnement (IKEA, Sephora, Leroy Merlin). RV : expériences immersives, showroom virtuel. Puissant pour les ventes complexes ou à distance.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div>
+          <div class="step-title">Caddies connectés</div>
+          <div class="step-body">Écran interactif (promotions ciblées), navigation guidée dans les rayons, paiement intégré sans caisse. Analyse des comportements d'achat et personnalisation en temps réel.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec-title">Commerce durable & responsable</div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon"><i class="ti ti-leaf" aria-hidden="true"></i></div>
+        <div class="card-title">Réduction du gaspillage</div>
+        <div class="card-body">La RFID optimise les stocks et limite la surproduction. Moins d'invendus = moins de déchets.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon"><i class="ti ti-map-pin" aria-hidden="true"></i></div>
+        <div class="card-title">Circuits courts valorisés</div>
+        <div class="card-body">Le conseiller met en avant les produits locaux et de saison. Il guide sans imposer vers des choix responsables.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon"><i class="ti ti-search" aria-hidden="true"></i></div>
+        <div class="card-title">Traçabilité & transparence</div>
+        <div class="card-body">Origine, fabrication, composition : le client veut savoir. La blockchain permettra une carte d'identité numérique produit.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon"><i class="ti ti-award" aria-hidden="true"></i></div>
+        <div class="card-title">RSE — ambassadeur de marque</div>
+        <div class="card-body">Le conseiller communique avec authenticité sur les engagements RSE, labels environnementaux et politiques sociales.</div>
+      </div>
+    </div>
+
+    <div class="sec-title">Le commerce de demain — tendances à connaître</div>
+    <div class="card-grid">
+      <div class="card"><div class="card-icon"><i class="ti ti-robot" aria-hidden="true"></i></div><div class="card-title">IA générative</div><div class="card-body">Chatbots ultra-personnalisés, recommandations prédictives basées sur les émotions et comportements.</div></div>
+      <div class="card"><div class="card-icon"><i class="ti ti-building-store" aria-hidden="true"></i></div><div class="card-title">Magasins autonomes</div><div class="card-body">Entrée par reconnaissance faciale, détection automatique des articles, paiement sans caisse ni friction.</div></div>
+      <div class="card"><div class="card-icon"><i class="ti ti-link" aria-hidden="true"></i></div><div class="card-title">Blockchain</div><div class="card-body">Carte d'identité numérique produit : origine, conditions de fabrication, empreinte carbone. Transparence totale.</div></div>
+      <div class="card"><div class="card-icon"><i class="ti ti-drone" aria-hidden="true"></i></div><div class="card-title">Livraison autonome</div><div class="card-body">Drones, robots livreurs, dark stores hyperlocaux. Livraison en moins de 10 minutes en grandes villes.</div></div>
+    </div>
+
+    <div class="alert">
+      <i class="ti ti-quote" aria-hidden="true"></i>
+      <span><em>« La technologie change les outils. L'humain reste le cœur du commerce. »</em> — Le conseiller de demain est un professionnel hybride : technophile ET humain, expert produit ET guide responsable.</span>
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="tab-quiz" class="panel">
+    <div class="quiz-progress" id="prog-dots"></div>
+    <div id="quiz-area">
+      <div class="q-num" id="q-num"></div>
+      <div class="q-text" id="q-text"></div>
+      <div class="options" id="q-options"></div>
+      <div class="feedback" id="q-feedback"></div>
+      <div class="quiz-nav">
+        <span id="q-score-inline" style="font-size:13px;color:var(--color-text-secondary);"></span>
+        <button class="nav-btn primary" id="btn-next" onclick="nextQ()" disabled>Question suivante →</button>
+      </div>
+    </div>
+    <div id="quiz-result" class="hidden score-box">
+      <div class="score-num" id="score-val"></div>
+      <div class="score-label" id="score-label"></div>
+      <div style="font-size:13px;color:var(--color-text-secondary);" id="score-detail"></div>
+      <button class="nav-btn primary" style="margin-top:1.5rem;" onclick="restartQuiz()">Recommencer le quiz</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const questions = [
+  {
+    q: "Parmi les fondamentaux du commerce, lequel reste primordial malgré l'avancée des technologies ?",
+    opts: ["La maîtrise des logiciels de caisse","La relation client basée sur l'écoute et l'empathie","La connaissance des réseaux sociaux","La capacité à travailler en équipe"],
+    ans: 1,
+    exp: "La relation client — accueil chaleureux, écoute active, empathie — est un fondamental intemporel. Un client qui se sent considéré revient et recommande davantage."
+  },
+  {
+    q: "Que signifie l'acronyme RFID ?",
+    opts: ["Réseau de Fréquences Informatisé pour la Distribution","Radio Frequency Identification","Référentiel de Formation pour l'Informatique Digitale","Réseau de Flux et d'Inventaires Digitaux"],
+    ans: 1,
+    exp: "RFID = Radio Frequency Identification (identification par radiofréquence). C'est une technologie sans contact qui identifie les produits grâce à des ondes radio."
+  },
+  {
+    q: "Quel est le rôle du tag RFID ?",
+    opts: ["Émettre une alerte en cas de vol uniquement","Stocker un identifiant unique et émettre un signal radio","Lire les codes-barres des produits","Envoyer des données au client via son smartphone"],
+    ans: 1,
+    exp: "Le tag RFID est une puce électronique et une antenne intégrées dans une étiquette. Il stocke un identifiant unique et émet un signal radio capté par les lecteurs."
+  },
+  {
+    q: "Quel avantage principal la RFID a-t-elle apporté à Decathlon pour ses inventaires ?",
+    opts: ["Une réduction du nombre d'employés","Des inventaires complets en quelques heures contre plusieurs jours auparavant","La suppression des caisses traditionnelles","Un service client 24h/24"],
+    ans: 1,
+    exp: "Grâce à la RFID, Decathlon réalise des inventaires complets en quelques heures, contre plusieurs jours avec les méthodes manuelles traditionnelles."
+  },
+  {
+    q: "De combien les caisses RFID de Decathlon ont-elles réduit les files d'attente ?",
+    opts: ["10 à 20%","30 à 50%","60 à 70%","Plus de 80%"],
+    ans: 1,
+    exp: "Les caisses RFID de Decathlon permettent de scanner tous les articles d'un panier en une seule fois, réduisant les files d'attente de 30 à 50%."
+  },
+  {
+    q: "Quelle est la principale différence entre l'approche transactionnelle (vendeur) et l'approche conseil (conseiller) ?",
+    opts: ["Le vendeur vend plus cher que le conseiller","Le vendeur cherche à conclure vite, le conseiller vise la fidélisation et la satisfaction durable","Le conseiller n'utilise pas les techniques de vente","Le vendeur travaille uniquement en magasin physique"],
+    ans: 1,
+    exp: "Le vendeur (approche transactionnelle) cherche à conclure rapidement. Le conseiller construit une relation durable basée sur l'écoute, la compréhension des besoins et la satisfaction client."
+  },
+  {
+    q: "Quelle méthode de questionnement est associée à l'approche conseil du conseiller de vente ?",
+    opts: ["SONCAS","CAP","QQOQCP","SMART"],
+    ans: 2,
+    exp: "La méthode QQOQCP (Qui, Quoi, Où, Quand, Comment, Pourquoi) est utilisée dans l'approche conseil pour pratiquer l'écoute active et comprendre les besoins réels du client."
+  },
+  {
+    q: "Quel indicateur mesure le succès dans l'approche conseil (conseiller) ?",
+    opts: ["Le chiffre de vente immédiat","Le nombre d'appels passés","La satisfaction et le retour client","Le panier moyen sur une journée"],
+    ans: 2,
+    exp: "Dans l'approche conseil, l'indicateur de succès est la satisfaction du client et son retour (fidélisation), et non le chiffre de vente immédiat comme dans l'approche transactionnelle."
+  },
+  {
+    q: "Qu'est-ce qu'un CRM et à quoi sert-il pour le conseiller de vente ?",
+    opts: ["Un caisse enregistreuse numérique","Un logiciel de gestion des stocks uniquement","Un outil centralisant toutes les informations client pour personnaliser le conseil","Un système de surveillance des vendeurs"],
+    ans: 2,
+    exp: "Le CRM (Customer Relationship Management) centralise l'historique d'achats, les préférences et les réclamations du client. Il permet un accueil personnalisé et un suivi post-achat adapté."
+  },
+  {
+    q: "Quelle enseigne utilise la RFID pour que Zara réapprovisionne chaque article individuellement en rayon ?",
+    opts: ["Decathlon","H&M","Zara","Ikea"],
+    ans: 2,
+    exp: "Zara utilise la RFID pour réapprovisionner chaque article individuellement, garantissant que la bonne taille est toujours disponible en rayon."
+  },
+  {
+    q: "Quel est l'apport principal de l'Intelligence Artificielle combinée aux données RFID ?",
+    opts: ["Remplacer les vendeurs par des robots","Transformer des données brutes en décisions stratégiques : prédiction, optimisation, recommandations","Créer des publicités personnalisées en ligne","Gérer les plannings des employés"],
+    ans: 1,
+    exp: "L'IA analyse les millions de données RFID pour prédire les tendances, optimiser les assortiments et proposer des recommandations personnalisées au bon client au bon moment."
+  },
+  {
+    q: "Qu'est-ce que la Réalité Augmentée (RA) apporte à l'expérience client dans le commerce ?",
+    opts: ["Elle remplace le conseiller pour répondre aux questions","Elle permet au client de visualiser un produit dans son propre environnement avant l'achat","Elle supprime les retours produits","Elle gère automatiquement les paiements"],
+    ans: 1,
+    exp: "La RA permet au client de visualiser un produit dans son environnement réel avant de l'acheter (ex : IKEA pour les meubles, Sephora pour le maquillage, Leroy Merlin pour les peintures)."
+  },
+  {
+    q: "Qu'est-ce qu'un caddie connecté propose comme fonctionnalité innovante ?",
+    opts: ["Un GPS pour retrouver son véhicule","Un écran interactif avec promotions ciblées, navigation en rayon et paiement intégré","Un système de pesée automatique des produits","Un scanner de QR codes uniquement"],
+    ans: 1,
+    exp: "Le caddie connecté dispose d'un écran interactif (promotions personnalisées), d'un plan du magasin pour naviguer dans les rayons, et d'un système de paiement intégré sans passer en caisse."
+  },
+  {
+    q: "Pourquoi dit-on que 'le digital ne remplace pas le conseiller' ?",
+    opts: ["Parce que les technologies sont trop coûteuses","Parce que le digital le rend plus efficace, mieux informé et capable de personnaliser chaque interaction","Parce que les clients n'utilisent pas encore le digital","Parce que le RGPD interdit l'utilisation des données clients"],
+    ans: 1,
+    exp: "Le digital augmente les capacités du conseiller : le CRM, l'IA et les outils connectés lui permettent d'offrir un conseil plus précis et personnalisé. L'humain reste irremplaçable dans la relation."
+  },
+  {
+    q: "Comment la RFID contribue-t-elle au commerce durable et responsable ?",
+    opts: ["En remplaçant les étiquettes papier par des étiquettes digitales","En optimisant les stocks pour limiter la surproduction et réduire les invendus","En permettant la livraison à domicile gratuite","En supprimant les emballages plastique"],
+    ans: 1,
+    exp: "La RFID optimise les stocks et limite la surproduction. En conséquence, il y a moins d'invendus et donc moins de déchets, ce qui bénéficie directement à l'environnement."
+  },
+  {
+    q: "Quel est le rôle du conseiller comme 'ambassadeur RSE' de la marque ?",
+    opts: ["Vendre uniquement les produits les moins chers","Communiquer avec authenticité sur les engagements environnementaux et orienter vers des choix responsables","Refuser de vendre des produits non bio","Gérer les réclamations liées aux produits défectueux"],
+    ans: 1,
+    exp: "Le conseiller est le visage humain des valeurs de l'enseigne. Il communique sur les démarches RSE et guide sans imposer le client vers des produits plus durables."
+  },
+  {
+    q: "Qu'est-ce que la blockchain pourra apporter au commerce dans le futur ?",
+    opts: ["Des paiements en cryptomonnaie uniquement","Une carte d'identité numérique produit avec origine, conditions de fabrication et empreinte carbone","La suppression des intermédiaires commerciaux","Un accès illimité aux données personnelles des clients"],
+    ans: 1,
+    exp: "La blockchain permettra à chaque produit d'avoir une carte d'identité numérique complète : origine, conditions de fabrication, empreinte carbone. Une transparence totale pour le consommateur responsable."
+  },
+  {
+    q: "Qu'est-ce qu'un magasin autonome tel que décrit dans les tendances du commerce de demain ?",
+    opts: ["Un magasin ouvert 24h/24 avec des vendeurs de nuit","Un magasin avec entrée par reconnaissance faciale, détection automatique des articles et paiement sans caisse","Un magasin géré entièrement à distance par un manager","Un magasin sans stock physique avec livraison uniquement"],
+    ans: 1,
+    exp: "Le magasin autonome fonctionne avec reconnaissance faciale à l'entrée, détection automatique des articles pris en rayon et paiement sans caisse ni friction. Zéro attente, zéro caissier."
+  },
+  {
+    q: "Quelle technique appartient à l'approche transactionnelle (vendeur traditionnel) ?",
+    opts: ["La co-construction de la solution avec le client","La méthode QQOQCP pour découvrir les besoins","La méthode SONCAS pour persuader directement","Le suivi post-achat et la fidélisation long terme"],
+    ans: 2,
+    exp: "SONCAS (Sécurité, Orgueil, Nouveauté, Confort, Argent, Sympathie) est une technique de persuasion directe caractéristique de l'approche transactionnelle du vendeur traditionnel."
+  },
+  {
+    q: "Selon le cours, quelle compétence restera toujours au cœur du commerce malgré les transformations technologiques ?",
+    opts: ["La maîtrise des outils de caisse connectés","La capacité à programmer des chatbots","L'écoute active, l'empathie et le conseil personnalisé","La connaissance des algorithmes de recommandation"],
+    ans: 2,
+    exp: "L'écoute active, l'empathie et le conseil personnalisé sont des compétences humaines irremplaçables. 'La technologie change les outils. L'humain reste le cœur du commerce.'"
+  }
+];
+
+let current = 0, score = 0, answered = new Array(20).fill(null);
+
+function showTab(t, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + t).classList.add('active');
+  btn.classList.add('active');
+  if (t === 'quiz') renderQ();
+}
+
+function buildDots() {
+  const el = document.getElementById('prog-dots');
+  el.innerHTML = '';
+  questions.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'prog-dot' + (answered[i] === true ? ' ok' : answered[i] === false ? ' ko' : '');
+    el.appendChild(d);
+  });
+}
+
+function renderQ() {
+  if (current >= questions.length) { showResult(); return; }
+  buildDots();
+  const q = questions[current];
+  document.getElementById('q-num').textContent = 'Question ' + (current + 1) + ' / ' + questions.length;
+  document.getElementById('q-text').textContent = q.q;
+  const opts = document.getElementById('q-options');
+  opts.innerHTML = '';
+  q.opts.forEach((o, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn';
+    btn.textContent = o;
+    btn.onclick = () => selectAnswer(i);
+    opts.appendChild(btn);
+  });
+  document.getElementById('q-feedback').className = 'feedback';
+  document.getElementById('q-feedback').textContent = '';
+  document.getElementById('btn-next').disabled = true;
+  document.getElementById('btn-next').textContent = 'Question suivante →';
+  document.getElementById('q-score-inline').textContent = current > 0 ? 'Score : ' + score + ' / ' + current : '';
+}
+
+function selectAnswer(idx) {
+  const q = questions[current];
+  const btns = document.querySelectorAll('.opt-btn');
+  btns.forEach(b => b.disabled = true);
+  const fb = document.getElementById('q-feedback');
+  if (idx === q.ans) {
+    btns[idx].classList.add('correct');
+    fb.textContent = '✓ Bonne réponse ! ' + q.exp;
+    fb.className = 'feedback ok show';
+    score++;
+    answered[current] = true;
+  } else {
+    btns[idx].classList.add('wrong');
+    btns[q.ans].classList.add('correct');
+    fb.textContent = '✗ Mauvaise réponse. ' + q.exp;
+    fb.className = 'feedback ko show';
+    answered[current] = false;
+  }
+  buildDots();
+  document.getElementById('btn-next').disabled = false;
+  if (current >= questions.length - 1) document.getElementById('btn-next').textContent = 'Voir les résultats →';
+  document.getElementById('q-score-inline').textContent = 'Score : ' + score + ' / ' + (current + 1);
+}
+
+function nextQ() {
+  current++;
+  renderQ();
+}
+
+function showResult() {
+  document.getElementById('quiz-area').classList.add('hidden');
+  document.getElementById('quiz-result').classList.remove('hidden');
+  buildDots();
+  const pct = Math.round((score / questions.length) * 100);
+  document.getElementById('score-val').textContent = score + ' / ' + questions.length;
+  let label, detail;
+  if (pct >= 80) { label = 'Excellent ! Vous maîtrisez les transformations du commerce. (' + pct + '%)'; detail = 'Vous êtes prêt(e) pour votre évaluation RNCP37099.'; }
+  else if (pct >= 60) { label = 'Bien ! Quelques notions à consolider. (' + pct + '%)'; detail = 'Relisez la fiche sur la RFID, l\'approche conseil et le commerce durable.'; }
+  else { label = 'Des révisions s\'imposent ! (' + pct + '%)'; detail = 'Reprenez la fiche de révision en entier et retentez le quiz.'; }
+  document.getElementById('score-label').textContent = label;
+  document.getElementById('score-detail').textContent = detail;
+}
+
+function restartQuiz() {
+  current = 0; score = 0; answered = new Array(20).fill(null);
+  document.getElementById('quiz-area').classList.remove('hidden');
+  document.getElementById('quiz-result').classList.add('hidden');
+  renderQ();
+}
+
+renderQ();
+</script>

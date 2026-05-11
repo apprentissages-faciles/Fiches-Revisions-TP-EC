@@ -1,0 +1,309 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.tab-bar{display:flex;border-bottom:0.5px solid var(--color-border-tertiary);margin-bottom:1.5rem;gap:4px}
+.tab-btn{padding:8px 18px;font-size:14px;font-weight:500;border:none;background:transparent;cursor:pointer;border-bottom:2px solid transparent;color:var(--color-text-secondary);border-radius:0}
+.tab-btn.active{color:var(--color-text-primary);border-bottom:2px solid #1D9E75}
+.tab-content{display:none}
+.tab-content.active{display:block}
+.section-title{font-size:16px;font-weight:500;margin-bottom:0.75rem;padding-bottom:6px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem 1.25rem;margin-bottom:0.75rem}
+.card p{font-size:13px;color:var(--color-text-secondary);line-height:1.6}
+.card strong{color:var(--color-text-primary);font-weight:500}
+.badge{display:inline-block;font-size:11px;font-weight:500;padding:3px 9px;border-radius:var(--border-radius-md)}
+.b-red{background:#FCEBEB;color:#A32D2D}
+.b-green{background:#EAF3DE;color:#27500A}
+.b-blue{background:#E6F1FB;color:#0C447C}
+.b-amber{background:#FAEEDA;color:#633806}
+.b-teal{background:#E1F5EE;color:#0F6E56}
+.b-gray{background:#F1EFE8;color:#444441}
+.compare-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin-bottom:1rem}
+.col-card{border-radius:var(--border-radius-lg);padding:1rem;border:0.5px solid var(--color-border-tertiary);background:var(--color-background-primary)}
+.col-card .col-head{font-size:15px;font-weight:500;margin-bottom:8px;padding-bottom:6px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.col-card ul{list-style:none;padding:0}
+.col-card li{font-size:12px;color:var(--color-text-secondary);padding:3px 0;line-height:1.5;display:flex;align-items:flex-start;gap:6px}
+.col-card li::before{content:"·";color:inherit;font-weight:700;flex-shrink:0}
+.row-ok{color:#27500A}
+.row-no{color:#A32D2D}
+.check{color:#27500A;font-weight:500}
+.cross{color:#A32D2D;font-weight:500}
+.steps{display:flex;flex-direction:column;gap:7px}
+.step{display:flex;align-items:flex-start;gap:10px;padding:9px 12px;background:var(--color-background-secondary);border-radius:var(--border-radius-md)}
+.step-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.step p{font-size:13px;color:var(--color-text-secondary);line-height:1.5}
+.step strong{color:var(--color-text-primary);font-weight:500}
+.memo-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:1rem}
+.memo-card{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:12px;text-align:center}
+.memo-big{font-size:22px;font-weight:500}
+.memo-label{font-size:11px;color:var(--color-text-secondary);margin-top:4px;line-height:1.4}
+.quiz-q{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem 1.25rem;margin-bottom:0.75rem}
+.qtext{font-size:14px;font-weight:500;margin-bottom:10px}
+.quiz-opt{display:block;padding:8px 12px;margin:4px 0;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);cursor:pointer;font-size:13px;background:var(--color-background-secondary);color:var(--color-text-primary);width:100%;text-align:left}
+.quiz-opt:hover{background:var(--color-background-primary);border-color:var(--color-border-secondary)}
+.quiz-opt.correct{background:#EAF3DE;border-color:#639922;color:#27500A;pointer-events:none}
+.quiz-opt.wrong{background:#FCEBEB;border-color:#A32D2D;color:#501313;pointer-events:none}
+.quiz-opt.disabled{pointer-events:none}
+.feedback{font-size:12px;margin-top:8px;padding:6px 10px;border-radius:var(--border-radius-md)}
+.feedback.ok{background:#EAF3DE;color:#27500A}
+.feedback.ko{background:#FCEBEB;color:#501313}
+.score-bar{background:var(--color-background-secondary);border-radius:var(--border-radius-lg);padding:1rem 1.25rem;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.score-num{font-size:28px;font-weight:500;color:#1D9E75}
+.score-label{font-size:12px;color:var(--color-text-secondary)}
+.progress{height:6px;background:var(--color-background-secondary);border-radius:3px;margin-bottom:1.5rem;overflow:hidden}
+.progress-fill{height:100%;background:#1D9E75;border-radius:3px;transition:width 0.3s}
+.btn-reset{border:0.5px solid var(--color-border-secondary);background:transparent;color:var(--color-text-primary);padding:6px 16px;border-radius:var(--border-radius-md);cursor:pointer;font-size:13px}
+.btn-reset:hover{background:var(--color-background-secondary)}
+.warn-box{background:#FAEEDA;border-left:3px solid #BA7517;border-radius:var(--border-radius-md);padding:10px 12px;margin-bottom:0.75rem}
+.warn-box p{font-size:12px;color:#633806;line-height:1.5}
+</style>
+
+<h2 class="sr-only">Fiche de révision — DLC, DDM, DCR et dates sur les surgelés — RNCP37099 TP Employé commercial</h2>
+
+<div style="padding:1rem 0">
+<div style="display:flex;align-items:center;gap:10px;margin-bottom:1.25rem">
+  <i class="ti ti-calendar-check" style="font-size:22px;color:#1D9E75" aria-hidden="true"></i>
+  <div>
+    <div style="font-size:18px;font-weight:500">DLC · DDM · DCR · Surgelés</div>
+    <div style="font-size:12px;color:var(--color-text-secondary)">Dates de péremption · RNCP37099 — TP Employé commercial</div>
+  </div>
+</div>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab('fiche')"><i class="ti ti-file-text" aria-hidden="true"></i> Fiche</button>
+  <button class="tab-btn" onclick="showTab('comparer')"><i class="ti ti-table" aria-hidden="true"></i> Comparer</button>
+  <button class="tab-btn" onclick="showTab('vendeur')"><i class="ti ti-user-check" aria-hidden="true"></i> Rôle vendeur</button>
+  <button class="tab-btn" onclick="showTab('quiz')"><i class="ti ti-help" aria-hidden="true"></i> Quiz</button>
+</div>
+
+<!-- FICHE -->
+<div id="tab-fiche" class="tab-content active">
+
+  <div class="section-title">Pourquoi maîtriser les dates ?</div>
+  <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:1.25rem">
+    <span class="badge b-red"><i class="ti ti-shield" aria-hidden="true"></i> Sécurité alimentaire</span>
+    <span class="badge b-green"><i class="ti ti-leaf" aria-hidden="true"></i> Hygiène</span>
+    <span class="badge b-amber"><i class="ti ti-tag" aria-hidden="true"></i> Démarque</span>
+    <span class="badge b-blue"><i class="ti ti-rotate" aria-hidden="true"></i> Rotation PEPS/FIFO</span>
+  </div>
+
+  <div class="section-title">DLC — Date Limite de Consommation</div>
+  <div class="card" style="border-left:3px solid #E24B4A">
+    <p style="margin-bottom:6px"><span class="badge b-red">Mention</span> <strong>« À consommer jusqu'au… »</strong></p>
+    <p style="margin-bottom:6px"><span class="badge b-gray">Produits</span> Viande fraîche · Poisson frais · Plats cuisinés frais · Crème fraîche</p>
+    <p style="margin-bottom:6px"><span class="badge b-red">Risque</span> <strong>Microbiologique</strong> → Salmonelles, Listeria → danger réel pour la santé</p>
+    <p><strong>Si DLC dépassée :</strong> <span class="cross">✗</span> Vendre <span class="cross">✗</span> Donner (même aux associations) <span class="cross">✗</span> Consommer</p>
+  </div>
+
+  <div class="section-title">DDM — Date de Durabilité Minimale (ex-DLUO)</div>
+  <div class="card" style="border-left:3px solid #639922">
+    <p style="margin-bottom:6px"><span class="badge b-green">Mention</span> <strong>« À consommer de préférence avant… »</strong></p>
+    <p style="margin-bottom:6px"><span class="badge b-gray">Produits</span> Pâtes · Riz · Biscuits · Chocolat · Conserves · Café · Épices · Eau gazeuse · <strong>Surgelés</strong></p>
+    <p style="margin-bottom:6px"><span class="badge b-green">Risque</span> Pas de danger immédiat → perte de goût, texture, odeur</p>
+    <p><strong>Après DDM :</strong> <span class="check">✓</span> Vendre <span class="check">✓</span> Donner <span class="check">✓</span> Consommer <em>(si bon état : emballage intact, pas d'odeur anormale)</em></p>
+  </div>
+
+  <div class="section-title">DCR — Date de Consommation Recommandée</div>
+  <div class="card" style="border-left:3px solid #BA7517">
+    <p style="margin-bottom:6px"><span class="badge b-amber">Produits</span> <strong>Lait cru</strong> (non pasteurisé) · <strong>Œufs coquille</strong></p>
+    <p style="margin-bottom:6px"><span class="badge b-amber">Œufs</span> DCR = <strong>28 jours après la ponte</strong></p>
+    <p>Après DCR : les œufs peuvent être consommés <strong>cuits (durs)</strong> si bien conservés → <span class="cross">✗</span> préparations crues (mousse au chocolat, mayonnaise maison)</p>
+  </div>
+
+  <div class="section-title">Surgelés</div>
+  <div class="card" style="border-left:3px solid #185FA5">
+    <p style="margin-bottom:6px"><span class="badge b-blue">Date</span> <strong>DDM</strong> — ex : « À consommer de préférence avant 12/2026 »</p>
+    <p style="margin-bottom:6px"><span class="badge b-blue">Pourquoi DDM ?</span> La surgélation <strong>stoppe la croissance des micro-organismes</strong> → longue conservation</p>
+    <p style="margin-bottom:6px"><span class="badge b-red">Règle d'or</span> Un produit décongelé <strong>ne doit jamais être recongelé</strong>, sauf s'il a été cuit entre-temps</p>
+    <p style="margin-bottom:6px"><span class="badge b-gray">Température</span> Congélateur ménager : <strong>–18°C</strong></p>
+    <p><strong>Givre sur emballage</strong> = possible rupture de chaîne du froid → retirer</p>
+  </div>
+
+  <div class="warn-box">
+    <p><strong>⚠ Armoire freezer ≠ surgélation</strong> : le freezer ne garantit pas –18°C en permanence, la température peut fluctuer.</p>
+  </div>
+
+</div>
+
+<!-- COMPARER -->
+<div id="tab-comparer" class="tab-content">
+  <div class="section-title">Tableau comparatif DLC / DDM / DCR</div>
+  <div class="compare-grid">
+    <div class="col-card" style="border-top:3px solid #E24B4A">
+      <div class="col-head"><span class="badge b-red">DLC</span><br><small style="font-size:11px;color:var(--color-text-secondary)">Date Limite de Consommation</small></div>
+      <ul>
+        <li>« À consommer jusqu'au… »</li>
+        <li>Produits très périssables</li>
+        <li>Viande, poisson, plats frais</li>
+        <li class="row-no">Risque microbiologique grave</li>
+        <li class="row-no">Interdit de vendre</li>
+        <li class="row-no">Interdit de donner</li>
+        <li class="row-no">Interdit de consommer</li>
+        <li>Contrôle : <strong>quotidien</strong></li>
+      </ul>
+    </div>
+    <div class="col-card" style="border-top:3px solid #639922">
+      <div class="col-head"><span class="badge b-green">DDM</span><br><small style="font-size:11px;color:var(--color-text-secondary)">Date de Durabilité Minimale</small></div>
+      <ul>
+        <li>« À consommer de préférence avant… »</li>
+        <li>Produits peu périssables + surgelés</li>
+        <li>Pâtes, conserves, biscuits…</li>
+        <li class="row-ok">Pas de danger immédiat</li>
+        <li class="row-ok">Autorisé à vendre</li>
+        <li class="row-ok">Autorisé à donner</li>
+        <li class="row-ok">Autorisé à consommer</li>
+        <li>Contrôle : <strong>hebdomadaire</strong></li>
+      </ul>
+    </div>
+    <div class="col-card" style="border-top:3px solid #BA7517">
+      <div class="col-head"><span class="badge b-amber">DCR</span><br><small style="font-size:11px;color:var(--color-text-secondary)">Date de Consommation Recommandée</small></div>
+      <ul>
+        <li>« À consommer jusqu'au… »</li>
+        <li>Lait cru, œufs coquille</li>
+        <li>Œufs = 28 j après ponte</li>
+        <li>Après DCR : cuisson possible (œufs durs)</li>
+        <li class="row-no">Pas de préparations crues</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section-title">Mémo chiffres clés</div>
+  <div class="memo-grid">
+    <div class="memo-card"><div class="memo-big" style="color:#E24B4A">DLC</div><div class="memo-label">Contrôle chaque <strong>jour</strong></div></div>
+    <div class="memo-card"><div class="memo-big" style="color:#639922">DDM</div><div class="memo-label">Contrôle chaque <strong>semaine</strong></div></div>
+    <div class="memo-card"><div class="memo-big" style="color:#BA7517">28 j</div><div class="memo-label">DCR œufs après la ponte</div></div>
+    <div class="memo-card"><div class="memo-big" style="color:#185FA5">–18°C</div><div class="memo-label">Température surgelés</div></div>
+  </div>
+
+  <div class="section-title">Les surgelés ont une DDM, pas une DLC</div>
+  <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:1rem">
+    <span class="badge b-green" style="font-size:12px;padding:5px 10px">Glaces → DDM</span>
+    <span class="badge b-green" style="font-size:12px;padding:5px 10px">Légumes surgelés → DDM</span>
+    <span class="badge b-green" style="font-size:12px;padding:5px 10px">Viandes surgelées → DDM</span>
+    <span class="badge b-green" style="font-size:12px;padding:5px 10px">Poissons surgelés → DDM</span>
+  </div>
+</div>
+
+<!-- VENDEUR -->
+<div id="tab-vendeur" class="tab-content">
+  <div class="section-title">Contrôles quotidiens</div>
+  <div class="steps">
+    <div class="step"><i class="ti ti-calendar-due step-icon" style="color:#E24B4A" aria-hidden="true"></i><p><strong>DLC : contrôle chaque jour</strong> — retirer immédiatement tout produit hors DLC, tenir une fiche de retrait</p></div>
+    <div class="step"><i class="ti ti-calendar step-icon" style="color:#639922" aria-hidden="true"></i><p><strong>DDM : contrôle chaque semaine</strong> — proposer des opérations anti-gaspillage (réductions) sur les dates courtes</p></div>
+    <div class="step"><i class="ti ti-rotate step-icon" style="color:#185FA5" aria-hidden="true"></i><p><strong>Appliquer le FIFO / PEPS</strong> — premier entré, premier sorti : les dates courtes devant, les longues derrière</p></div>
+    <div class="step"><i class="ti ti-eye step-icon" style="color:#BA7517" aria-hidden="true"></i><p><strong>Faire le facing</strong> — produits bien alignés, étiquettes lisibles, rotation vérifiée</p></div>
+    <div class="step"><i class="ti ti-file-description step-icon" style="color:#444441" aria-hidden="true"></i><p><strong>Tenir une fiche de retrait</strong> — traçabilité obligatoire des produits retirés de la vente</p></div>
+  </div>
+
+  <div style="margin-top:1.25rem" class="section-title">Particularités surgelés</div>
+  <div class="steps">
+    <div class="step"><i class="ti ti-temperature step-icon" style="color:#185FA5" aria-hidden="true"></i><p><strong>Vérifier la température : –18°C</strong> — en dessous de cette limite, les micro-organismes ne se développent pas</p></div>
+    <div class="step"><i class="ti ti-door step-icon" style="color:#185FA5" aria-hidden="true"></i><p><strong>S'assurer que les portes ferment bien</strong> — une mauvaise fermeture rompt la chaîne du froid</p></div>
+    <div class="step"><i class="ti ti-snowflake step-icon" style="color:#185FA5" aria-hidden="true"></i><p><strong>Vérifier l'état des emballages</strong> — givre excessif = possible rupture de chaîne du froid → retirer le produit</p></div>
+    <div class="step"><i class="ti ti-ban step-icon" style="color:#E24B4A" aria-hidden="true"></i><p><strong>Jamais recongelez un produit décongelé</strong> — sauf s'il a été cuit entre-temps</p></div>
+  </div>
+
+  <div style="margin-top:1.25rem" class="section-title">Mettre en avant les dates courtes</div>
+  <div class="card">
+    <p style="margin-bottom:6px"><strong>DLC courte</strong> → avancer en rayon, signaler avec une étiquette de réduction possible, alerter le responsable</p>
+    <p style="margin-bottom:6px"><strong>DDM courte</strong> → proposer une réduction (opération anti-gaspillage), communiquer en rayon</p>
+    <p><strong>Objectif</strong> : limiter la démarque inconnue et réduire le gaspillage alimentaire</p>
+  </div>
+
+  <div class="warn-box">
+    <p><strong>⚠ Rappel légal :</strong> vendre un produit dont la DLC est dépassée expose l'enseigne à des sanctions pénales. Pas de dérogation possible, même pour un don.</p>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div id="tab-quiz" class="tab-content">
+  <div class="score-bar">
+    <div>
+      <div class="score-label">Score</div>
+      <div><span class="score-num" id="score">0</span><span style="font-size:14px;color:var(--color-text-secondary)">/20</span></div>
+    </div>
+    <div>
+      <div class="score-label">Progression</div>
+      <div style="font-size:14px;font-weight:500"><span id="answered">0</span>/20 répondues</div>
+    </div>
+    <button class="btn-reset" onclick="resetQuiz()"><i class="ti ti-refresh" aria-hidden="true"></i> Recommencer</button>
+  </div>
+  <div class="progress"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+  <div id="quiz-container"></div>
+</div>
+
+</div>
+
+<script>
+const questions=[
+  {q:"Que signifie DLC ?",opts:["Date Limite de Conservation","Date Limite de Consommation","Date de Livraison Contrôlée","Date Légale de Consommation"],a:1,exp:"DLC = Date Limite de Consommation. Mention : 'À consommer jusqu'au…'"},
+  {q:"Que signifie DDM ?",opts:["Date de Durabilité Minimale","Date de Démarque Maximale","Date de Distribution Minimum","Date Durable en Magasin"],a:0,exp:"DDM = Date de Durabilité Minimale (anciennement DLUO). Mention : 'À consommer de préférence avant…'"},
+  {q:"Quelle mention apparaît sur un produit avec une DLC ?",opts:["À consommer de préférence avant…","À consommer jusqu'au…","Date de ponte","À utiliser avant le…"],a:1,exp:"La mention DLC est 'À consommer jusqu'au…'. La DDM porte 'À consommer de préférence avant…'"},
+  {q:"Quel type de risque présente un produit dont la DLC est dépassée ?",opts:["Perte de goût uniquement","Risque microbiologique → danger pour la santé","Risque d'allergie","Aucun risque"],a:1,exp:"La DLC concerne des produits très périssables. Dépasser la DLC expose à un risque microbiologique réel (Salmonelles, Listeria…)."},
+  {q:"Peut-on donner à une association un produit dont la DLC est dépassée ?",opts:["Oui, avec accord du responsable","Oui si c'est une association agréée","Non, c'est interdit","Oui si le produit semble en bon état"],a:2,exp:"La loi interdit formellement de vendre, donner ou consommer un produit dont la DLC est dépassée."},
+  {q:"Un produit dont la DDM est dépassée peut-il être vendu ?",opts:["Non, jamais","Oui, s'il est en bon état","Seulement avec une réduction","Seulement sur accord de la DDPP"],a:1,exp:"Après la DDM, le produit peut être vendu, donné ou consommé s'il est en bon état (emballage intact, pas d'odeur anormale)."},
+  {q:"À quoi correspondent les initiales FIFO ?",opts:["First In First Out","Food Information For Others","First Important Food Order","Frais Indexé sur la Formation Obligatoire"],a:0,exp:"FIFO = First In First Out / PEPS = Premier Entré Premier Sorti. Les produits arrivés en premier doivent partir en premier."},
+  {q:"À quelle fréquence doit-on contrôler les DLC ?",opts:["Une fois par semaine","Une fois par mois","Chaque jour","Tous les deux jours"],a:2,exp:"Les DLC doivent être contrôlées chaque jour car elles concernent des produits très périssables à risque microbiologique."},
+  {q:"À quelle fréquence doit-on contrôler les DDM ?",opts:["Chaque jour","Chaque semaine","Chaque mois","Uniquement à la réception"],a:1,exp:"Les DDM doivent être contrôlées chaque semaine. Le risque est moins immédiat que pour les DLC."},
+  {q:"Quelle date de péremption portent les surgelés ?",opts:["DLC","DCR","DDM","Pas de date"],a:2,exp:"Les surgelés portent une DDM car la surgélation stoppe la croissance des micro-organismes → produit longue conservation."},
+  {q:"Pourquoi les surgelés n'ont-ils pas de DLC ?",opts:["C'est une erreur réglementaire","La surgélation stoppe la croissance des micro-organismes","Ils sont fabriqués avec des conservateurs","Ils ne contiennent pas de protéines"],a:1,exp:"La congélation à –18°C stoppe le développement microbien, ce qui explique l'absence de DLC sur les surgelés."},
+  {q:"Quelle est la température réglementaire de conservation des surgelés ?",opts:["–8°C","–12°C","–15°C","–18°C"],a:3,exp:"Les surgelés doivent être conservés à –18°C minimum dans un congélateur ménager."},
+  {q:"Un produit décongelé peut-il être recongelé ?",opts:["Oui, toujours","Oui, si on le congèle rapidement","Non, sauf s'il a été cuit entre-temps","Oui, avec accord du responsable"],a:2,exp:"Un produit décongelé ne doit jamais être recongelé sauf s'il a été cuit entre-temps (la cuisson élimine les micro-organismes)."},
+  {q:"Que signifie la présence de givre sur l'emballage d'un surgelé ?",opts:["Le produit est correctement conservé","Possible rupture de la chaîne du froid","Le produit a été fabriqué récemment","Aucun problème particulier"],a:1,exp:"Un givre excessif sur l'emballage peut indiquer une rupture de la chaîne du froid. Le produit doit être retiré."},
+  {q:"À quels produits la DCR s'applique-t-elle principalement ?",opts:["Viande fraîche et poisson","Pâtes et conserves","Lait cru et œufs coquille","Fromages et yaourts"],a:2,exp:"La DCR (Date de Consommation Recommandée) concerne le lait cru et les œufs coquille."},
+  {q:"Combien de jours après la ponte correspond la DCR des œufs ?",opts:["14 jours","21 jours","28 jours","35 jours"],a:2,exp:"La DCR des œufs correspond à 28 jours après la ponte."},
+  {q:"Après dépassement de la DCR, comment peut-on consommer les œufs ?",opts:["Crus uniquement","Cuits durs si bien conservés","Ils ne peuvent plus être consommés","En préparations crues comme la mayonnaise"],a:1,exp:"Après la DCR, les œufs peuvent être consommés cuits (durs). Les préparations crues (mousse au chocolat, mayo) sont interdites."},
+  {q:"Qu'est-ce que le PEPS dans la gestion des rayons ?",opts:["Produits En Promotion Saisonnière","Premier Entré Premier Sorti","Panier En Priorité Sécurisé","Prix En Phase de Soldes"],a:1,exp:"PEPS = Premier Entré Premier Sorti (= FIFO). Les produits arrivés en premier doivent être vendus en premier."},
+  {q:"Quelle action est recommandée pour limiter la démarque sur les DDM courtes ?",opts:["Retirer les produits du rayon","Proposer des réductions (opérations anti-gaspillage)","Congeler les produits","Les mettre en réserve"],a:1,exp:"Pour les DDM courtes, on peut proposer des réductions pour encourager la vente et limiter le gaspillage."},
+  {q:"Laquelle de ces affirmations est correcte concernant le freezer ?",opts:["Freezer = surgélation, même résultat","Le freezer garantit toujours –18°C","Un freezer peut ne pas maintenir –18°C en permanence","Un freezer prolonge la DLC d'un produit frais"],a:2,exp:"Un freezer (armoire freezer) n'est pas un appareil de surgélation : la température peut fluctuer et ne garantit pas –18°C en permanence."}
+];
+
+let state=questions.map(()=>null);
+
+function showTab(id){
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>{
+    b.classList.toggle('active',['fiche','comparer','vendeur','quiz'][i]===id);
+  });
+  document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+}
+
+function buildQuiz(){
+  const c=document.getElementById('quiz-container');
+  c.innerHTML=questions.map((q,qi)=>`
+    <div class="quiz-q" id="q${qi}">
+      <div class="qtext"><span style="font-size:12px;color:var(--color-text-secondary)">Question ${qi+1}/20 · </span>${q.q}</div>
+      ${q.opts.map((o,oi)=>`<button class="quiz-opt" onclick="answer(${qi},${oi})">${o}</button>`).join('')}
+      <div class="feedback" id="fb${qi}" style="display:none"></div>
+    </div>`).join('');
+}
+
+function answer(qi,oi){
+  if(state[qi]!==null)return;
+  state[qi]=oi;
+  const q=questions[qi];
+  document.querySelectorAll(`#q${qi} .quiz-opt`).forEach((o,i)=>{
+    o.classList.add('disabled');
+    if(i===q.a)o.classList.add('correct');
+    else if(i===oi&&oi!==q.a)o.classList.add('wrong');
+  });
+  const fb=document.getElementById('fb'+qi);
+  fb.style.display='block';
+  fb.className='feedback '+(oi===q.a?'ok':'ko');
+  fb.textContent=(oi===q.a?'✓ Bonne réponse ! ':'✗ Mauvaise réponse. ')+q.exp;
+  const answered=state.filter(s=>s!==null).length;
+  const correct=state.filter((s,i)=>s===questions[i].a).length;
+  document.getElementById('score').textContent=correct;
+  document.getElementById('answered').textContent=answered;
+  document.getElementById('progress-fill').style.width=(answered/20*100)+'%';
+}
+
+function resetQuiz(){
+  state=questions.map(()=>null);
+  buildQuiz();
+  document.getElementById('score').textContent=0;
+  document.getElementById('answered').textContent=0;
+  document.getElementById('progress-fill').style.width='0%';
+}
+
+buildQuiz();
+</script>

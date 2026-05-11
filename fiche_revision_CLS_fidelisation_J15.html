@@ -1,0 +1,390 @@
+
+<h2 class="sr-only">Fiche de révision interactive — CLS et Fidélisation — TP Employé Commercial RNCP37099 — Journée 15</h2>
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  .tab-bar { display: flex; gap: 8px; margin-bottom: 1.5rem; flex-wrap: wrap; padding: 1rem 0 0; }
+  .tab-btn {
+    padding: 8px 18px; border-radius: var(--border-radius-md);
+    border: 0.5px solid var(--color-border-secondary);
+    background: var(--color-background-primary);
+    color: var(--color-text-secondary); font-size: 14px; cursor: pointer;
+    font-family: var(--font-sans); font-weight: 400;
+  }
+  .tab-btn.active { background: #D85A30; color: #fff; border-color: #D85A30; font-weight: 500; }
+  .section { display: none; }
+  .section.visible { display: block; }
+
+  .card {
+    background: var(--color-background-primary);
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-lg);
+    padding: 1rem 1.25rem; margin-bottom: 12px;
+  }
+  .card-title {
+    font-size: 15px; font-weight: 500; color: var(--color-text-primary);
+    margin-bottom: 8px; display: flex; align-items: center; gap: 8px;
+  }
+  .badge {
+    display: inline-block; font-size: 11px; padding: 2px 8px;
+    border-radius: var(--border-radius-md); font-weight: 500;
+  }
+  .badge-coral { background: #FAECE7; color: #993C1D; }
+  .badge-blue { background: #E6F1FB; color: #185FA5; }
+  .badge-teal { background: #E1F5EE; color: #0F6E56; }
+  .badge-amber { background: #FAEEDA; color: #854F0B; }
+  .badge-purple { background: #EEEDFE; color: #3C3489; }
+  .badge-red { background: #FCEBEB; color: #A32D2D; }
+
+  .row { display: flex; gap: 12px; flex-wrap: wrap; }
+  .half { flex: 1; min-width: 200px; }
+  p, li { font-size: 14px; color: var(--color-text-secondary); line-height: 1.6; }
+  ul { padding-left: 1.2rem; }
+  h3 { font-size: 15px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 6px; }
+
+  .key-box {
+    border-left: 3px solid #D85A30; padding-left: 12px;
+    border-radius: 0; margin: 8px 0;
+  }
+  .key-box p { color: var(--color-text-primary); font-weight: 500; font-size: 14px; }
+
+  .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; }
+  .metric-card {
+    background: var(--color-background-secondary);
+    border-radius: var(--border-radius-md);
+    padding: 10px 14px; text-align: center;
+  }
+  .metric-label { font-size: 12px; color: var(--color-text-secondary); margin-bottom: 4px; }
+  .metric-value { font-size: 22px; font-weight: 500; color: #D85A30; }
+
+  .step-row { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; }
+  .step-num {
+    width: 24px; height: 24px; border-radius: 50%;
+    background: #D85A30; color: #fff;
+    font-size: 12px; font-weight: 500;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .step-text { font-size: 13px; color: var(--color-text-secondary); line-height: 1.5; padding-top: 3px; }
+
+  .q-container { margin-bottom: 1rem; }
+  .q-text { font-size: 15px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 10px; }
+  .q-num { color: #D85A30; margin-right: 6px; }
+  .choices { display: flex; flex-direction: column; gap: 6px; }
+  .choice-btn {
+    text-align: left; padding: 8px 12px; font-size: 13px;
+    border: 0.5px solid var(--color-border-secondary);
+    border-radius: var(--border-radius-md);
+    background: var(--color-background-primary);
+    color: var(--color-text-secondary); cursor: pointer;
+    font-family: var(--font-sans);
+  }
+  .choice-btn:hover:not(:disabled) { border-color: #D85A30; color: var(--color-text-primary); }
+  .choice-btn.correct { background: #E1F5EE; color: #0F6E56; border-color: #1D9E75; font-weight: 500; }
+  .choice-btn.wrong { background: #FAECE7; color: #993C1D; border-color: #D85A30; }
+  .explanation {
+    margin-top: 8px; font-size: 13px; padding: 8px 12px;
+    background: var(--color-background-secondary);
+    border-radius: var(--border-radius-md);
+    color: var(--color-text-secondary); display: none;
+  }
+  .explanation.show { display: block; }
+  .next-btn {
+    margin-top: 12px; padding: 8px 20px;
+    background: #D85A30; color: #fff; border: none;
+    border-radius: var(--border-radius-md); font-size: 14px; cursor: pointer;
+    font-family: var(--font-sans); display: none;
+  }
+  .next-btn.show { display: inline-block; }
+  .score-card {
+    text-align: center; padding: 2rem;
+    background: var(--color-background-secondary);
+    border-radius: var(--border-radius-lg); margin-top: 1rem;
+  }
+  .score-big { font-size: 48px; font-weight: 500; color: #D85A30; }
+  .score-sub { font-size: 15px; color: var(--color-text-secondary); margin-top: 8px; }
+  .restart-btn {
+    margin-top: 1rem; padding: 10px 24px;
+    background: #D85A30; color: #fff; border: none;
+    border-radius: var(--border-radius-md); font-size: 14px; cursor: pointer;
+    font-family: var(--font-sans);
+  }
+  .progress-bar-bg {
+    height: 4px; background: var(--color-background-secondary);
+    border-radius: 2px; margin-bottom: 1.5rem;
+  }
+  .progress-bar-fill { height: 4px; background: #D85A30; border-radius: 2px; transition: width 0.3s; }
+  .start-btn {
+    padding: 10px 24px; background: #D85A30; color: #fff; border: none;
+    border-radius: var(--border-radius-md); font-size: 14px; cursor: pointer;
+    font-family: var(--font-sans); margin-top: 1rem; display: block;
+  }
+  .intro-quiz {
+    text-align: center; padding: 1.5rem;
+    background: var(--color-background-secondary);
+    border-radius: var(--border-radius-lg);
+  }
+  .intro-quiz p { font-size: 15px; color: var(--color-text-secondary); }
+</style>
+
+<div>
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab('fiche')"><i class="ti ti-book-2" aria-hidden="true"></i> Fiche de révision</button>
+  <button class="tab-btn" onclick="showTab('quiz')"><i class="ti ti-brain" aria-hidden="true"></i> Quiz 20 questions</button>
+</div>
+
+<div id="fiche" class="section visible">
+
+  <div class="card">
+    <div class="card-title"><span class="badge badge-coral">1</span> Historique des CLS</div>
+    <div class="row">
+      <div class="half">
+        <h3>Années 1980</h3>
+        <p>Premiers prototypes développés dans des environnements contrôlés, pas encore de déploiement commercial.</p>
+      </div>
+      <div class="half">
+        <h3>Années 1990 — le tournant</h3>
+        <p>Les grandes chaînes intègrent massivement les CLS. Passage du prototype au standard commercial.</p>
+      </div>
+    </div>
+    <div class="key-box" style="margin-top: 10px;">
+      <p>3 technologies clés de l'essor CLS : lecture optique (scanners laser), interfaces tactiles, paiement électronique</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="badge badge-blue">2</span> Fonctionnement d'une CLS</div>
+    <div style="margin-bottom: 8px;">
+      <div class="step-row"><div class="step-num">1</div><div class="step-text"><strong style="color: var(--color-text-primary);">Scanner</strong> — Le client passe l'article devant le scanner. Si code-barres illisible : alerte déclenchée → agent intervient.</div></div>
+      <div class="step-row"><div class="step-num">2</div><div class="step-text"><strong style="color: var(--color-text-primary);">Peser & étiqueter</strong> — Pour les produits en vrac via balances connectées.</div></div>
+      <div class="step-row"><div class="step-num">3</div><div class="step-text"><strong style="color: var(--color-text-primary);">Payer</strong> — Carte bancaire (avec/sans contact) ou espèces avec rendu de monnaie automatique.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="badge badge-teal">3</span> Avantages & inconvénients</div>
+    <div class="row">
+      <div class="half">
+        <h3>Pour les clients</h3>
+        <ul>
+          <li>Rapidité et autonomie (petits paniers)</li>
+          <li>Confidentialité (produits sensibles)</li>
+          <li>Disponibilité étendue (hors heures de pointe)</li>
+        </ul>
+      </div>
+      <div class="half">
+        <h3>Pour les détaillants</h3>
+        <ul>
+          <li>Réduction des coûts salariaux</li>
+          <li>Meilleure gestion des flux</li>
+          <li>Optimisation de l'espace en magasin</li>
+        </ul>
+      </div>
+    </div>
+    <div class="row" style="margin-top: 10px;">
+      <div class="half">
+        <h3>Risques / défis</h3>
+        <ul>
+          <li>Impact sur l'emploi (reconversion)</li>
+          <li>Vol à l'étalage facilité</li>
+          <li>Fraude à la consommation</li>
+          <li>Difficultés pour certains clients (seniors, handicap)</li>
+        </ul>
+      </div>
+      <div class="half">
+        <h3>Perspectives d'avenir</h3>
+        <ul>
+          <li>Reconnaissance visuelle sans code-barres (IA)</li>
+          <li>Paiement NFC et biométrique</li>
+          <li>Magasins sans caisse (ex : Amazon Go)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="badge badge-amber">4</span> Posture professionnelle en CLS</div>
+    <div class="row">
+      <div class="half">
+        <h3>Disponibilité & assistance</h3>
+        <ul>
+          <li>Aider au scan des articles difficiles</li>
+          <li>Résoudre les incidents techniques</li>
+          <li>Être attentif aux signaux clients (regard, hésitation)</li>
+        </ul>
+      </div>
+      <div class="half">
+        <h3>Surveillance & prévention vol</h3>
+        <ul>
+          <li>Vérifier concordance panier / articles scannés</li>
+          <li>Repérer attitudes suspectes</li>
+          <li>Alerter discrètement la hiérarchie</li>
+        </ul>
+      </div>
+    </div>
+    <div class="row" style="margin-top: 10px;">
+      <div class="half">
+        <h3>Gestion des files d'attente</h3>
+        <ul>
+          <li>Identifier les clients bloqués rapidement</li>
+          <li>Prioriser les interventions avec calme</li>
+          <li>Orienter vers une borne libre si possible</li>
+        </ul>
+      </div>
+      <div class="half">
+        <h3>Service client (priorité absolue)</h3>
+        <ul>
+          <li>Accueil chaleureux + sourire</li>
+          <li>Répondre clairement aux questions</li>
+          <li>Résoudre les problèmes sans faire attendre</li>
+        </ul>
+      </div>
+    </div>
+    <div class="key-box" style="margin-top: 10px;">
+      <p>Procédure incident code-barres : 1. Accueillir avec sourire 2. Tenter scan manuel 3. Appeler renfort après 30 secondes</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="badge badge-purple">5</span> La carte de fidélité</div>
+    <div class="row">
+      <div class="half">
+        <h3>Caractéristiques</h3>
+        <ul>
+          <li>Souvent gratuite (payante si liée à un compte bancaire)</li>
+          <li>S'obtient en caisse ou à l'accueil</li>
+          <li>Application mobile disponible</li>
+          <li>Ticket dématérialisé accessible sur l'appli</li>
+          <li>Points et argent visibles sur le ticket et l'appli</li>
+        </ul>
+      </div>
+      <div class="half">
+        <h3>Argumentaire en 4 étapes</h3>
+        <div class="step-row"><div class="step-num">A</div><div class="step-text">Accroche — question ouverte centrée client</div></div>
+        <div class="step-row"><div class="step-num">B</div><div class="step-text">Avantages — 2 à 3 bénéfices concrets</div></div>
+        <div class="step-row"><div class="step-num">C</div><div class="step-text">Objections — reformuler, rassurer</div></div>
+        <div class="step-row"><div class="step-num">D</div><div class="step-text">Conclusion — action immédiate proposée</div></div>
+      </div>
+    </div>
+    <div style="margin-top: 10px; padding: 10px 14px; background: var(--color-background-secondary); border-radius: var(--border-radius-md); font-size: 13px; color: var(--color-text-secondary);">
+      Objection "pas le temps" → inscription en 2 min sur appli | Objection "pas de pubs" → préférences gérables librement
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="badge badge-red">6</span> Chiffres clés — fidélisation</div>
+    <div class="grid-3">
+      <div class="metric-card"><div class="metric-label">Français avec une carte fidélité</div><div class="metric-value">98%</div></div>
+      <div class="metric-card"><div class="metric-label">Utilisent vraiment leur carte</div><div class="metric-value">2/3</div></div>
+      <div class="metric-card"><div class="metric-label">Cartes possédées en moyenne</div><div class="metric-value">9</div></div>
+      <div class="metric-card"><div class="metric-label">Clients fidèles → % du CA</div><div class="metric-value">30/80</div></div>
+      <div class="metric-card"><div class="metric-label">Coût fidélisation vs conquête</div><div class="metric-value">6× moins</div></div>
+    </div>
+    <div class="key-box" style="margin-top: 12px;">
+      <p>La Customer Lifetime Value (CLV) = valeur générée par un client sur la durée de la relation. Plus elle est longue, plus elle est rentable.</p>
+    </div>
+  </div>
+
+  <div style="text-align: center; margin-top: 1rem; margin-bottom: 1rem;">
+    <button class="start-btn" onclick="showTab('quiz')"><i class="ti ti-brain" aria-hidden="true"></i> Tester mes connaissances →</button>
+  </div>
+</div>
+
+<div id="quiz" class="section">
+  <div class="progress-bar-bg"><div class="progress-bar-fill" id="progress-fill" style="width: 0%;"></div></div>
+  <div id="quiz-body"></div>
+</div>
+</div>
+
+<script>
+const questions = [
+  { q: "Dans quelle décennie les CLS ont-elles commencé à être déployées massivement en grande distribution ?", choices: ["Années 1970", "Années 1980", "Années 1990", "Années 2000"], correct: 2, expl: "C'est dans les années 1990 que les grandes chaînes de supermarchés ont commencé à intégrer massivement les CLS. Les années 1980 ne correspondent qu'aux premiers prototypes expérimentaux." },
+  { q: "Quelles sont les 3 étapes du processus d'encaissement en CLS dans l'ordre ?", choices: ["Payer → Scanner → Peser", "Scanner → Payer → Peser", "Scanner → Peser & étiqueter → Payer", "Peser → Scanner → Payer"], correct: 2, expl: "L'ordre est : 1) Scanner les articles, 2) Peser et étiqueter les produits en vrac si nécessaire, 3) Payer. C'est la séquence logique d'un passage en caisse libre-service." },
+  { q: "Que doit faire l'agent CLS si un code-barres est illisible ?", choices: ["Ignorer l'article et continuer", "Fermer la borne immédiatement", "Intervenir rapidement : tenter le scan manuel, appeler un renfort si nécessaire", "Demander au client de revenir plus tard"], correct: 2, expl: "En cas de code-barres illisible, le système déclenche une alerte. L'agent doit accueillir le client avec le sourire, tenter de scanner manuellement, puis appeler un renfort si le problème persiste après 30 secondes." },
+  { q: "Quel est le principal avantage des CLS pour les clients souhaitant rester discrets ?", choices: ["La rapidité uniquement", "La confidentialité : transactions sans interaction directe avec un employé", "La gratuité du service", "La disponibilité 24h/24"], correct: 1, expl: "La confidentialité est un avantage majeur des CLS : les transactions s'effectuent sans interaction directe avec un employé, ce qui est particulièrement apprécié lors de l'achat de produits intimes ou sensibles." },
+  { q: "Quel est l'impact principal des CLS sur l'emploi en magasin ?", choices: ["Aucun impact, les emplois restent identiques", "Création massive d'emplois de caissiers", "Réduction de la demande en postes de caissiers traditionnels, nécessitant une reconversion", "Suppression de tous les emplois en magasin"], correct: 2, expl: "Les CLS réduisent mécaniquement la demande en postes de caissiers traditionnels. Cela impose aux enseignes une réflexion sur la reconversion des collaborateurs vers de nouveaux rôles : accompagnement client, supervision des bornes, gestion des litiges." },
+  { q: "Quel comportement l'agent CLS doit-il adopter face à un client suspect ?", choices: ["Intervenir directement et confronter le client", "Alerter discrètement la hiérarchie sans confrontation directe", "Ignorer et ne rien faire", "Appeler la police immédiatement"], correct: 1, expl: "La vigilance ne doit pas mener à une confrontation directe, qui pourrait créer un incident. La procédure est d'alerter discrètement la hiérarchie en cas de doute sur une transaction suspecte." },
+  { q: "Quelle technologie future permet d'identifier un produit sans code-barres ?", choices: ["Le paiement NFC", "La reconnaissance visuelle par intelligence artificielle", "La balance connectée", "Le lecteur CMC7"], correct: 1, expl: "La prochaine génération de CLS intègre la reconnaissance visuelle par IA, permettant d'identifier les produits sans qu'il soit nécessaire de scanner un code-barres. Cette technologie rendra le processus encore plus fluide." },
+  { q: "Quel pourcentage des Français possède au moins une carte de fidélité ?", choices: ["72%", "85%", "92%", "98%"], correct: 3, expl: "98% des Français possèdent au moins une carte de fidélité dans leur portefeuille. Cependant, seulement 2/3 d'entre eux utilisent réellement leur carte et profitent de ses avantages." },
+  { q: "Combien de cartes de fidélité un Français possède-t-il en moyenne ?", choices: ["3 cartes", "5 cartes", "9 cartes", "15 cartes"], correct: 2, expl: "Chaque Français possède en moyenne 9 cartes de fidélité, toutes enseignes confondues. Un fort taux d'équipement ne garantit pas l'utilisation : votre rôle est d'encourager les clients à utiliser leur carte." },
+  { q: "Que signifie la règle des 30/80 en matière de fidélisation ?", choices: ["30% de remise pour 80 points cumulés", "30% des clients les plus fidèles génèrent 80% du chiffre d'affaires", "80% des clients viennent 30 fois par an", "30 minutes d'attente max pour 80% des clients"], correct: 1, expl: "La règle des 30/80 illustre l'importance de la fidélisation : 30% des clients les plus fidèles génèrent 80% du chiffre d'affaires. Ce chiffre justifie de concentrer les efforts sur la rétention plutôt que sur la conquête." },
+  { q: "Combien de fois moins coûteuse est la fidélisation par rapport à la conquête d'un nouveau client ?", choices: ["2 fois moins", "4 fois moins", "6 fois moins", "10 fois moins"], correct: 2, expl: "Les coûts liés à la fidélisation sont 6 fois inférieurs à ceux d'une stratégie de conquête de nouveaux clients. Transformer un prospect en client revient beaucoup plus cher que de fidéliser un client déjà acquis." },
+  { q: "Qu'est-ce que la Customer Lifetime Value (CLV) ?", choices: ["Le montant du ticket de caisse moyen", "La valeur générée par un client sur la durée de sa relation avec l'enseigne", "Le nombre de visites d'un client par an", "Le coût d'acquisition d'un nouveau client"], correct: 1, expl: "La CLV mesure l'espérance de revenu ou de profit qu'une entreprise peut attendre du développement d'une relation à moyen et long terme avec un client. Plus la relation dure, plus la valeur générée est importante." },
+  { q: "À quel moment est-il idéal de proposer la carte de fidélité à un client en CLS ?", choices: ["Uniquement avant que le client commence à scanner", "Pendant le passage en caisse ou lors d'une intervention d'assistance", "Uniquement à l'accueil du magasin", "Jamais, ce n'est pas le rôle de l'agent CLS"], correct: 1, expl: "Le moment idéal est pendant le passage en caisse, lorsque le client attend la validation de son paiement, ou lors d'une intervention d'assistance. C'est une opportunité naturelle d'interaction." },
+  { q: "Comment répondre à l'objection 'Je ne veux pas recevoir de publicités' lors de la proposition de la carte fidélité ?", choices: ["Accepter le refus sans insister", "Expliquer que le client choisit lui-même ses préférences de communication dans l'application", "Promettre qu'il n'y aura aucune communication", "Dire que c'est obligatoire pour avoir la carte"], correct: 1, expl: "La bonne réponse est de préciser que le client gère librement ses préférences de communication dans l'application, et peut choisir de ne recevoir que ses avantages fidélité sans aucune publicité." },
+  { q: "Quel est le rôle de l'agent CLS face à la gestion des files d'attente ?", choices: ["Attendre que la file se résorbe seule", "Fermer des bornes pour concentrer les clients", "Identifier les clients bloqués rapidement et prioriser les interventions avec calme", "Orienter tous les clients vers les caisses traditionnelles"], correct: 2, expl: "L'agent doit identifier rapidement les clients bloqués, prioriser les interventions en évaluant l'urgence de chaque situation avec calme et méthode, et maintenir un rythme de passage régulier aux bornes." },
+  { q: "Comment la carte de fidélité contribue-t-elle à la stratégie commerciale de l'enseigne ?", choices: ["Elle sert uniquement à collecter des données clients", "Elle crée une relation durable et personnalisée, renforçant l'attachement à la marque", "Elle permet uniquement de faire des remises immédiates", "Elle n'a pas d'impact sur le chiffre d'affaires"], correct: 1, expl: "La carte de fidélité est un outil stratégique qui crée un lien privilégié et durable avec le client. Elle favorise l'attachement à la marque, la récurrence des achats et augmente le chiffre d'affaires sur le long terme." },
+  { q: "Quel est le modèle de magasin le plus avancé en matière d'automatisation cité dans le cours ?", choices: ["Carrefour City", "Amazon Go / Amazon Fresh", "Leclerc Drive", "Monoprix"], correct: 1, expl: "Amazon Go illustre la trajectoire vers laquelle tend la distribution mondiale : le client entre, prend ses articles et repart sans passer par aucune caisse. Le paiement s'effectue automatiquement via une application." },
+  { q: "Quelle est la posture attendue de l'agent CLS vis-à-vis du service client ?", choices: ["Intervenir uniquement en cas de panne technique", "Rester derrière un comptoir et attendre d'être sollicité", "Être disponible, souriant, attentif aux signaux clients et proposer une aide proactive", "Se concentrer uniquement sur la surveillance anti-vol"], correct: 2, expl: "L'agent CLS est le visage humain d'un espace automatisé. Sa posture doit être : disponibilité constante, accueil chaleureux, écoute et réactivité aux signaux clients (regard, hésitation, appel) et assistance proactive." },
+  { q: "Pourquoi fidéliser coûte-t-il moins cher que conquérir de nouveaux clients ?", choices: ["Parce que les clients fidèles acceptent des prix plus élevés", "Parce qu'un client fidèle ne nécessite plus d'actions marketing coûteuses pour être attiré", "Parce que les remises accordées aux fidèles sont moins importantes", "Parce que les clients fidèles achètent moins souvent"], correct: 1, expl: "Un client fidèle connaît déjà l'enseigne et n'a pas besoin d'être conquis. Les actions de fidélisation (avantages, points) coûtent 6 fois moins cher que les actions de conquête (publicité, promotions d'acquisition)." },
+  { q: "Quelle est la mission principale de l'hôte/hôtesse CLS en matière de fidélisation ?", choices: ["Forcer chaque client à souscrire à la carte de fidélité", "Proposer systématiquement la carte de fidélité à chaque client qui ne la possède pas encore, avec enthousiasme", "Ne proposer la carte qu'aux clients qui en font la demande", "Distribuer des flyers sur la carte de fidélité"], correct: 1, expl: "L'hôte/hôtesse doit proposer la carte systématiquement à tout client qui ne la possède pas encore, avec enthousiasme et conviction. Proposer la carte fait pleinement partie de sa mission d'accueil et de son rôle commercial." }
+];
+
+let current = 0, score = 0, answered = false;
+
+function showTab(tab) {
+  document.getElementById('fiche').classList.remove('visible');
+  document.getElementById('quiz').classList.remove('visible');
+  document.getElementById(tab).classList.add('visible');
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-btn')[tab === 'fiche' ? 0 : 1].classList.add('active');
+  if (tab === 'quiz' && current === 0 && score === 0) renderIntro();
+}
+
+function renderIntro() {
+  document.getElementById('progress-fill').style.width = '0%';
+  document.getElementById('quiz-body').innerHTML = `
+    <div class="intro-quiz">
+      <p style="font-size: 20px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 8px;">Quiz CLS & Fidélisation</p>
+      <p>20 questions pour valider tes connaissances sur les caisses libre-service et la fidélisation client — compétences clés du TP Employé Commercial RNCP37099.</p>
+      <button class="start-btn" onclick="renderQuestion()">Démarrer le quiz</button>
+    </div>`;
+}
+
+function renderQuestion() {
+  const qb = document.getElementById('quiz-body');
+  if (current >= questions.length) {
+    const pct = Math.round((score / questions.length) * 100);
+    const msg = pct >= 80 ? "Excellent ! Tu es prêt(e) pour l'évaluation." : pct >= 60 ? "Bien ! Revois les points en rouge." : "Continue à réviser la fiche !";
+    qb.innerHTML = `<div class="score-card">
+      <div class="metric-label">Score final</div>
+      <div class="score-big">${score}/${questions.length}</div>
+      <div style="font-size: 28px; font-weight: 500; margin: 6px 0;">${pct}%</div>
+      <div class="score-sub">${msg}</div>
+      <button class="restart-btn" onclick="restartQuiz()">Recommencer</button>
+    </div>`;
+    document.getElementById('progress-fill').style.width = '100%';
+    return;
+  }
+  document.getElementById('progress-fill').style.width = ((current / questions.length) * 100) + '%';
+  const q = questions[current];
+  const choicesHtml = q.choices.map((c, i) =>
+    `<button class="choice-btn" id="c${i}" onclick="answer(${i})">${String.fromCharCode(65+i)}. ${c}</button>`
+  ).join('');
+  qb.innerHTML = `<div class="q-container">
+    <div class="q-text"><span class="q-num">Q${current+1}/20</span> ${q.q}</div>
+    <div class="choices">${choicesHtml}</div>
+    <div class="explanation" id="expl">${q.expl}</div>
+    <button class="next-btn" id="nextBtn" onclick="nextQ()">${current < questions.length - 1 ? 'Question suivante →' : 'Voir mon score →'}</button>
+  </div>`;
+  answered = false;
+}
+
+function answer(idx) {
+  if (answered) return;
+  answered = true;
+  const q = questions[current];
+  if (idx === q.correct) score++;
+  q.choices.forEach((_, i) => {
+    const btn = document.getElementById('c' + i);
+    btn.disabled = true;
+    if (i === q.correct) btn.classList.add('correct');
+    else if (i === idx) btn.classList.add('wrong');
+  });
+  document.getElementById('expl').classList.add('show');
+  document.getElementById('nextBtn').classList.add('show');
+}
+
+function nextQ() { current++; renderQuestion(); }
+
+function restartQuiz() { current = 0; score = 0; answered = false; renderIntro(); }
+</script>
